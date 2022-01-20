@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+
+<odoo>
+    <data>
+        <record id="report_template_form_view" model="ir.ui.view">
+            <field name="name">Report Template</field>
+            <field name="model">report.template</field>
+            <field name="arch" type="xml">
+                <form string="Server Action">
+                    <!-- <header>
+                        <button name="validate_template" string="Validate" type="object" class="btn-primary"/>
+                    </header> -->
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name" placeholder="e.g. Product Label Template"/></h1>
+                        </div>
+                        <group name="action_wrapper">
+                            <group name="action_content">
+                                <field name="model_id"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Report Template" name="report_tempate" autofocus="autofocus">
+                                <field name="template_text" placeholder="Enter your Report Template here. Help about template is available in the help tab of this document."/>
+                            </page>
+
+                            <page string="Help">
+                                <group>
+                                    <div style="margin-top: 4px;">
+                                        <h3>Help with report templates</h3>
+                                        <p>You can use your printer specific language here. Example zpl can be used for zebra printers. Use the following constructs for referring to the data of the  model:</p>
+                                        <ul>
+                                            <li><code>{}</code>: Enclode the code in the curly-brackets for referring to the model fields/methods.</li>
+                                            <li><code>self</code>: Use the <b>self</b> keyword for referring to the current model object.</li>
+                                        </ul>
+                                        <p>You can checkout <code>http://labelary.com/</code> for zpl designs help.</p>
+                                        <div>
+                                            <p>Example of Report Template. If the report type is zpl:</p>
+<code style="white-space: pre-wrap">
+    ^XA
+    ^CFA,30
+    ^FO50,100^FD {self.name} ^FS
+    ^FO50,140^FD {self.street} ^FS
+    ^FO50,180^FD {self.city} ^FS
+    ^FO50,220^FD {self.zip} ^FS
+    ^CFA,15
+    ^BY5,2,270
+    ^FO100,350^BC^FD 11223344 ^FS
+    ^XZ
+</code>
+                                        </div>
+                                    </div>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="report_template_list_view" model="ir.ui.view">
+            <field name="name">Report Template</field>
+            <field name="model">report.template</field>
+            <field name="arch" type="xml">
+                <tree string="Report Templates">
+                    <field name="name"/>
+                    <field name="model_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="report_template_action" model="ir.actions.act_window">
+            <field name="name">Report Templates</field>
+            <field name="res_model">report.template</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="reports_menuitem_template"
+            name="Report Templates"
+            parent="base.reporting_menuitem"
+            action="wk_odoo_directly_print_reports.report_template_action"
+            sequence="5"
+            groups="base.group_no_one"
+            />
+
+    </data>
+</odoo>

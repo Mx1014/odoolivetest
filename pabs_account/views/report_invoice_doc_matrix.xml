@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <template id="vat_report_dot_matrix_inherit" inherit_id="account.report_invoice_document" primary="True">
+       <xpath expr="//t[@t-call='web.external_layout']" position="attributes">
+           <attribute name="t-call">web.basic_layout</attribute>
+       </xpath>
+<!--       <xpath expr="//div[@align='center']" position="before">-->
+<!--             <div class="row">-->
+<!--                <div class="col-6" name="company_address">-->
+<!--                    <div t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--       </xpath>-->
+   </template>
+</odoo>

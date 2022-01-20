@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_inventory_form_inherit" model="ir.ui.view">
+        <field name="name">view.inventory.form.inherit</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="stock.view_inventory_form"/>
+        <field name="arch" type="xml">
+            <field name="state" position="attributes">
+                <attribute name="statusbar_visible">draft,confirm,reviews,done</attribute>
+            </field>
+            <button name="action_validate" position="after">
+                <button name="action_review" states="confirm" string="Confirm" type="object" class="oe_highlight"/>
+            </button>
+
+            <button name="action_open_inventory_lines" position="attributes">
+                <attribute name="states">reviews</attribute>
+            </button>
+
+            <button name="action_validate" position="attributes">
+                <attribute name="states">reviews</attribute>
+            </button>
+
+             <button name="action_cancel_draft" position="attributes">
+                <attribute name="states">reviews,confirm</attribute>
+            </button>
+
+            <field name="product_ids" position="before">
+                <field name="x_user_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="x_adju_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            </field>
+
+            <sheet position="after">
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </sheet>
+        </field>
+    </record>
+
+    <record id="stock_inventory_line_tree2_inherit" model="ir.ui.view">
+        <field name="name">stock.inventory.line.tree2.inherit</field>
+        <field name="model">stock.inventory.line</field>
+        <field name="inherit_id" ref="stock.stock_inventory_line_tree2"/>
+        <field name="arch" type="xml">
+            <field name="theoretical_qty" position="attributes">
+                <attribute name="groups">pabs_product.group_inventory_manager</attribute>
+            </field>
+            <field name="theoretical_qty" position="before">
+                <field name="x_no_validate" groups="pabs_product.group_inventory_manager"/>
+            </field>
+
+        </field>
+    </record>
+
+</odoo>

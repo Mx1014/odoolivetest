@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_pabs_sale" model="ir.ui.view">
+        <field name="name">pabs.helpdesk</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <!--            <header>-->
+            <!--                <field name="x_show_send_agent" invisible="1"/>-->
+            <!--                <button name="action_mail_send_To_Agent" string="Send To Agent" type="object" class="oe_stat_button"-->
+            <!--                        attrs="{'invisible': ['|', ('brand_agent', '=', False), ('x_show_send_agent', '=', False)]}"/>-->
+            <!--            </header>-->
+            <xpath expr="//header" position="inside">
+                <field name="x_show_send_agent" invisible="1"/>
+                <button name="action_mail_send_To_Agent" string="Send To Agent" type="object" class="oe_stat_button"
+                        attrs="{'invisible': ['|', ('brand_agent', '=', False), ('x_show_send_agent', '=', False)]}"/>
+
+                <button name="action_create_comeback_job" string="Come-back Job" type="object"
+                        attrs="{'invisible': [('x_is_close','=', False)]}"/>
+
+<!--                <button name="cancel_undelivered_order"-->
+<!--                        attrs="{'invisible': ['|','|', ('ticket_type_id', '!=', %(pabs_repair.product_cancellation)d), ('id', '=', False), ('x_move_id', '!=', [])]}"-->
+<!--                        type="object" string="Cancel Undelivered Order"/>-->
+
+<!--                <button name="cancel_delivered_order"-->
+<!--                        attrs="{'invisible': ['|','|', ('ticket_type_id', '!=', %(pabs_repair.product_cancellation)d), ('id', '=', False), ('x_move_id', '!=', [])]}"-->
+<!--                        type="object" string="Cancel Delivered Order"/>-->
+
+            </xpath>
+            <xpath expr="//header" position="after">
+                <header>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"
+                           attrs="{'invisible': [('x_is_close', '!=', False), ('team_id', '=', 5)]}"/>
+                    <field name="x_close_stage_id" widget="statusbar"
+                           attrs="{'invisible': ['|', ('team_id', '!=', 5), ('x_is_close', '=', False)]}"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <button name="action_generate_fsm_task" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '|',('use_fsm', '=', False), ('x_is_close', '!=', False),
+                    ('ticket_type_id', '=', %(pabs_repair.product_cancellation)d)]}
+                </attribute>
+            </button>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" name="action_view_repair_and_task_invoice" type="object"
+                        icon="fa-pencil-square-o" attrs="{'invisible': [('x_invoice_counts', '=', 0)]}">
+                    <field string="Invoices" name="x_invoice_counts" widget="statinfo"/>
+                </button>
+                <button class="oe_stat_button" name="action_view_comeback_job" type="object" icon="fa-tasks"
+                        attrs="{'invisible': [('x_comeback_counts', '=', 0)]}">
+                    <field string="Come-Back" name="x_comeback_counts" widget="statinfo"/>
+                </button>
+
+
+
+<!--                <button class="oe_stat_button" type="object"-->
+<!--                    name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': [('ticket_count', '=', 0)]}">-->
+<!--                    <div class="o_stat_info">-->
+<!--                        <field name="ticket_count" class="o_stat_value"/>-->
+<!--                        <span class="o_stat_text"> Tickets</span>-->
+<!--                    </div>-->
+<!--                </button>-->
+            </xpath>
+
+            <button name="action_view_pickings" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('pickings_count', '=', 0), ('ticket_type_id', '=', %(pabs_repair.product_cancellation)d)]}</attribute>
+                </button>
+
+
+            <!--            <div class="oe_button_box" name="button_box">-->
+            <!--                <button name="Check_warranty" type="object" class="oe_stat_button" icon="fa-files-o">-->
+            <!--                    <field name="warranty_count" string="Warranty" widget="statinfo"/>-->
+            <!--                </button>-->
+            <!--            </div>-->
+            <!--            <field name="commercial_partner_id"/>-->
+
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-danger" role="alert" style="margin-bottom:0px;" attrs="{'invisible': ['|', ('fsm_task_count', '!=', 0), ('stage_id', '!=', 28)]}">
+                       <i>Please Create a Plane Intervention</i>
+                </div>
+            </xpath>
+
+            <xpath expr="//sheet//group//group[2]" position="attributes">
+                <attribute name="string">Customer</attribute>
+            </xpath>
+            <xpath expr="//sheet//group//group[1]" position="attributes">
+                <attribute name="string">Ticket Info</attribute>
+            </xpath>
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="is_collect" position="after">
+                <field name="ticket_type_id"/>
+            </field>
+            <field name="partner_id" position="after">
+
+                <label for="" string="Mobile / Phone"/>
+                <div>
+                    <field name="x_phone"/>
+                    <br/>
+                    <field name="x_mobile"/>
+                    <br/>
+                    <field name="x_mobile_2"/>
+                </div>
+            </field>
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+            <field name="product_id" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('is_collect', '!=', False), '&amp;', '&amp;',
+                    ('use_credit_notes', '=', False), ('use_product_returns', '=', False), ('use_product_repairs', '=',
+                    False)]}
+                </attribute>
+            </field>
+
+            <!--            <field name="product_id" position="after">-->
+            <!--                <field name="is_collect" invisible="1"/>-->
+            <!--                <field name="x_product_id"-->
+            <!--                       attrs="{'invisible': ['|', ('is_collect', '=', False), '&amp;', '&amp;', ('use_credit_notes', '=', False), ('use_product_returns', '=', False), ('use_product_repairs', '=', False)]}"-->
+            <!--                       options="{'no_create': True, 'no_edit': True, 'no_create_edit': True,-->
+            <!--                    'no_quick_create': True}"/>-->
+            <!--                <field name="x_serial_no"/>-->
+            <!--                <field name="product_quantity"/>-->
+            <!--                <field name="x_product_domain" invisible="1"/>-->
+            <!--                <field name="x_sale_order_domain" invisible="1"/>-->
+            <!--                <field name="agents_product" attrs="{'invisible': [('agents_product', '=', False)]}"/>-->
+            <!--                <field name="brand_agent" attrs="{'invisible': [('brand_agent', '=', False)]}"/>-->
+
+            <!--            </field>-->
+            <xpath expr="//sheet//group//group[2]" position="after">
+                <group string="Warranty" attrs="{'invisible': [('ticket_type_id', '=', %(pabs_repair.product_cancellation)d)]}">
+                    <field name="kanban_label" invisible="1"/>
+                    <field name="x_is_close" invisible="1"/>
+                    <field name="x_warranty_availbility" widget="selection_badge"/>
+                    <field name="warranty_sequence"
+                           context="{'default_customer_name': partner_id, 'default_product_id': x_product_id or product_id}"
+                           attrs="{'required': [('ticket_type_id', '!=', %(pabs_repair.product_cancellation)d), ('x_warranty_availbility', '!=', 'out_warr')]}"/>
+                    <field name="warranty_end_date" readonly="1" force_save="1"/>
+                    <field name="extended_warranty_end_date" readonly="1" force_save="1"
+                           attrs="{'invisible': [('extended_warranty_end_date', '=', False)]}"/>
+                    <field name="warranty_status" readonly="1" force_save="1"/>
+                    <field name="x_warranty_other_info"/>
+                </group>
+            </xpath>
+            <xpath expr="//sheet//group//group[2]" position="after">
+                <group string="Product" attrs="{'invisible': [('ticket_type_id', '=', %(pabs_repair.product_cancellation)d)]}">
+                    <field name="product_id" domain="[('id', 'in', x_product_domain)]" options="{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}" attrs="{'invisible': ['|', ('is_collect', '!=', False), '&amp;', '&amp;',
+                    ('use_credit_notes', '=', False), ('use_product_returns', '=', False), ('use_product_repairs', '=',
+                    False)], 'required': ['&amp;', ('x_product_required', '!=', False), ('is_collect', '=', False)]}"/>
+                    <field name="is_collect" invisible="1"/>
+                    <field name="x_product_required" invisible="1"/>
+                    <field name="x_product_id"
+                           attrs="{'invisible': ['|', ('is_collect', '=', False), '&amp;', '&amp;', ('use_credit_notes', '=', False), ('use_product_returns', '=', False), ('use_product_repairs', '=', False)], 'required': ['&amp;', ('x_product_required', '!=', False), ('is_collect', '!=', False)]}"
+                           options="{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}"/>
+                    <field name="x_serial_no"/>
+                    <field name="product_quantity"/>
+                    <field name="x_product_domain" invisible="1"/>
+                    <field name="x_sale_order_domain" invisible="1"/>
+                    <field name="agents_product" attrs="{'invisible': [('agents_product', '=', False)]}"/>
+                    <field name="brand_agent" attrs="{'invisible': [('brand_agent', '=', False)]}"/>
+		    <field name="x_service_category" readonly="1" string="" force_save="1" attrs="{'invisible': [('x_service_category', '=', False)]}"/>
+                    <field name="x_service_category_bot1" readonly="1" invisible="1"/>
+                    <field name="x_service_category_bot2" readonly="1" invisible="1"/>
+                </group>
+            </xpath>
+
+            <!--             <field name="product_id" position="after">
+                            <field name="is_collect" invisible="1"/>
+                            <field name="x_product_id"
+                                   attrs="{'invisible': ['|', ('is_collect', '=', False), '&amp;', '&amp;', ('use_credit_notes', '=', False), ('use_product_returns', '=', False), ('use_product_repairs', '=', False)]}"
+                                   options="{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                                'no_quick_create': True}"/>
+                            <field name="x_serial_no"/>
+                            <field name="product_quantity"/>
+                            <field name="x_product_domain" invisible="1"/>
+                            <field name="x_sale_order_domain" invisible="1"/>
+                            <field name="agents_product" attrs="{'invisible': [('agents_product', '=', False)]}"/>
+                            <field name="brand_agent" attrs="{'invisible': [('brand_agent', '=', False)]}"/>
+                            <field name="warranty_sequence"/>
+                            <field name="warranty_end_date" readonly="1" force_save="1"/>
+                            <field name="extended_warranty_end_date" readonly="1" force_save="1"
+                                   attrs="{'invisible': [('extended_warranty_end_date', '=', False)]}"/>
+                            <field name="warranty_status" readonly="1" force_save="1"/>
+                            <field name="x_warranty_other_info"/>
+                        </field> -->
+
+            <field name="partner_id" position="attributes">
+                <attribute name="context">{'show_address': 1}</attribute>
+                <attribute name="options">{"always_reload": True}</attribute>
+                <attribute name="attrs">{'required': [('ticket_type_id', '=', %(pabs_repair.product_cancellation)d)]}
+                </attribute>
+
+                <!--                <attribute name="attrs">{'required': [('ticket_type_id', '=', %(pabs_repair.product_cancellation)d)}</attribute>-->
+            </field>
+            <field name="product_id" position="attributes">
+                <attribute name="domain">[('id', 'in', x_product_domain)]</attribute>
+            </field>
+            <field name="product_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <field name="product_id" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}
+                </attribute>
+            </field>
+            <field name="sale_order_id" position="attributes">
+<!--                <attribute name="domain">[('id', 'in', x_sale_order_domain)]</attribute>-->
+                <attribute name="attrs">{'invisible': [('is_collect', '!=', False)], 'required': [('ticket_type_id',
+                    '=', %(pabs_repair.product_cancellation)d)]}
+                </attribute>
+            </field>
+
+            <field name="name" position="attributes">
+                <attribute name="force_save">1</attribute>
+            </field>
+            <field name="product_id" position="before">
+                <field name="sale_order_date" attrs="{'invisible': [('sale_order_id', '=', False)]}"/>
+            </field>
+            <field name="company_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+          </field>
+        </record>
+
+    <record id="helpdesk_team_view_pivot_analysis_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.pivot.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_pivot_analysis"/>
+        <field name="arch" type="xml">
+            <xpath expr="//pivot" position="inside">
+                <field name="close_days" force_save="1"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="helpdesk_team_view_graph_analysis_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.graph.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_graph_analysis"/>
+        <field name="arch" type="xml">
+            <xpath expr="//graph" position="inside">
+                <field name="close_days" force_save="1"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="helpdesk_helpdesk_tickets_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.helpdesk.tickets.view.kanban.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//progressbar" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//progressbar" position="after">
+                <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger", "normal": "muted"}'/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="helpdesk_helpdesk_tickets_view_tree_pabs_repair" model="ir.ui.view">
+        <field name="name">helpdesk_helpdesk_tickets_view_tree_pabs_repair</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//field[@name='partner_id']" position="after">
+                <field name="product_id" optional="show"/>
+                <field name="agents_product" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

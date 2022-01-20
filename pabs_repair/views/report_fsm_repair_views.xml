@@ -1,0 +1,115 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="repair_fsm_report_list_view">
+            <field name="name">repair.fsm.report.list.view</field>
+            <field name="model">repair.fsm.report</field>
+            <field name="arch" type="xml">
+                <tree create="0" edit="0">
+                    <field name="service_type" optional="show"/>
+                    <field name="name" optional="show"/>
+                    <field name="ticket_name" optional="show"/>
+                    <field name="ticket_type" optional="show"/>
+                    <field name="product_id" optional="show"/>
+                    <field name="category" optional="show"/>
+                    <field name="product_brand" optional="show"/>
+                    <field name="date" optional="show"/>
+                    <field name="partner_id" optional="show"/>
+                    <field name="phone" optional="show"/>
+                    <field name="warranty_state" optional="show"/>
+                    <field name="warranty_expiration_date" optional="show"/>
+                    <field name="team" optional="show"/>
+                    <field name="state" optional="show"/>
+                    <field name="total_amount" optional="show"/>
+                    <field name="invoice_address" optional="show"/>
+                    <field name="invoice_number" optional="show"/>
+                    <field name="invoice_date" optional="show"/>
+                    <field name="invoiced_amount" optional="show"/>
+                    <field name="invoice_payment_state" optional="show"/>
+                    <field name="due_amount" optional="show"/>
+                    <!--          <field name="product_brand"/>-->
+                    <!--          <field name="repair_id"/>-->
+                    <!--          <field name="delivery_address_id"/>-->
+
+                    <!--          <field name="company_id" invisible="1"/>-->
+                    <!--          <field name="currency_id" invisible="1"/>-->
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="repair_fsm_report_form_view">
+            <field name="name">repair.fsm.report.form.view</field>
+            <field name="model">repair.fsm.report</field>
+            <field name="arch" type="xml">
+                <form create="0" edit="0">
+                    <sheet>
+
+                        <h1 class="d-none d-md-block">
+                            <field name="name"/>
+                        </h1>
+                        <group>
+                            <group string="Ticket Info">
+                                <field name="ticket_name"/>
+                                 <field name="service_type"/>
+                                <field name="ticket_type"/>
+                                <field name="team"/>
+                                <field name="state"/>
+                                <field name="date"/>
+                            </group>
+                            <group string="Product">
+                                <field name="product_id"/>
+                                <field name="category"/>
+                                <field name="product_brand"/>
+                                <field name="warranty_state"/>
+                                <field name="warranty_expiration_date"/>
+                            </group>
+                            <group string="Customer">
+                                <field name="partner_id"/>
+                                <field name="phone"/>
+                            </group>
+                            <group string="Invoicing">
+                                <field name="total_amount"/>
+                                <field name="invoice_address"/>
+                                <field name="invoice_number"/>
+                                <field name="invoice_date"/>
+                                <field name="invoiced_amount"/>
+                                <field name="invoice_payment_state"/>
+                                <field name="due_amount"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="service_analysis_report_search">
+            <field name="name">Service Analysis Report</field>
+            <field name="model">repair.fsm.report</field>
+            <field name="arch" type="xml">
+                <search string="Service Analysis">
+                    <field name="name"/>
+                    <field name="ticket_name"/>
+                    <field name="partner_id"/>
+                    <field name="team"/>
+                    <field name="service_type"/>
+                </search>
+            </field>
+        </record>
+
+
+        <!-- actions opening views on models -->
+
+        <record model="ir.actions.act_window" id="repair_fsm_report_action_window">
+            <field name="name">Service Analysis</field>
+            <field name="res_model">repair.fsm.report</field>
+            <field name="view_mode">tree,form,pivot,graph</field>
+            <field name="context">{'group_by': 'service_type'}</field>
+        </record>
+
+
+        <menuitem name="Service Analysis" id="menu_report_fsm_repair" parent="helpdesk.helpdesk_ticket_report_menu_main"
+                  action="repair_fsm_report_action_window" sequence="5"/>
+
+
+    </data>
+</odoo>

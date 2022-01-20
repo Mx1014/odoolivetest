@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+
+         <record id="view_tax_form_paid_at_customs" model="ir.ui.view">
+           <field name="name">account.tax.form.paid_at_customs</field>
+           <field name="model">account.tax</field>
+           <field name="inherit_id" ref="account.view_tax_form"/>
+           <field name="arch" type="xml">
+             <xpath expr="//field[@name='active']" position="after">
+               <field name="is_paid_at_customs"/>
+             </xpath>
+           </field>
+         </record>
+
+  </data>
+</odoo>

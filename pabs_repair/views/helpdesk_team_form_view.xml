@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="helpdesk_team_view_form_inherit_pabs_repair" model="ir.ui.view">
+            <field name="name">helpdesk.team.view.form.inherit.pabs.repair</field>
+            <field name="model">helpdesk.team</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
+            <field name="arch" type="xml">
+                <div id="productivity" position="after">
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="x_location_id"/>
+                                <div class="text-muted">
+                                    Specify location for repairs created from helpdesk ticket to be automatically
+                                    assigned inside the repair order.
+                                </div>
+                                <div>
+                                    <field name="x_location_id" class="mt16"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="x_operation_id"/>
+                                <div class="text-muted">
+                                    Specify return operations to use when returning a product.
+                                </div>
+                                <div>
+                                    <field name="x_operation_id" widget="many2many_tags" class="mt16"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </field>
+        </record>
+
+
+        <record id="helpdesk_team_view_kanban_inherit" model="ir.ui.view">
+            <field name="name">Ticket Dashboard Inherit</field>
+            <field name="model">helpdesk.team</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_team_view_kanban"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="id"/>
+                    <field name="x_unassigned_count"/>action_new_ticket
+                </field>
+                <xpath expr="//div[hasclass('mb4')][3]" position="after">
+                    <div class="mb4"  t-if="record.id.value == 5">
+                        <a name="action_view_unassigned_repair" type="object" context="{'search_default_team_id': active_id, 'default_team_id': active_id}"><t t-esc="record.x_unassigned_count.value"/> Unassigned Tasks</a>
+                    </div>
+                </xpath>
+                <xpath expr="//div[hasclass('o_kanban_primary_left')]" position="inside">
+                     <button class="btn btn-primary" name="action_new_ticket" type="object">Create</button>
+                </xpath>
+                <xpath expr="//div[hasclass('o_kanban_primary_left')]//button" position="replace">
+                     <button class="btn btn-primary" name="%(helpdesk.helpdesk_ticket_action_team)d" type="action">View</button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

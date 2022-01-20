@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+            id="report_final_settlement"
+            model="hr.settlement"
+            string="Final Settlement"
+            report_type="qweb-pdf"
+            name="pabs_settlement.final_settlement_printout"
+            file="pabs_settlement.final_settlement_printout"
+            paperformat="pabs_settlement.paperformat_settlement_report"
+
+    />
+    <report
+            id="report_annual_leave_settlement"
+            model="hr.settlement"
+            string="Annual Leave Settlement"
+            report_type="qweb-pdf"
+            name="pabs_settlement.annual_leave_settlement_printout"
+            file="pabs_settlement.annual_leave_settlement_printout"
+            paperformat="pabs_settlement.paperformat_annual_leave_settlement_report"
+
+    />
+    <report
+            id="report_vacation_settlement"
+            model="hr.settlement"
+            string="Vacation Settlement"
+            report_type="qweb-pdf"
+            name="pabs_settlement.vacation_settlement_printout"
+            file="pabs_settlement.vacation_settlement_printout"
+            paperformat="pabs_settlement.paperformat_vacation_settlement_report"
+
+    />
+</odoo>

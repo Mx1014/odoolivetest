@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_x_products_supplied" model="ir.ui.view">
+            <field name="name">view.x.products.supplied</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group string="Product">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="name" invisible="1"/>
+                            <field name="product_tmpl_id"/>
+                            <field name="product_name"/>
+                            <field name="product_code"/>
+                            <field name="product_id" domain="[('product_tmpl_id', '=', product_tmpl_id)]"/>
+                            <field name="delay"/>
+                        </group>
+                        <group string="Price List">
+                            <field name="min_qty"/>
+                            <field name="price"/>
+                            <label for="date_start" string="Validity"/>
+                            <div class="o_row" style="max-width: 500px">
+                                <field name="date_start" widget="daterange" options="{'related_end_date': 'date_end'}"/>
+                                <span>to</span>
+                                <field name="date_end" widget="daterange"
+                                       options="{'related_start_date': 'date_start'}"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group string="Other Information">
+
+                        <field name="company_id"/>
+
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_partner_form_inherit_pabs_product" model="ir.ui.view">
+            <field name="name">view.partner.form.inherit.pabs.product</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook colspan="4" position="inside">
+                    <page string="Products Supplied" attrs="{'invisible': [('x_is_vendor', '=', False)]}">
+                        <field name="x_products_supplied"
+                               context="{'form_view_ref':'pabs_product.view_x_products_supplied',
+                               'default_name':context.get('id',active_id)}" nolabel="1">
+                            <tree>
+                                <field name="product_tmpl_id" optional="show"/>
+                                <field name="product_name" optional="hide"/>
+                                <field name="product_code" optional="hide"/>
+                                <field name="product_id" optional="show"/>
+                                <field name="delay" optional="hide"/>
+                                <field name="min_qty" optional="show"/>
+                                <field name="price" optional="show"/>
+                                <field name="company_id" optional="hide"/>
+                                <field name="date_start" optional="show"/>
+                                <field name="date_end" optional="show"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</odoo>
+<!--<field name="currency_id" invisible="1"/>-->
+<!--<field name="name" invisible="1"/>-->

@@ -1,0 +1,365 @@
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+
+<html>
+   <body>
+      <section class="oe_container oe_dark lead">
+         <section class="oe_container oe_dark lead">
+            <div class=row>
+               <div class="col-11" style="width:95%; margin-left:4%;">
+                  <p class="oe_slogan text-center" style="font-size:30px;">
+                            <b>Print Product Labels via Zebra Printer with Configuration.</b> 
+                  </p>
+                  <p class="text-center" style="font-size:22px;">
+                        Odoo Extension Allowing The User To Print Product Label Directly by configure the dimesnsion and margins of Barcode Via Zebra Printer Instead Of Downloading As a PDF File.
+                  </p>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-11" style="width:95%; margin-left:4%;">
+                  <p class="text-danger">
+                     <b>
+                     This module uses the QZ Tray client for sending direct print commands to the printer:
+                     </b>
+                  </p>
+                  <ul>
+                     <li>
+                        Installation Link: (<a href="https://qz.io/download/" target="_blank">https://qz.io/download/</a>)
+                     </li>
+                     <li>
+                        Demo Link: (<a href="https://demo.qz.io/" target="_blank">https://demo.qz.io/</a>)
+                     </li>
+                  </ul>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-11" style="width:95%; margin-left:4%;">
+                  <div class="panel panel-primary" id="wkid0">
+                     <div class="panel-heading">
+                        <h3 class="panel-title" style="font-size: 25px;">
+                           <i class="fa fa-mail-forward ">
+                           </i>
+                           <b>
+                           Salient Features
+                           </b>
+                        </h3>
+                     </div>
+                     <div class="panel-body">
+                        <ul class="wk">
+                           <li>
+                              User can select the default Zebra printer for a report.
+                           </li>
+                           <li>  
+                              It will print the Product Name along with the Barcode of Product.
+                           </li>
+                           <li>
+                              User can Configure the Label Height, Width, Left Margins, Buttom Margins.
+                           </li>
+                           <li>
+                              User can also Configure the Product Name Height, Width, Left Margins, Buttom Margins.
+                           </li>
+                           <li>
+                              User Can Change the position of product name for ZPL printing.
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </section>
+      <section class="oe_container oe_dark lead">
+         <div class="row">
+            <div class="col-11" style="width:95%; margin-left:4%;">
+               <div class="panel" id="wkid2">
+                  <div class="panel-heading">
+                     <h3 class="panel-title" style="font-size: 25px;">
+                        <i class="fa fa-wrench">
+                        </i>
+                        <b>
+                        Setup&amp; Configuration
+                        </b>
+                     </h3>
+                  </div>
+                  <div class="panel-body">
+                     <!-- ############################################################################################## -->
+
+                     <div class="alert alert-info" style="padding:8px;font-weight: 300; font-size: 20px;">
+                           <i class="fa fa-cog"></i>
+                        <b>
+                              Configuring Printers
+                        </b>
+                     </div>
+                     <p>
+                           <b>This module depends upon another module "Print Odoo Reports via Zebra Printer
+                                 by Webkul Software Pvt. Ltd."</b>
+                     </p>
+                     <p>
+                        <a href="screen0.jpg">
+                           <img class="oe_picture oe_screenshot" src="screen0.jpg">
+                        </a>
+                     </p>
+                     <p>
+                           <b>You can download the module from link: </b>
+                        <a href="https://apps.odoo.com/apps/modules/12.0/wk_odoo_directly_print_reports/">
+                           <b>https://apps.odoo.com/apps/modules/12.0/wk_odoo_directly_print_reports/</b>
+                        </a>
+                     </p>
+                     <p>
+                        <i>
+                              After the successful installation of both the modules You can setup the available printers under the <b>Settings &gt; Technical</b> menu.
+                        </i>
+                     </p>
+                     <p>
+                        <a href="screen1.jpg">
+                           <img class="oe_picture oe_screenshot" src="screen1.jpg"/>
+                        </a>
+                     </p>
+                     <p>
+                        <b>Enter the details of printer.</b>
+                     </p>
+                     <ul>
+                        <li>
+                           <p>
+                              <b>Printer Name:</b> Name of your printer.
+                              <p>
+                                 <i>
+                                    Make sure the <b>Printer's name</b> is exactly the same as the name of the printer is used by the QZ Tray client to make connection and send print commands.
+                                 </i>
+                              </p>
+                           </p>
+                        </li>
+                        <li>
+                           <p>
+                              <i>
+                                 <b>Printer type</b>: Select the printer type here. Currently, only zebra printers are supported.
+                              </i>
+                              </p>
+                           <p>
+                        </li>
+                     </ul>
+                     <p>   
+                        <a href="screen2.jpg">
+                           <img class="oe_picture oe_screenshot" src="screen2.jpg"/>
+                        </a>
+                     </p>
+                     
+                     <div class="alert alert-info" style="padding:8px;font-weight: 300; font-size: 20px;">
+                        <i class="fa fa-cog"></i>
+                        <b>
+                           Odoo-Report Configuration.
+                        </b>
+                     </div>
+                     <p>
+                        <i>
+                           Next, you'll need to configure the Product Barcode (ZPL) report action in the report that you wish to send to the printer. You can set this from the <b>Settings > Technical</b> menu under the Reporting section.
+                        </i>
+                     </p>
+                     <p>
+                        <a href="screen5.jpg">
+                            <img class="oe_picture oe_screenshot" src="screen5.jpg"/>
+                        </a>
+                     </p>
+                     <p>
+                        <i>
+                           In the Product Barcode (ZPL) report form view, you can set the following parameters:
+                        </i>
+                     </p>
+                     <ul>
+                        <li>
+                           <i><b>Report Action</b>: Select the <b>"Send To Printer"</b> option here if you wish to print the report directly instead of downloading it. The default value of this field is <b>"Default Odoo's Action"</b> that leads to the default Odoo's behaviour.</i>
+                        </li>
+                        <li>
+                           <i><b>Printer</b>: Select the default printer here. Leave this field blank if you wish to select the printer from the list of available printers while printing it.</i>
+                        </li>
+                        <li>
+                           <i><b>Use Template</b>:Always Select this option. </i>
+                        </li>
+                        <li>
+                           <i><b>Report Template</b>: Select the Product Barcode Report Template record here.
+                        </li>
+                     </ul>
+                     <p>
+                        <a href="screen6.jpg">
+                           <img class="oe_picture oe_screenshot" src="screen6.jpg"/>
+                        </a>
+                     </p>
+                     
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      
+      <section class="oe_container oe_dark lead">
+         <div class="row">
+            <div class="col-11" style="width:95%; margin-left:4%;">
+               <div class="panel" id="wkid3">
+                  <div class="panel-body">
+                     <div class="alert alert-info" style="padding:8px;font-weight: 300; font-size: 20px;">
+                        <i class="fa fa-wrench">
+                        </i>
+                        <b>
+                           Configuration for Label.
+                        </b>
+                     </div>
+                     <ul>
+                        <li>
+                     <p>
+                        
+                           You will find the tab <b>Product Barcode Settings</b> in which you will get multiple fields for Configurations. 
+                          
+                        <ul>
+                           <li>
+                              <b>Barcode Height.</b>
+                           </li>
+                           <li>
+                              <b>Barcode Width.</b>
+                           </li>
+                           <li>
+                              <b>Barcode Bottom Margin.</b>
+                           </li>
+                           <li>
+                              <b>Barcode Left Margin.</b>
+                           </li>
+                           You can change the values of all the fields as per your need.
+                           <p>
+                                 <a href="screen7.jpg">
+                                    <img class="oe_picture oe_screenshot" src="screen7.jpg"/>
+                                 </a>
+                              </p>
+                        </ul>
+                     </p>
+                     </li>
+                     <li>
+                           <p>
+                                 
+                                    You will also got a tab <b>Product Name Settings</b> in which you will get multiple fields for Configurations. 
+                                   
+                                 <ul>
+                                    <li>
+                                       <b>Product Name Height.</b>
+                                    </li>
+                                    <li>
+                                       <b>Product Name Width.</b>
+                                    </li>
+                                    <li>
+                                       <b>Product Name Bottom Margin.</b>
+                                    </li>
+                                    <li>
+                                       <b>Product Name Left Margin.</b>
+                                    </li>
+                                    You can change the values of all the fields as per your need.
+                                 </ul>
+                                 <p>
+                                       <a href="screen8.jpg">
+                                          <img class="oe_picture oe_screenshot" src="screen8.jpg"/>
+                                       </a>
+                                    </p>
+                           </p>
+                     </li>
+                     <li>
+                        <p>
+                           You will also find a tab <b>Report Template</b> which have the zpl of <b>Product Label</b>.
+                        </p>
+                        <p>
+                           <a href="screen12.jpg">
+                              <img class="oe_picture oe_screenshot" src="screen12.jpg"/>
+                           </a>
+                        </p>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+      <section class="oe_container oe_dark lead">
+         <div class="row">
+            <div class="col-11" style="width:95%; margin-left:4%;">
+               <div class="panel" id="wkid3">
+                  <div class="panel-body">
+                     <div class="alert alert-info" style="padding:8px;font-weight: 300; font-size: 20px;">
+                        <i class="fa fa-pencil-square-o">
+                        </i>
+                        <b>
+                           Work Flow.
+                        </b>
+                     </div>
+                     <ul>
+                        <li>
+                           <p>
+                              After successful configuration of printer and Report template print <b>Product label</b> by clicking on <b>Product Label (ZPL Direct)</b> under the Print button on Product Variants. 
+                           </p>
+                           <p>
+                              <a href="screen9.jpg">
+                                 <img class="oe_picture oe_screenshot" src="screen9.jpg"/>
+                              </a>
+                           </p>
+                        </li>
+                        <li>
+                           
+                           <div class="row">
+                              <div class="col-11 text-center" style="display:flex; justify-content: center;">
+                                 <a href="screen10.jpg">
+                                       <img class="oe_picture oe_screenshot"   src="screen10.jpg"/>
+                                  </a>
+                              </div>
+                           </div>
+                        </li>
+                        
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+                     
+      
+      
+      <section class="oe_container lead">
+         <div>
+            <div class="col-12 text-center">
+               <h2 class="oe_slogan">
+                  Complimentary Support
+               </h2>
+               <p>
+                  You will get 90 days free support for any doubt, queries, and bug fixing (excluding data recovery) or any type of issue related to this module.
+               </p>
+            </div>
+         </div>
+         <div class="col-12 text-center">
+            <div class="col-12 text-center">
+               <h2 class="text-center oe_slogan">
+                  Help and Support
+               </h2>
+            </div>
+            <div class="oe_slogan oe_spaced text-center">
+               <a href="https://webkul.uvdesk.com/en/customer/create-ticket/" onmouseout="this.style.color='#7c7bad'" onmouseover="this.style.color='#AC1EE0'" style="color:#7c7bad;" title="Get Instant Help !">
+               <i class="fa fa-life-ring">
+               </i>
+               Help
+               </a>
+               <a href="https://webkul.uvdesk.com/en/customer/create-ticket/" onmouseout="this.style.color='#7c7bad'" onmouseover="this.style.color='#AC1EE0'" style="color:#7c7bad;" title="Get Instant Support!">
+               <i class="fa fa-ticket">
+               </i>
+               Support
+               </a>
+               <a href="https://webkul.uvdesk.com/en/customer/create-ticket/" onmouseout="this.style.color='#7c7bad'" onmouseover="this.style.color='#AC1EE0'" style="color:#7c7bad;" title="Request Features now !">
+               <i class="fa fa-check-circle">
+               </i>
+               Request new Features
+               </a>
+            </div>
+         </div>
+      </section>
+      <section class="oe_container">
+         <div class="col-12">
+            <!-- Piwik Image Tracker-->
+            <img alt="" src="http://odooimg.webkul.com/analytics/piwik/piwik.php?idsite=3&amp;rec=1&amp;action_name=Print-Odoo-Reports-Via-Zebra-Printer&amp;url=https://apps.openerp.com/apps/modules/12.0/wk_odoo_directly_print_reports&amp;uid=wk_odoo_directly_print_reports" style="border:0"/>
+            <!-- End Piwik -->
+         </div>
+      </section>
+   </body>
+</html>

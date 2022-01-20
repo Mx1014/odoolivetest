@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+    id="report_annual_leave_button"
+    model="hr.payslip"
+    string="Annual Leave Settlement"
+    report_type="qweb-pdf"
+    name="pabs_hr.report_annual_leave_template"
+    file="pabs_hr.report_annual_leave_template"
+
+    />
+</odoo>
+<!--        paperformat="pabs_tags.paperformat_offer_large"-->

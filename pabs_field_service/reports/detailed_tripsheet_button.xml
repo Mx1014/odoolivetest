@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="field_service_detailed_tripsheet_button"
+            model="project.task.batch"
+            string="Visit Sheet"
+            report_type="qweb-pdf"
+            name="pabs_field_service.field_service_detailed_tripsheet_template"
+            file="pabs_field_service.field_service_detailed_tripsheet_template"
+            paperformat="pabs_field_service.fiels_service_detailed_tripsheet_paperformat"
+    />
+</odoo>

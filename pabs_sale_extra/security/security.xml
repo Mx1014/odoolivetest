@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record model="ir.module.category" id="module_category_sales_custom">
+        <field name="name">Sale</field>
+        <field name="description">Category For Sales Rights</field>
+        <field name="sequence">0</field>
+    </record>
+
+    <record id="group_cash_memo_sale" model="res.groups">
+        <field name="name">Cash Memo</field>
+        <field name="implied_ids"
+               eval="[(4, ref('sales_team.group_sale_salesman_all_leads'))]"/>
+        <field name="category_id" ref="module_category_sales_custom"/>
+        <field name="comment">Cash Memo</field>
+    </record>
+
+    <record id="group_cash_pod" model="res.groups">
+        <field name="name">Paid on Delivery</field>
+        <field name="implied_ids"
+               eval="[(4, ref('sales_team.group_sale_salesman_all_leads'))]"/>
+        <field name="category_id" ref="module_category_sales_custom"/>
+        <field name="comment">Paid on Delivery</field>
+    </record>
+
+    <record id="group_service" model="res.groups">
+        <field name="name">Service</field>
+        <field name="implied_ids"
+               eval="[(4, ref('sales_team.group_sale_salesman_all_leads'))]"/>
+        <field name="category_id" ref="module_category_sales_custom"/>
+        <field name="comment">Service</field>
+    </record>
+
+    <record id="group_advanced_payment" model="res.groups">
+        <field name="name">Cash Invoice</field>
+        <field name="implied_ids"
+               eval="[(4, ref('sales_team.group_sale_salesman_all_leads'))]"/>
+        <field name="category_id" ref="module_category_sales_custom"/>
+        <field name="comment">Cash Invoice</field>
+    </record>
+
+    <record id="group_credit_sale" model="res.groups">
+        <field name="name">Credit sales</field>
+        <field name="implied_ids"
+               eval="[(4, ref('sales_team.group_sale_salesman_all_leads'))]"/>
+        <field name="category_id" ref="module_category_sales_custom"/>
+        <field name="comment">Credit sales</field>
+    </record>
+
+    <record model="ir.module.category" id="module_category_cheque_management">
+        <field name="name">Cheque</field>
+        <field name="description">Category For Cheque Rights</field>
+        <field name="sequence">0</field>
+    </record>
+
+    <record id="group_cheque_validate" model="res.groups">
+        <field name="name">Validate Cheque</field>
+        <field name="comment">Allows user to validate a cheque in Batch Transfer</field>
+        <field name="category_id" ref="module_category_cheque_management"/>
+    </record>
+
+     <record id="group_cheque_return" model="res.groups">
+        <field name="name">Return Cheque</field>
+        <field name="comment">Allows user to return a cheque in Batch Transfer</field>
+         <field name="category_id" ref="module_category_cheque_management"/>
+    </record>
+
+
+<!--    <record id="group_contact_manager" model="res.groups">-->
+<!--        <field name="name">Contact Manager</field>-->
+<!--        &lt;!&ndash;        <field name="category_id" ref="base.module_category_human_resources_approvals"/>&ndash;&gt;-->
+<!--        <field name="implied_ids"-->
+<!--               eval="[(4, ref('pabs_contact.group_special_sales')), (4, ref('pabs_contact.group_accounting')), (4, ref('pabs_contact.group_senior_accounting'))]"/>-->
+<!--        <field name="category_id" ref="module_category_contact"/>-->
+<!--        <field name="comment">custom group for Contact Managers</field>-->
+<!--    </record>-->
+<!--    -->
+<!--    <record id="group_contact_manager" model="res.groups">-->
+<!--        <field name="name">Contact Manager</field>-->
+<!--        &lt;!&ndash;        <field name="category_id" ref="base.module_category_human_resources_approvals"/>&ndash;&gt;-->
+<!--        <field name="implied_ids"-->
+<!--               eval="[(4, ref('pabs_contact.group_special_sales')), (4, ref('pabs_contact.group_accounting')), (4, ref('pabs_contact.group_senior_accounting'))]"/>-->
+<!--        <field name="category_id" ref="module_category_contact"/>-->
+<!--        <field name="comment">custom group for Contact Managers</field>-->
+<!--    </record>-->
+<!--    -->
+<!--    <record id="group_contact_manager" model="res.groups">-->
+<!--        <field name="name">Contact Manager</field>-->
+<!--        &lt;!&ndash;        <field name="category_id" ref="base.module_category_human_resources_approvals"/>&ndash;&gt;-->
+<!--        <field name="implied_ids"-->
+<!--               eval="[(4, ref('pabs_contact.group_special_sales')), (4, ref('pabs_contact.group_accounting')), (4, ref('pabs_contact.group_senior_accounting'))]"/>-->
+<!--        <field name="category_id" ref="module_category_contact"/>-->
+<!--        <field name="comment">custom group for Contact Managers</field>-->
+<!--    </record>-->
+
+</odoo>

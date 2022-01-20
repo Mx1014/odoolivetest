@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="complaint_form_templates">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div style="font-size:25px">
+                            <center>
+                                <h1>
+                                    Complaint Form
+                                </h1>
+                            </center>
+                        </div>
+
+                        <div style="float:left;">
+                            <label style="font-weight: bold">Customer Name:</label>
+                            <span t-field="o.partner_id"/>
+                            <div>
+                                <label style="font-weight: bold">Delivery Address:</label>
+                                <t t-if="o.partner_id.street_number">
+                                    <label>House</label>
+                                    <span t-field="o.partner_id.street_number"/>,
+                                </t>
+                                <t t-if="o.partner_id.x_flat">
+                                    <label>Flat</label>
+                                    <span t-field="o.partner_id.x_flat"/>,
+                                </t>
+                                <label>Road</label>
+                                <span t-field="o.partner_id.x_address_road"/>,
+                                <label>Block</label>
+                                <span t-field="o.partner_id.x_address_block"/>,
+                                <span t-field="o.partner_id.city"/>
+                            </div>
+                            <div>
+                                <label style="font-weight: bold">Phone:</label>
+                                <span t-field="o.partner_id.phone"/>
+                            </div>
+                            <div>
+                                <label style="font-weight: bold">Ticket Type:</label>
+                                <span t-field="o.ticket_type_id"/>
+                            </div>
+                        </div>
+
+                        <div style="float:right;">
+                            <label style="font-weight: bold">INV NO:</label>
+                            <span t-field="o.sale_order_id.invoice_ids.name"/>
+                            <div>
+                                <label style="font-weight: bold">INV DATE:</label>
+                                <span t-field="o.sale_order_id.invoice_ids.invoice_date"/>
+                            </div>
+                            <div>
+                                <label style="font-weight: bold">L.P.O:</label>
+                                <span t-field="o.sale_order_id.invoice_ids.x_bill_origin"/>
+                            </div>
+                            <label style="font-weight: bold">COMP Date:</label>
+                            <span t-field="o.complain_date"/>
+                        </div>
+
+                        <table style="width: 100%;" class="table-sm o_main_table">
+
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid black">
+                                        <h5 style="font-size:medium;font-weight: bold">BARCODE</h5>
+                                    </th>
+                                    <th style="width: 50%; border: 1px solid black">
+                                        <h5 style="font-size:medium;font-weight: bold">
+                                            MODEL/DESCRIPTION
+                                        </h5>
+                                    </th>
+                                    <th style="border: 1px solid black;">
+                                        <h5 style="font-size:medium;font-weight: bold">BRAND
+                                        </h5>
+                                    </th>
+                                    <th style="border: 1px solid black;">
+                                        <h5 style="font-size:medium;font-weight: bold">BRAND AGENT
+                                        </h5>
+                                    </th>
+                                    <th style="border: 1px solid black;">
+                                        <h5 style="font-size:medium;font-weight: bold">WAR REF
+                                        </h5>
+                                    </th>
+                                    <th style="border: 1px solid black;">
+                                        <h5 style="font-size:medium;font-weight: bold">WAR END DATE
+                                        </h5>
+                                    </th>
+                                    <th style="border: 1px solid black;">
+                                        <h5 style="font-size:medium;font-weight: bold">WAR STATUS
+                                        </h5>
+                                    </th>
+                                </tr>
+
+                                <tbody>
+                                    <tr>
+                                        <td style="border: 1px solid black">
+                                            <span t-field="o.product_id.barcode"/>
+                                        </td>
+                                        <td style="border: 1px solid black">
+                                            <span t-field="o.product_id"/>
+                                        </td>
+                                        <td style="border: 1px solid black">
+                                            <span t-field="o.agents_product"/>
+                                        </td>
+                                        <td style="border: 1px solid black">
+                                            <span t-field="o.brand_agent"/>
+                                        </td>
+                                        <td style="border: 1px solid black">
+                                            <span t-field="o.warranty_sequence"/>
+                                        </td>
+                                        <td style="border: 1px solid black">
+                                            <span t-field="o.warranty_end_date"/>
+                                        </td>
+                                        <td style="border: 1px solid black">
+                                            <span t-field="o.warranty_status"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </thead>
+                        </table>
+                        <span t-field="o.ticket_type_id"/>
+                        <p style="padding-top:1mm" t-field="o.description"/>
+                        <div style="margin-top:10mm; float:left">
+                            <div>
+                                <label style="font-weight: bold">COMPLAINT:</label>
+                                <span t-field="o.name"/>
+                            </div>
+                            <div>
+                                <label style="font-weight: bold">SEND BY:</label>
+                                <span t-field="o.user_id"/>
+                            </div>
+                        </div>
+                        <div style="margin-top:10mm; float:right">
+                            <p style="padding-bottom:5mm">Received By (Customer Service)</p>
+                            <p style="padding-bottom:5mm">Received By (Agent)</p>
+                            <p style="padding-bottom:5mm">Received  From Agent</p>
+                              <p style="padding-bottom:5mm">Customer</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

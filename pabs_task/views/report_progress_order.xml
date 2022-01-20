@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <report
+            id="action_report_progress_qoutation"
+            string="Agreement Statement"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="pabs_contact.report_progress_quotation"
+            name="pabs_contact.report_progress_quotation"
+            print_report_name="'Agreement Statement - %s' % (object.name)"
+    />
+
+
+    <template id="report_progress_quotation_document" inherit_id="sale.report_saleorder_document" primary="True">
+        <!--        <xpath expr="//table//thead//tr" position="inside">-->
+        <!--            <th>Status</th>-->
+        <!--        </xpath>-->
+        <!--        <xpath expr="//table//tbody//t//tr//t" position="inside">-->
+        <!--            <td><span t-field="line.invoice_status"/></td>-->
+        <!--        </xpath>-->
+
+        <xpath expr="//tbody" position="replace">
+            <tbody class="sale_tbody">
+
+                    <t t-set="current_subtotal" t-value="0"/>
+
+                    <t t-foreach="doc.order_line" t-as="line">
+                        <t t-if="line.is_downpayment == False">
+
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                        <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                            <t t-if="not line.display_type">
+                                <td name="td_name"><span t-field="line.name"/></td>
+                                <td name="td_quantity" class="text-right">
+                                    <span t-field="line.product_uom_qty"/>
+                                    <span t-field="line.product_uom" groups="uom.group_uom"/>
+                                </td>
+                                <td name="td_priceunit" class="text-right">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
+                                    <span t-field="line.discount"/>
+                                </td>
+                                <td name="td_taxes" class="text-right">
+                                    <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.price_tax"/>
+                                </td>
+                                <td name="td_subtotal" class="text-right o_price_total">
+                                    <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                </td>
+                            </t>
+                            <t t-if="line.display_type == 'line_section'">
+                                <td name="td_section_line" colspan="99">
+                                    <span t-field="line.name"/>
+                                </td>
+                                <t t-set="current_section" t-value="line"/>
+                                <t t-set="current_subtotal" t-value="0"/>
+                            </t>
+                            <t t-if="line.display_type == 'line_note'">
+                                <td name="td_note_line" colspan="99">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </t>
+                        </tr>
+
+                        <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section')">
+                            <tr class="is-subtotal text-right">
+                                <td name="td_section_subtotal" colspan="99">
+                                    <strong class="mr16">Subtotal</strong>
+                                    <span
+                                        t-esc="current_subtotal"
+                                        t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
+                                    />
+                                </td>
+                            </tr>
+                        </t>
+                            </t>
+                    </t>
+                </tbody>
+        </xpath>
+
+        <xpath expr="//table" position="after">
+            <t t-set="total_due" t-value="0"/>
+            <table class="table table-sm o_main_table">
+                <tr style="">
+                    <td name="td_amount_untaxed_label">
+                        <strong>Subtotal</strong>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td name="td_amount_untaxed" class="text-right">
+                        <span t-field="doc.amount_untaxed"/>
+                    </td>
+                </tr>
+
+                <t t-foreach="doc.amount_by_group" t-as="amount_by_group">
+                    <tr style="">
+                        <t t-if="amount_by_group[5] == 1 and doc.amount_untaxed == amount_by_group[2]">
+                            <td name="td_amount_by_group_label_3">
+                                <strong>
+                                    <span t-esc="amount_by_group[0]"/>
+                                    <span>&amp;nbsp;<span>on</span>&amp;nbsp;
+                                        <t t-esc="amount_by_group[2]"
+                                           t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                                    </span>
+                                </strong>
+                            </td>
+                            <td> </td>
+                            <td> </td>
+                            <td></td>
+                            <td name="td_amount_by_group_3" class="text-right o_price_total">
+                                <span t-esc="amount_by_group[1]"
+                                      t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                            </td>
+                        </t>
+                        <t t-else="">
+                            <td name="td_amount_by_group_label">
+                                <strong>
+                                    <span t-esc="amount_by_group[0]"/>
+                                </strong>
+                            </td>
+                            <td> </td>
+                            <td> </td>
+                            <td></td>
+                            <td name="td_amount_by_group" class="text-right o_price_total">
+                                <span t-esc="amount_by_group[1]"
+                                      t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                            </td>
+                        </t>
+                    </tr>
+                </t>
+
+                 <tr>
+                    <td name="td_amount_total_label">
+                        <strong>Total</strong>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td name="td_amount_total" class="text-right">
+                        <span t-field="doc.amount_total"/>
+                    </td>
+                </tr>
+                <t t-if="doc.x_invoice_payment != []">
+                <tr>
+                    <td colspan="5" class="text-center"><h5><strong>Payment History</strong></h5></td>
+<!--                    <td></td>-->
+<!--                    <td></td>-->
+<!--                    <td></td>-->
+                </tr>
+
+                <tr>
+                    <th class="text-left">Reference</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Payment Ref</th>
+                    <th class="text-center">Payment Method</th>
+                    <th class="text-right">Paid</th>
+                </tr>
+
+
+                <t t-foreach="doc.x_invoice_payment" t-as="l">
+                        <tr>
+                            <td class="text-left">
+                                <span t-field="l.communication"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="l.payment_date"/>
+                            </td>
+                             <td class="text-center">
+                                <span t-field="l.name"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="l.journal_id.name"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="l.x_amount_in_sale"
+                                      t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                            </td>
+                        </tr>
+                        <t t-set="total_due" t-value="total_due + l.x_amount_in_sale"/>
+                </t>
+
+                <tr>
+                    <td colspan="5" class="text-center"></td>
+                </tr>
+
+                </t>
+
+                <tr>
+                    <td>
+                        <strong>Amount Due</strong>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">
+                        <strong><span t-esc="doc.amount_total - total_due"
+                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></strong>
+                    </td>
+                </tr>
+            </table>
+        </xpath>
+        <!--        <xpath expr="//div[@id='total']/div/table" position="inside">-->
+        <!--                <t t-set="total_due" t-value="0"/>-->
+        <!--                <t t-foreach="doc.invoice_ids" t-as="payment_val">-->
+        <!--                 <t t-foreach="doc.env['account.move'].search([('id','=', payment_val.id)])._get_reconciled_info_JSON_values()" t-as="payment_vals">-->
+        <!--                    <tr>-->
+        <!--                        <td>-->
+        <!--                            <i class="oe_form_field text-right oe_payment_label">Paid on <t t-esc="payment_vals['date']"/></i>-->
+        <!--                            <i class="oe_form_field text-right oe_payment_label">&amp;nbsp;&amp;nbsp;&amp;nbsp;Ref <t t-esc="payment_vals"/></i>-->
+        <!--                            <i class="oe_form_field text-right oe_payment_label">&amp;nbsp;&amp;nbsp;&amp;nbsp;Paid By <t t-esc="payment_vals['journal_name']"/></i>-->
+        <!--                        </td>-->
+        <!--                        <td class="text-right">-->
+        <!--                            <span t-esc="payment_vals['amount']" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>-->
+        <!--                        </td>-->
+        <!--                    </tr>-->
+        <!--                   <t t-set="total_due" t-value="total_due + payment_vals['amount']"/>-->
+        <!--                </t>-->
+        <!--                </t>-->
+        <!--                    <tr class="border-black">-->
+        <!--                        <td><strong>Amount Due</strong></td>-->
+        <!--                        <td class="text-right">-->
+        <!--                            <span t-esc="doc.amount_total - total_due" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>-->
+        <!--                        </td>-->
+        <!--                    </tr>-->
+        <!--            </xpath>-->
+
+        <xpath expr="//p[@t-field='doc.note']" position="replace"/>
+        <xpath expr="//p[@t-if='doc.payment_term_id.note']" position="replace"/>
+        <xpath expr="//div[@id='total']" position="replace"/>
+
+<!--        <xpath expr="//h2[hasclass('mt16')]" position="before">-->
+<!--                    <h2>Agreement Statement</h2>-->
+<!--        </xpath>-->
+        <xpath expr="//t[@t-if='doc.note']" position="replace"/>
+        <xpath expr="//h2[hasclass('mt16')]//span[@t-field='doc.name']" position="after">
+            <span style="float: right;" class="text-right">Agreement Statement</span>
+
+        </xpath>
+
+        <!--        <xpath expr="//div[@name='so_total_summary']//div//div" position="attributes">-->
+        <!--            <attribute name="t-attf-class">#{'col-10' if report_type != 'html' else 'col-sm-10 col-md-10'} ml-auto</attribute>-->
+        <!--        </xpath>-->
+
+
+    </template>
+
+    <template id="report_progress_quotation">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="pabs_contact.report_progress_quotation_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

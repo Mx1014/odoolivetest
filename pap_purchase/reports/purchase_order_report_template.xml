@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="inherit_purchase_order_templates_pabs_purchase"
+                  inherit_id="purchase.report_purchaseorder_document">
+            <xpath expr="//t[@t-set='address']" position="replace"/>
+            <xpath expr="//t[@t-call='web.external_layout']" position="attributes">
+                <attribute name="t-call">web.basic_layout</attribute>
+            </xpath>
+            <xpath expr="//t[@t-set='information_block']" position="replace"/>
+            <xpath expr="//div[@id='informations']" position="replace"/>
+            <xpath expr="//div[@class='page']//div[@class='oe_structure']" position="replace"/>
+            <xpath expr="//div[@class='page']//h2[4]" position="replace"/>
+            <xpath expr="//div[@class='page']//h2[3]" position="replace"/>
+            <xpath expr="//div[@class='page']//h2[2]" position="replace"/>
+            <xpath expr="//div[@class='page']//h2[1]" position="replace">
+                <center>
+                    <h2 t-if="o.state == 'draft'">Request Quotation</h2>
+                    <h2 t-if="o.state in ['purchase', 'done']">Purchase Order</h2>
+                    <h2 t-if="o.state in ['sent', 'to approve']">Purchase Order</h2>
+                    <h2 t-if="o.state == 'cancel'">Cancelled Order</h2>
+                </center>
+            </xpath>
+            <xpath expr="//h2" position="after">
+                <div style="position: absolute; top: 0; right: 0; x-index: -5;">
+                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('Code128', o.name, 330, 50)"/>
+                </div>
+            </xpath>
+            <xpath expr="//div[@class='page']" position="before">
+                <div class="header">
+                    <img t-att-src="'/pap_purchase/static/src/img/AlSalam_IT.png'"
+                         style="max-height:150px"/>
+                </div>
+            </xpath>
+            <xpath expr="//table[@class='table table-sm o_main_table']" position="before">
+                <div style="float:left; padding-bottom:5mm; padding-top:5mm;">
+                    <table>
+                        <tr>
+                            <td style="width:150px">
+                                <strong>Supplier Name:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.partner_id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <t t-if="o.partner_id.vat">
+                                <td>
+                                    <strong>Supplier TRN No:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.partner_id.vat"/>
+                                </td>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="">Supplier Address:</strong>
+                            </td>
+                            <td>
+                                <t t-if="o.partner_id.street_number">
+                                    <strong>H:</strong>
+                                    <span t-field="o.partner_id.street_number"/>
+                                </t>
+                                <t t-if="o.partner_id.x_flat">
+                                    <strong>F:</strong>
+                                    <span t-field="o.partner_id.x_flat"/>
+                                </t>
+                                <t t-if="o.partner_id.x_address_road">
+                                    <strong style="">, R:</strong>
+                                    <span t-field="o.partner_id.x_address_road"/>
+                                </t>
+                                <t t-if="o.partner_id.x_address_block">
+                                    <strong style="">, B:</strong>
+                                    <span t-field="o.partner_id.x_address_block"/>
+                                </t>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="">Supplier Phone:</strong>
+                            </td>
+                            <td>
+                                <t t-if="o.partner_id.phone">
+                                    <span t-field="o.partner_id.phone"/>
+                                </t>
+                                <t t-if="o.partner_id.mobile">
+                                    /
+                                    <span t-field="o.partner_id.mobile"/>
+                                </t>
+                                <t t-if="o.partner_id.x_mobile">
+                                    /
+                                    <span t-field="o.partner_id.x_mobile"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Supplier Code:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.partner_id.x_code"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="float:right; padding-bottom:5mm; padding-top:5mm;">
+                    <table>
+                        <tr>
+                            <td style="width:140px">
+                                <strong style="">Date:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.date_order" t-options='{"format": "MM/dd/yyyy"}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="">L.P.O:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.name"/>
+                            </td>
+                        </tr>
+                        <t t-if="o.origin">
+                            <tr>
+                                <td>
+                                    <strong style="">Source Document:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.origin"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-if="o.dest_address_id">
+                            <tr>
+                                <t t-if="o.state != 'draft'">
+
+                                    <td>
+                                        <strong>Deliver To:</strong>
+                                    </td>
+
+                                    <td>
+                                        <t t-if="o.dest_address_id.street_number">
+
+                                            <strong>H:</strong>
+                                            <span t-field="o.dest_address_id.street_number"/>
+                                        </t>
+                                        <t t-if="o.dest_address_id.x_flat">
+                                            <strong>F:</strong>
+                                            <span t-field="o.dest_address_id.x_flat"/>
+                                        </t>
+                                        <t t-if="o.dest_address_id.x_address_road">
+                                            <strong>,R:</strong>
+                                            <span t-field="o.dest_address_id.x_address_road"/>
+                                        </t>
+                                        <t t-if="o.dest_address_id.x_address_block">
+                                            <strong>,B:</strong>
+                                            <span t-field="o.dest_address_id.x_address_block"/>
+                                        </t>
+                                        <t t-if="o.dest_address_id.city_id">
+                                            <strong>,C:</strong>
+                                            <span t-field="o.dest_address_id.city_id"/>
+                                        </t>
+                                    </td>
+
+                                </t>
+                            </tr>
+                        </t>
+                        <t t-else="">
+                            <tr>
+
+                                <t t-if="o.state != 'draft'">
+                                    <t t-if="o.picking_type_id.default_location_dest_id">
+                                        <td>
+                                            <strong>Delivery To:</strong>
+                                        </td>
+                                        <td>
+                                                <span t-field="o.picking_type_id.default_location_dest_id"/>
+<!--                                            <t t-if="o.picking_type_id.warehouse_id.partner_id.x_flat">-->
+<!--                                                <strong>F:</strong>-->
+<!--                                                <span t-field="o.picking_type_id.warehouse_id.partner_id.x_flat"/>-->
+<!--                                            </t>-->
+<!--                                            <t t-if="o.picking_type_id.warehouse_id.partner_id.x_address_road">-->
+<!--                                                <strong>,R:</strong>-->
+<!--                                                <span t-field="o.picking_type_id.warehouse_id.partner_id.x_address_road"/>-->
+<!--                                            </t>-->
+<!--                                            <t t-if="o.picking_type_id.warehouse_id.partner_id.x_address_block">-->
+<!--                                                <strong>,B:</strong>-->
+<!--                                                <span t-field="o.picking_type_id.warehouse_id.partner_id.x_address_block"/>-->
+<!--                                            </t>-->
+<!--                                            <t t-if="o.picking_type_id.warehouse_id.partner_id.city_id">-->
+<!--                                                <strong>,C:</strong>-->
+<!--                                                <span t-field="o.picking_type_id.warehouse_id.partner_id.city_id"/>-->
+<!--                                            </t>-->
+                                        </td>
+                                    </t>
+                                </t>
+                            </tr>
+                        </t>
+                        <t t-if="o.dest_address_id">
+                            <tr>
+                                <t t-if="o.state != 'draft'">
+                                    <td>
+                                        <strong style="">Phone:</strong>
+                                    </td>
+
+                                    <td>
+                                        <t t-if="o.dest_address_id.phone">
+                                            <span t-field="o.dest_address_id.phone"/>
+                                        </t>
+                                        <t t-if="o.dest_address_id.mobile">
+                                            /
+                                            <span t-field="o.dest_address_id.mobile"/>
+                                        </t>
+                                        <t t-if="o.dest_address_id.x_mobile">
+                                            /
+                                            <span t-field="o.dest_address_id.x_mobile"/>
+                                        </t>
+                                    </td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Customer Name:</strong>
+                                </td>
+
+                                <td>
+                                    <t t-if="o.dest_address_id">
+                                        <span t-field="o.dest_address_id"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Customer Code:</strong>
+                                </td>
+
+                                <td>
+                                    <t t-if="o.dest_address_id.x_code">
+                                        <span t-field="o.dest_address_id.x_code"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <td>
+                                <strong>Operation Type:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.picking_type_id.name"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!--                                    <div>-->
+                <!--                                        <t t-if="o.state != 'draft'">-->
+                <!--                                            <t t-if="o.picking_type_id.warehouse_id">-->
+                <!--                                                <strong>Delivery To:</strong>-->
+                <!--                                            </t>-->
+                <!--                                            <t t-if="o.picking_type_id.warehouse_id.partner_id.street_number">-->
+                <!--                                                <strong>H:</strong>-->
+                <!--                                                <span t-field="o.dest_address_id.warehouse_id.partner_id.street_number"/>-->
+                <!--                                            </t>-->
+                <!--                                            <t t-if="o.picking_type_id.warehouse_id.partner_id.x_flat">-->
+                <!--                                                <strong>F:</strong>-->
+                <!--                                                <span t-field="o.picking_type_id.warehouse_id.partner_id.x_flat"/>-->
+                <!--                                            </t>-->
+                <!--                                            <t t-if="o.picking_type_id.warehouse_id.partner_id.x_address_road">-->
+                <!--                                                <strong>R:</strong>-->
+                <!--                                                <span t-field="o.picking_type_id.warehouse_id.partner_id.x_address_road"/>-->
+                <!--                                            </t>-->
+                <!--                                            <t t-if="o.picking_type_id.warehouse_id.partner_id.x_address_block">-->
+                <!--                                                <strong>B:</strong>-->
+                <!--                                                <span t-field="o.picking_type_id.warehouse_id.partner_id.x_address_block"/>-->
+                <!--                                            </t>-->
+                <!--                                        </t>-->
+
+                <!--                                        <t t-if="o.state != 'draft'">-->
+                <!--                                            <div>-->
+                <!--                                                <t t-if="o.dest_address_id">-->
+                <!--                                                    <strong>Delivery To:</strong>-->
+                <!--                                                </t>-->
+                <!--                                                <t t-if="o.dest_address_id.street_number">-->
+                <!--                                                    <strong>H:</strong>-->
+                <!--                                                    <span t-field="o.dest_address_id.street_number"/>-->
+                <!--                                                </t>-->
+                <!--                                                <t t-if="o.dest_address_id.x_flat">-->
+                <!--                                                    <strong>F:</strong>-->
+                <!--                                                    <span t-field="o.dest_address_id.x_flat"/>-->
+                <!--                                                </t>-->
+                <!--                                                <t t-if="o.dest_address_id.x_address_road">-->
+                <!--                                                    <strong>R:</strong>-->
+                <!--                                                    <span t-field="o.dest_address_id.x_address_road"/>-->
+                <!--                                                </t>-->
+                <!--                                                <t t-if="o.dest_address_id.x_address_block">-->
+                <!--                                                    <strong>B:</strong>-->
+                <!--                                                    <span t-field="o.dest_address_id.x_address_block"/>-->
+                <!--                                                </t>-->
+                <!--                                            </div>-->
+                <!--                                        </t>-->
+                <!--                                        <br></br>-->
+                <!--                                    </div>-->
+                <!--                                </div>-->
+            </xpath>
+
+            <xpath expr="//table[@class='table table-sm o_main_table']//thead//tr[1]"
+                   position="replace">
+                <th>
+                    <strong>Model/Description</strong>
+                </th>
+                <th class="text-center">
+                    <strong>Qty</strong>
+                </th>
+                <th>
+                    <strong>Units</strong>
+                </th>
+                <t t-if="o.state != 'draft'">
+                    <th class="text-center">
+                        <strong>Rate</strong>
+                    </th>
+                    <th class="text-center">
+                        <strong>Gross</strong>
+                    </th>
+                    <th class="text-center">
+                        <strong>VAT%</strong>
+                    </th>
+                    <th class="text-center">
+                        <strong>Total</strong>
+                    </th>
+                </t>
+            </xpath>
+
+            <xpath expr="//table[@class='table table-sm o_main_table']//tbody"
+                   position="replace">
+                <tbody>
+                    <t t-foreach="o.order_line" t-as="line">
+                        <tr>
+                            <td id="product">
+                                <span t-field="line.product_id"/>
+                            </td>
+                            <td id="quantity" class="text-center">
+                                <span t-esc="'{:,.0f}'.format(line.product_qty)"/>
+                            </td>
+                            <td>
+                                <span t-field="line.product_uom.name"/>
+                            </td>
+                            <t t-if="o.state != 'draft'">
+                                <td class="text-right" id="price_exclusive">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td class="text-right" id="Gross">
+                                    <span t-esc="'{:,.3f}'.format(line.price_unit * line.product_qty)"/>
+                                </td>
+                                <td id="Taxes" class="text-center">
+                                    <span t-esc="line.taxes_id.amount"/>
+                                </td>
+                                <td class="text-right" id="Total_Amount">
+                                    <span t-esc="'{:,.3f}'.format(line.price_subtotal)"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </t>
+                    <tr>
+                        <td>
+                            <strong>Total Qty</strong>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="'%.0f'%sum(o.order_line.mapped('product_qty'))"/>
+                        </td>
+                        <td></td>
+                        <t t-if="o.state != 'draft'">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </t>
+                    </tr>
+                </tbody>
+            </xpath>
+            <xpath expr="//div[@id='total']" position="replace">
+                <t t-if="o.state != 'draft'">
+                    <div id="total" class="row justify-content-end">
+                        <div class="col-4">
+                            <table class="table table-sm">
+                                <tr class="border-black">
+                                    <td name="td_subtotal_label">
+                                        <strong>Subtotal</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_untaxed"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr class="border-black">
+                                    <td name="td_taxes_label">
+                                        <strong>Taxes</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_tax"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr class="border-black o_total">
+                                    <td name="td_amount_total_label">
+                                        <strong>Total Inc</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_total"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </xpath>
+            <xpath expr="//p[@t-field='o.notes']"
+                   position="replace">
+                <div>
+                    <strong>Payment Terms:</strong>
+                    <span t-field="o.payment_term_id"/>
+                </div>
+                <div>
+                    <span t-field="o.notes"/>
+                </div>
+                <br></br>
+                <div>
+                    <div style="float:left">
+                        <strong>Prepared By:</strong>
+                        <span t-field="o.user_id"/>
+<!--                        <span t-field="o.user_id.partner_id.x_first_name"/>-->
+<!--                        <span></span>-->
+<!--                        <span t-field="o.user_id.partner_id.x_last_name"/>-->
+                    </div>
+                    <t t-if="o.state != 'draft'">
+                        <div style="float:right">
+                            <strong>Approved By:</strong>
+                            <img t-att-src="'/pap_purchase/static/src/img/msign.bmp'"
+                                 style="max-height:100px"/>
+                        </div>
+                    </t>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

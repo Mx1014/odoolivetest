@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="Alsalam"
+            model="account.payment"
+            string="Alsalam Cheque"
+            report_type="qweb-pdf"
+            name="pabs_fawri+_report.alsalam_bank_cheque_template"
+            file="pabs_fawri+_report.alsalam_bank_cheque_template"
+            paperformat="pabs_fawri+_report.paperformat_alsalam_bank_cheque"
+    />
+
+    <report
+            id="NBK"
+            model="account.payment"
+            string="NBK Cheque"
+            report_type="qweb-pdf"
+            name="pabs_fawri+_report.nbk_bank_cheque_template"
+            file="pabs_fawri+_report.nbk_bank_cheque_template"
+            paperformat="pabs_fawri+_report.paperformat_nbk_bank_cheque"
+    />
+</odoo>

@@ -1,0 +1,72 @@
+<!--<odoo>-->
+<!--    <data>-->
+<!--        <record id="whatsapp_template" model="mail.template">-->
+<!--            <field name="name">Whatsapp Notification</field>-->
+<!--            <field name="email_from">iap@odoo.com</field>-->
+<!--            <field name="email_to">iap@odoo.com</field>-->
+<!--            <field name="subject">Account Invoice Extract Notification</field>-->
+<!--            <field name="model_id" ref="iap.model_iap_account"/>-->
+<!--            <field name="body_html" type="html">-->
+<!--                        <div style="margin: 0px; padding: 0px;">-->
+<!--                            <p>-->
+<!--                                A predefined message available for the user which needs to be sent to the customer first-->
+<!--                            </p>-->
+<!--                            <p>-->
+<!--                                "Dear Customer,-->
+
+<!--                                Congratulations! Please find the attached coupons for the {Promotion Program Name} that you have-->
+<!--                                won-->
+<!--                                from the purchase made at {Company Name}.-->
+
+<!--                                Be tuned up for the raffle day mentioned in the Coupons.-->
+<!--                            </p>-->
+<!--                            <p>-->
+<!--                                عزيز الزبون،-->
+
+<!--                                تهانينا! الرجاء فتح الكوبونات المرفقة لبرنامج {إسم البرنامج} لشرائك من {إسم الشركة}-->
+
+<!--                                كن على استعداد ليوم السحب على القسائم-->
+<!--                            </p>-->
+<!--                        </div>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<odoo>
+    <data>
+        <record id="whatsapp_template" model="mail.template">
+            <field name="name">Coupon</field>
+            <field name="model_id" ref="sale_coupon.model_sale_coupon"/>
+            <field name="subject">Your reward coupon from ${object.program_id.company_id.name}</field>
+            <field name="email_from">${object.program_id.company_id.email | safe}</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>
+                        شكرا لاختياركم إلكترونيات السلام..💙
+
+                        تم اصدار القسائم الرقمية لكم مقابل مشترياتكم لمنتجات مايديا ودخولكم في السحب الاضخم بشكل تلقائي
+                        متمنين لكم حظاً وفيراً.
+                        تاريخ السحوبات الالكترونية ١٧ يونيو ٢٠٢١ و ٢٠ يوليو ٢٠٢١. يرجى الاحتفاظ بالقسائم المرفقة و كونوا
+                        على استعداد لايام السحب الالكتروني.
+
+                        لمزيد من المعلومات تواصل معنا عبر بالاتصال على ١٧٤٠١٢١٢ أو الواتساب..
+                        https://wa.link/xcexzp
+                    </p>
+                    <!--                    <p>-->
+                    <!--                        Dear Customer,-->
+                    <!--                        Congratulations! Please find the attached coupons for the  RAFFLE   DRAW that-->
+                    <!--                        you have-->
+                    <!--                        won-->
+                    <!--                        from the purchase made at Al Salam GAS S.P.C .-->
+                    <!--                        Be tuned up for the raffle day mentioned in the Coupons.-->
+                    <!--                    </p>-->
+                    <!--                    <p>-->
+                    <!--                        عزيز الزبون،-->
+                    <!--                        تهانينا! الرجاء فتح الكوبونات المرفقة لبرنامج السحب الاضخم لشرائك   من إلكترونيات السلام-->
+                    <!--                        كن على استعداد ليوم السحب على القسائم-->
+                    <!--                    </p>-->
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

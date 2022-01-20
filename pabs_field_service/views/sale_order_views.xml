@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_inherit_pabs_field_service" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.pabs.field.service</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="sale_order_type" position="before">
+                    <field name="x_no_charge" invisible="1"/>
+                    <field name="x_service_type" invisible="1"/>
+            </field>
+            <button name="action_approval" position="after">
+                <button name="service_type_action" type="object" string="Change to Credit Service" attrs="{'invisible': ['|', '|', ('sale_order_type', '!=', 'service'), ('x_amount_residual', '=', 0), ('x_service_type', '=', 'credit')]}"/>
+            </button>
+        </field>
+    </record>
+
+</odoo>
+<!-- readonly="1" force_save="1" attrs="{'invisible': [('x_no_charge', '=', False)]}"-->
+<!-- force_save="1" attrs="{'invisible': [('x_no_charge', '=', False)]}"-->

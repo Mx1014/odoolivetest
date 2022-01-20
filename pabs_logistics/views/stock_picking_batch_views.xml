@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_batch_inherit_form" model="ir.ui.view">
+        <field name="name">stock.picking.batch.inherit.form</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="in_progress,loading,out_for_delivery,returned,done"/>
+            </xpath>
+            <xpath expr="//field[@name='name']/.." position="before">
+                <label for="name" string="Trip Sheet No" />
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="string">Driver Name</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']/.." position="after">
+                <group attrs="{'readonly': [('state', '=', 'done')]}">
+                    <field name="trip_sheet_date"/>
+                    <field name="delivery_slot"/>
+                    <field name="vendor_name"/>
+                    <field name="technician_name"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="picking_type_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                <field name="slot_allocation_time_id" domain="[('picking_type_id', '=', picking_type_id)]" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                <field name="fleet_vehicle_id" domain="[('picking_type_id', '=', picking_type_id)]" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                <field name="delivery_qty" readonly="1" force_save="1"/>
+                <field name="remaining_qty" readonly="1" force_save="1"/>
+            </xpath>
+            <xpath expr="//field[@name='picking_ids']//tree/field[@name='origin']" position="after">
+                <field name="batch_id"/>
+                <field name="slot_allocation_time_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                <field name="fleet_vehicle_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                <field name="sale_order_type" />
+                <field name="partner_id"/>
+                <field name="zone"/>
+                <field name="city"/>
+                <field name="street"/>
+                <field name="phone"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="stock_picking_batch_inherit_tree" model="ir.ui.view">
+        <field name="name">stock.picking.batch.inherit.tree</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_tree"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="picking_type_id"/>
+                <field name="slot_allocation_time_id"/>
+                <field name="fleet_vehicle_id"/>
+            </field>
+        </field>
+    </record>
+</odoo>

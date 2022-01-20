@@ -1,0 +1,7 @@
+<odoo>
+  <data noupdate="1">
+        <record id="product_brand_template" model="product.brand">
+            <field name="name">Al-Salam Gas</field>
+        </record>
+    </data>
+</odoo>

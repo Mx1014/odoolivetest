@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_frontend_custom" inherit_id="web_editor.assets_frontend" name="Portal Assets Custom" priority="16">
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/pabs_online_booking/static/src/js/portal_signature.js"></script>
+        </xpath>
+    </template>
+
+</odoo>

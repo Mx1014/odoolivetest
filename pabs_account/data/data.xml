@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+   <data noupdate="1">
+        <record id="type_cashmemo" model="order.sale.type">
+            <field name="name">Cash Memo</field>
+        </record>
+
+        <record id="type_credit" model="order.sale.type">
+            <field name="name">Credit Sale</field>
+        </record>
+
+        <record id="type_pod" model="order.sale.type">
+            <field name="name">Paid on Delivery</field>
+        </record>
+
+        <record id="type_cashinvoice" model="order.sale.type">
+            <field name="name">Cash Invoice</field>
+        </record>
+
+
+
+        <record id="type_service" model="order.sale.type">
+            <field name="name">Service</field>
+        </record>
+
+       <record id="voucher_sequence" model="ir.sequence">
+            <field name="name">Voucher</field>
+            <field name="code">payment.voucher</field>
+            <field name="prefix"></field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+    </data>
+</odoo>
+

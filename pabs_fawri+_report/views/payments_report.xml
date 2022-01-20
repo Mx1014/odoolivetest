@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="Fawri+"
+            model="account.payment"
+            string="Fawri+ Report"
+            report_type="qweb-pdf"
+            name="pabs_fawri+_report.fawri+_report_template"
+            file="pabs_fawri+_report.fawri+_report_template"
+            paperformat="pabs_fawri+_report.paperformat_Fawri+"
+    />
+
+     <report
+            id="Fawri"
+            model="account.payment"
+            string="Fawri Report"
+            report_type="qweb-pdf"
+            name="pabs_fawri+_report.fawri_report_template"
+            file="pabs_fawri+_report.fawri_report_template"
+            paperformat="pabs_fawri+_report.paperformat_Fawri"
+    />
+
+        <report
+            id="International"
+            model="account.payment"
+            string="International Report"
+            report_type="qweb-pdf"
+            name="pabs_fawri+_report.International_report_template"
+            file="pabs_fawri+_report.International_report_template"
+            paperformat="pabs_fawri+_report.paperformat_International_report"
+    />
+
+    <report
+            id="account.action_report_payment_receipt"
+            model="account.payment"
+            string="Payment Voucher"
+            report_type="qweb-pdf"
+            name="account.report_payment_receipt"
+            file="account.report_payment_receipt"
+            menu="True"
+        />
+</odoo>

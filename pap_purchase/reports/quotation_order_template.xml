@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="inherit_purchase_quotation_pabs_purchase"
+                  inherit_id="purchase.report_purchasequotation_document">
+            <xpath expr="//t[@t-set='address']" position="replace"/>
+            <xpath expr="//t[@t-set='information_block']" position="replace"/>
+            <xpath expr="//table[@class='table table-sm']" position="before">
+                <div style="float:left; padding-bottom:5mm">
+                    <table>
+                        <tr>
+                            <td style="width:150px">
+                                <strong>Supplier Name:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.partner_id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <t t-if="o.partner_id.vat">
+                                <td>
+                                    <strong>Supplier TRN No:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.partner_id.vat"/>
+                                </td>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="">Phone:</strong>
+                            </td>
+                            <td>
+                                <t t-if="o.partner_id.phone">
+                                    <span t-field="o.partner_id.phone"/>
+                                </t>
+                                <t t-if="o.partner_id.mobile">
+                                    /
+                                    <span t-field="o.partner_id.mobile"/>
+                                </t>
+                                <t t-if="o.partner_id.x_mobile">
+                                    /
+                                    <span t-field="o.partner_id.x_mobile"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Date:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.date_order" t-options='{"format": "MM/dd/yyyy"}'/>
+                            </td>
+                        </tr>
+                    </table>
+                    <br></br>
+                </div>
+
+                <div style="float:right; padding-bottom:5mm">
+                    <table>
+                        <tr>
+                            <td>
+                                <strong style="">Date Of Supply:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.date_planned" t-options='{"format": "MM/dd/yyyy"}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="">Supplier Code:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.partner_id.x_code"/>
+                            </td>
+                        </tr>
+                        <br></br>
+                    </table>
+                </div>
+
+            </xpath>
+            <xpath expr="//table[@class='table table-sm']//thead//tr//th[2]" position="replace"/>
+            <xpath expr="//table[@class='table table-sm']//tbody//tr//td[2]" position="replace"/>
+            <xpath expr="//table[@class='table table-sm']" position="inside">
+                <tr>
+                    <td>
+                        <strong>Total Qty</strong>
+                    </td>
+                    <td class="text-center">
+                        <span t-esc="'%.0f'%sum(o.order_line.mapped('product_qty'))"/>
+                    </td>
+                </tr>
+            </xpath>
+        </template>
+    </data>
+</odoo>

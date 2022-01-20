@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="vacation_settlement_printout">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            table, th, td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            }
+                            td, th {
+                            padding-left: 3px;
+                            }
+                        </style>
+                        <center>
+                            <h3>Vacation Settlement</h3>
+                        </center>
+                        <table style="width:100%;">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="4">Employee Details</th>
+                            </tr>
+                            <tr>
+                                <th>Employee Name</th>
+                                <td>
+                                    <t t-esc="o.employee_name.name"/>
+                                </td>
+                                <th>Request Date</th>
+                                <td>
+                                    <t t-esc="o.date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Employee Code</th>
+                                <td>
+                                    <t t-esc="o.employee_name.registration_number"/>
+                                </td>
+                                <th>Employee CPR</th>
+                                <td>
+                                    <t t-esc="o.employee_name.identification_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Nationality</th>
+                                <td>
+                                    <t t-esc="o.nationality.name"/>
+                                </td>
+                                <th>Passport No</th>
+                                <td>
+                                    <t t-esc="o.employee_name.passport_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Designation</th>
+                                <td>
+                                    <t t-esc="o.employee_name.job_id.name"/>
+                                </td>
+                                <th>Joining Date</th>
+                                <td>
+                                    <t t-esc="o.employee_name.date_of_join"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Basic Salary</th>
+                                <td>
+                                    <t t-esc="'{:,.3f}'.format(o.basic_salary)"/>
+                                </td>
+                                <th>Salary Per Day</th>
+                                <td>
+                                    <t t-esc="o.x_salary_per_day"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width:100%;">
+                            <tr>
+                                <th>Rejoin Date</th>
+                                <td>
+                                    <t t-esc="o.rejoin_date"/>
+                                </td>
+                                <th>Last Working Date</th>
+                                <td>
+                                    <t t-esc="o.date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Duration of Work</th>
+                                <td>
+                                    <t t-esc="o.x_working_days"/>
+                                </td>
+                                <th>Due Leave Days</th>
+                                <td>
+                                    <span t-esc="sum(o.vacation_payment_line.mapped('x_current_balance'))"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <t t-if="o.ticket_price">
+                            <table style="width:100%;" t-if="o.nationality.id != 23">
+                                <tr style="background-color:#B1B3B8;">
+                                    <th class="text-center" colspan="4">Vacation Settlement/Remittance Advice</th>
+                                </tr>
+                                <tr>
+                                    <th>Due Leave Days</th>
+                                    <td>
+                                        <span t-esc="'{:,.3f}'.format(sum(o.vacation_payment_line.mapped('x_current_balance')))"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Unpaid Leave Days</th>
+                                    <td>
+                                        <span t-esc="'{:,.3f}'.format(sum(o.vacation_payment_line.mapped('x_unpaid_days')))"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Total Leave Days</th>
+                                    <td>
+                                        <span style="background-color:#E8E5E4"
+                                              t-esc="'{:,.3f}'.format(sum(o.vacation_payment_line.mapped('x_unpaid_days'))
+                                              + sum(o.vacation_payment_line.mapped('x_current_balance')))"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Vacation Payment</th>
+                                    <td>
+                                        <span t-esc="'{:,.3f}'.format(sum(o.vacation_payment_line.mapped('total_amount')))"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Net Salary</th>
+                                    <td>
+                                        <span t-esc="'{:,.3f}'.format(o.net_salary)"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.ticket_covered_price">
+                                    <th>Payment of Ticket</th>
+                                    <td>
+                                        <span t-esc="'{:,.3f}'.format(o.ticket_price - o.ticket_covered_price)"/>
+                                    </td>
+                                </tr>
+                                <t t-else="">
+                                    <th>Payment of Ticket</th>
+                                    <td>
+                                        <span t-esc="0.0"/>
+                                    </td>
+                                </t>
+                                <tr>
+                                    <th>Total Paid Payment By Company To Employee</th>
+                                    <td>
+                                        <span style="background-color:#E8E5E4" t-esc="'{:,.3f}'.format(sum(o.vacation_payment_line.mapped('total_amount'))
+                                        - (o.ticket_price - o.ticket_covered_price) + o.net_salary)"/>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </t>
+                        <t t-if="o.ticket_price">
+                            <table style="width:100%;" t-if="o.nationality.id != 23">
+                                <tr style="background-color:#B1B3B8;">
+                                    <th class="text-center" colspan="4">Ticket Details</th>
+                                </tr>
+                                <tr>
+                                    <th>Ticket Price</th>
+                                    <td>
+                                        <t t-esc="o.ticket_price"/>
+                                    </td>
+                                    <th colspan="2" class="text-center">Employee and Employer</th>
+                                </tr>
+                                <tr>
+                                    <th>Air Line</th>
+                                    <td>
+                                        <t t-esc="o.air_line"/>
+                                    </td>
+                                    <th>Traveling Date</th>
+                                    <td>
+                                        <t t-esc="o.x_traveling_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Ticket No</th>
+                                    <td>
+                                        <t t-esc="o.ticket_number"/>
+                                    </td>
+                                    <th>Rejoining Date</th>
+                                    <td>
+                                        <t t-esc="o.x_rejoining_date"/>
+                                    </td>
+                                </tr>
+                                <!--                                <tr>-->
+                                <!--                                    <td>Ticket Price</td>-->
+                                <!--                                    <td class="text-center">-->
+                                <!--                                        <span t-field="o.ticket_price"/>-->
+                                <!--                                    </td>-->
+                                <!--                                    <td>Air Lines</td>-->
+                                <!--                                    <td>-->
+                                <!--                                        <span t-field="o.air_line"/>-->
+                                <!--                                    </td>-->
+                                <!--                                    <td>Ticket No</td>-->
+                                <!--                                    <td>-->
+                                <!--                                        <span t-field="o.ticket_number"/>-->
+                                <!--                                    </td>-->
+                                <!--                                </tr>-->
+                            </table>
+                        </t>
+                        <table style="width:100%;" t-if="o.nationality.id != 23">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="4">Passport Details</th>
+                                <th class="text-center" colspan="4">Visa Details</th>
+                            </tr>
+                            <tr>
+                                <td>Issue Date</td>
+                                <td class="text-center">
+                                    <span t-field="o.employee_name.passport_issue_date"/>
+                                </td>
+                                <td>Expiry Date</td>
+                                <td>
+                                    <span t-field="o.employee_name.passport_expiration"/>
+                                </td>
+                                <td>Issue Date</td>
+                                <td class="text-center">
+                                    <span t-field="o.employee_name.visa_issue_date"/>
+                                </td>
+                                <td>Expiry Date</td>
+                                <td>
+                                    <span t-field="o.employee_name.visa_expire"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <t t-if="o.vacation_payment_line">
+                            <table style="width:100%;" t-if="o.nationality.id != 23">
+                                <tr style="background-color:#B1B3B8;">
+                                    <th class="text-center" colspan="5">Encashment Vacation Computation</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Leave Type(Days)</th>
+                                    <th class="text-center">Requested Days</th>
+                                    <th class="text-center">Total Amount</th>
+                                </tr>
+                                <tr t-foreach="o.vacation_payment_line" t-as="line">
+                                    <td class="text-center">
+                                        <span t-field="line.x_leave_type"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_requested_days)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span style="margin-right:2mm" t-esc="'%.3f'%(line.total_amount)"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+                        <table style="width:100%;" t-if="o.nationality.id != 23">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="5">Ticket Details</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Ticket Price</th>
+                                <td class="text-center">
+                                    <span t-esc="'%.3f'%(o.ticket_price)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Air Lines</th>
+                                <td class="text-center">
+                                    <span t-field="o.air_line"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Ticket No</th>
+                                <td class="text-center">
+                                    <span t-field="o.ticket_number"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <t t-if="o.indemnity_vacation_payment_line">
+                            <table style="width:100%;" t-if="o.nationality.id != 23">
+                                <tr style="background-color:#B1B3B8;">
+                                    <th class="text-center" colspan="8">Indemnity Computation</th>
+                                </tr>
+                                <tr>
+                                    <th>Period</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Total Working Days</th>
+                                    <th>Unpaid Days</th>
+                                    <th>Final Working Days</th>
+                                    <th>Indemnity Days</th>
+                                    <th>Indemnity Amount</th>
+                                </tr>
+                                <tr t-foreach="o.indemnity_vacation_payment_line" t-as="line">
+                                    <td class="text-center">
+                                        <span t-field="line.x_period"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="line.x_date_of_join"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="line.x_date_to"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_total_working_days)"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_unpaid_leave)"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_final_working_days)"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-esc="'%.3f'%(line.x_indemnity_balance)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span style="margin-right:2mm" t-esc="'%.3f'%(line.x_indemnity_amount)"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+                        <table style="width:100%;">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="3">Signature and Approval</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="width:25%">HR Department</th>
+                                <th class="text-center" style="width:25%">Management</th>
+                                <th class="text-center" style="width:25%">Employee Signature</th>
+                            </tr>
+                            <tbody>
+                                <tr style="height: 100px">
+                                    <td style=""></td>
+                                    <td style=""></td>
+                                    <td style=""></td>
+                                </tr>
+<!--                                <tr>-->
+<!--                                    <td style="">Name:</td>-->
+<!--                                    <td style="">Name:</td>-->
+<!--                                    <td style="">Name:</td>-->
+<!--                                </tr>-->
+                                <tr>
+                                    <td style="">Date:</td>
+                                    <td style="">Date:</td>
+                                    <td style="">Date:</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

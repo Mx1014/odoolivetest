@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_product_template_spare_part_repair" model="ir.actions.act_window">
+            <field name="name">Spare Parts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('x_is_part', '=', True)]</field>
+        </record>
+    <record id="action_product_product_spare_part_repair" model="ir.actions.act_window">
+            <field name="name">Spare Parts Variants</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('x_is_part', '=', True)]</field>
+        </record>
+
+    <menuitem id="spare_part_menu" parent="repair.menu_repair_order"
+                  sequence="100" name="Master Data"/>
+    <menuitem action="action_product_template_spare_part_repair" id="product_template_spare_part_menu" parent="pabs_product.spare_part_menu"
+                  sequence="10" name="Spare Parts"/>
+    <menuitem action="action_product_product_spare_part_repair" id="product_product_spare_part_menu" parent="pabs_product.spare_part_menu"
+                  sequence="20" name="Spare Parts Variants"/>
+</odoo>

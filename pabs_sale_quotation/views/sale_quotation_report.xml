@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="sale_quotation"
+            model="sale.order"
+            string="Quotation/Order"
+            report_type="qweb-pdf"
+            name="pabs_sale_quotation.sale_quotation_report_template"
+            file="pabs_sale_quotation.sale_quotation_report_template"
+            paperformat="paperformat_sale_quotation_report_template"
+
+    />
+    <report
+            id="sale_quotation_email"
+            model="sale.order"
+            string="Quotation/Order By Email"
+            report_type="qweb-pdf"
+            name="pabs_sale_quotation.sale_quotation_email_report"
+            file="pabs_sale_quotation.sale_quotation_email_report"
+            paperformat="paperformat_sale_quotation_email_report"
+
+
+    />
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="statement_cash_voucher_form">
+            <field name="name">statement.cash.voucher.form</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <form string="Voucher">
+<!--                    <separator string="Describe why you put/take money from the cash register:"/>-->
+                    <group>
+                        <field name="journal_id" class="oe_inline" readonly="1"/>
+                        <field name="destination_journal_id" class="oe_inline" readonly="1"/>
+                        <field name="amount"/>
+                        <field name="state" invisible="1"/>
+                        <field name="communication" invisible="1"/>
+                        <field name="payment_type" invisible="1"/>
+                    </group>
+
+                    <footer>
+                        <button name="post" string="Confirm" type="object" class="btn-primary"/>
+                        <button class="btn-secondary" special="cancel" string="Cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

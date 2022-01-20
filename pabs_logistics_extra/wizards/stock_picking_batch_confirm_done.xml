@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_batch_confirm_done" model="ir.ui.view">
+        <field name="name">stock.picking.batch.confirm.done</field>
+        <field name="model">stock.picking.batch.confirm</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <span>Are you sure you want to confirm the trip sheet??</span>
+                </group>
+                <footer>
+                    <button class="oe_highlight" name="done" string="Confirm" type="object"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" close="1"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

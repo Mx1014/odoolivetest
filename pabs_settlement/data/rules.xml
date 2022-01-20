@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="resignation_penalty" model="hr.payslip.input.type">
+            <field name="name">Resignation Penalty</field>
+            <field name="code">RP</field>
+        </record>
+
+        <record id="indemnity_provision" model="hr.payslip.input.type">
+            <field name="name">Indemnity Provision</field>
+            <field name="code">IP</field>
+        </record>
+
+        <record id="annual_provision" model="hr.payslip.input.type">
+            <field name="name">Annual Provision</field>
+            <field name="code">AP</field>
+        </record>
+        <record id="indemnity_expense" model="hr.payslip.input.type">
+            <field name="name">Indemnity Expense</field>
+            <field name="code">IE</field>
+        </record>
+
+        <record id="annual_expense" model="hr.payslip.input.type">
+            <field name="name">Annual Expense</field>
+            <field name="code">AE</field>
+        </record>
+        <record id="ticket_price" model="hr.payslip.input.type">
+            <field name="name">Ticket Price</field>
+            <field name="code">TP</field>
+        </record>
+        <record id="covered_ticket_price" model="hr.payslip.input.type">
+            <field name="name">Covered Ticket Price</field>
+            <field name="code">CTP</field>
+        </record>
+        <record id="encashment_vacation_payment" model="hr.payslip.input.type">
+            <field name="name">Encashment  Vacation Payment</field>
+            <field name="code">EVP</field>
+        </record>
+        <record id="indemnity_vacation_payment" model="hr.payslip.input.type">
+            <field name="name">Indemnity Vacation Payment</field>
+            <field name="code">IVP</field>
+        </record>
+        <record id="vacation_payment_deduction" model="hr.payslip.input.type">
+            <field name="name">Vacation Payment Deduction</field>
+            <field name="code">VPD</field>
+        </record>
+    </data>
+</odoo>

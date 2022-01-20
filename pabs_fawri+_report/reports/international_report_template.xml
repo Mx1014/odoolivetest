@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="International_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div style="padding-top:50mm">
+                            <div style="float:left">
+                                <span style="margin-left:12mm" t-field="o.payment_date"/>
+                                <div style="margin-left:34mm; margin-top:6mm">
+                                    <span
+                                            t-field="o.partner_bank_account_id.x_branch"/>
+                                </div>
+                                <div style="margin-top:23mm">
+                                    <span style="margin-left:9mm;" t-field="o.currency_id"/>
+                                    <span style="margin-left:40mm;" t-field="o.amount"/>
+                                </div>
+                                <div style="margin-left:10mm; margin-top:15mm">
+                                    <span t-field="o.x_amount_in_words"/>
+                                </div>
+                            </div>
+                            <!--                            <div style="float:right">-->
+<!--                                <div style="margin-top:26.5mm; margin-right:45mm">-->
+<!--                                    <span t-field="o.partner_bank_account_id.bank_name"/>-->
+<!--                                </div>-->
+<!--                                <div style="margin-top:30mm">-->
+<!--                                    <span t-field="o.partner_bank_account_id.x_iban"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div style="float:left">-->
+<!--                                <span style="margin-top:34mm; margin-left:22.5mm"-->
+<!--                                      t-field="o.partner_bank_account_id.x_branch"/>-->
+<!--                                <div style="margin-top:15mm; margin-left:11mm">-->
+<!--                                    <span-->
+<!--                                            t-field="o.partner_bank_account_id.acc_holder_name"/>-->
+<!--                                </div>-->
+<!--                                <div style="margin-top:17mm; margin-left:16.5mm">-->
+<!--                                    <span t-field="o.amount"/>-->
+<!--                                </div>-->
+<!--                                <div style="margin-top:6mm; margin-left:10mm">-->
+<!--                                    <span t-field="o.x_amount_in_words"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                        <!--                        <div-->
+                        <!--                             style="float:left; margin-top:79.4mm; margin-left:40mm; width: 18mm;">-->
+                        <!--                                    <t t-esc="o.company_id.partner_id.bank_ids.acc_number[0]"/>-->
+                        <!--                        </div>-->
+                        <!--                        <div style="margin-top:79.4mm; letter-spacing:1.5mm">-->
+                        <!--                            <t t-foreach="range(6)" t-as="i">-->
+                        <!--                                <t t-esc="o.company_id.partner_id.bank_ids.acc_number[i+1]"/>-->
+                        <!--                            </t>-->
+                        <!--                            <t t-foreach="range(7)" t-as="i">-->
+                        <!--                                <t style="letter-spacing:1.5mm"-->
+                        <!--                                   t-esc="o.company_id.partner_id.bank_ids.acc_number[i+1]"/>-->
+                        <!--                            </t>-->
+                        <!--                        </div>-->
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

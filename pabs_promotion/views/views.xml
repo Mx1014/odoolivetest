@@ -1,0 +1,120 @@
+<odoo>
+    <data>
+
+        <record id="inherit_view_order_form_for_coupons" model="ir.ui.view">
+            <field name="name">inherit.view.order.form.for.coupons</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" type="object" icon="fa-ticket" name="action_view_coupons"
+                            attrs="{'invisible': [('x_coupon_count', '=', 0)]}">
+                        <field name="x_coupon_count" string="Coupons" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="inherit_view_partner_simple_form_for_coupons" model="ir.ui.view">
+            <field name="name">inherit_view_partner_simple_form_for_coupons</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_simple_form"/>
+            <field name="arch" type="xml">
+                <field name="mobile" position="after">
+                    <field name="x_cpr" required="context.get('force_email', False)"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_coupon_program_view_form_common_custom">
+        <field name="name">sale.coupon.program.common.form.custom</field>
+        <field name="model">sale.coupon.program</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_program_view_form_common"/>
+        <field name="arch" type="xml">
+            <group name="conditions" position="inside">
+                <label for="x_third_party_code" />
+                <div>
+                    <field name="x_third_party_code"/>
+                </div>
+            </group>
+            <label for="rule_minimum_amount" position="before">
+                <label for="x_max_coupons" />
+                <div>
+                    <field name="x_max_coupons"/>
+                </div>
+                  <label for="x_template_id" />
+                <div>
+                    <field name="x_template_id"/>
+                </div>
+                  <label for="x_report_id" />
+                <div>
+                    <field name="x_report_id"/>
+                </div>
+
+            </label>
+
+        </field>
+    </record>
+
+       <record id="sale_coupon_program_view_promo_program_form" model="ir.ui.view">
+        <field name="name">sale.coupon.promotion.program.form</field>
+        <field name="model">sale.coupon.program</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_program_view_promo_program_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(sale_coupon.sale_coupon_action)d']" position="attributes">
+                <attribute name="context">{'default_program_id': active_id}</attribute>
+            </xpath>
+        </field>
+       </record>
+
+        <record id="coupons_send_selected_coupon" model="ir.actions.server">
+            <field name="name">Send Coupons</field>
+            <field name="model_id" ref="sale_coupon.model_sale_coupon"/>
+            <field name="binding_model_id" ref="sale_coupon.model_sale_coupon"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_coupons_sent()
+            </field>
+        </record>
+
+        <odoo>
+            <record id="view_inherit_sale_coupon" model="ir.ui.view">
+                <field name="name">view.inherit.sale.coupon</field>
+                <field name="model">sale.coupon</field>
+                <field name="inherit_id" ref="sale_coupon.sale_coupon_view_form"/>
+                <field name="arch" type="xml">
+                    <field name="partner_id" position="after">
+                        <field name="customer_cpr"/>
+                        <field name="customer_phone"/>
+                        <field name="customer_mobile"/>
+                        <field name="customer_whatsapp_number"/>
+                        <field name="customer_invoice" widget="many2many_tags"/>
+                        <field name="related_x_payment_state"/>
+                        <field name="code_url" widget="url"/>
+                        <field name="x_state" readonly="1" force_save="1" invisible="1"/>
+                    </field>
+                    <field name="expiration_date" position="after">
+                        <field name="coupon_send"/>
+                    </field>
+                </field>
+            </record>
+
+            <record id="view_sale_coupon_pabs_promotion" model="ir.ui.view">
+                <field name="name">view.sale.coupon.pabs.promotion</field>
+                <field name="model">sale.coupon</field>
+                <field name="inherit_id" ref="sale_coupon.sale_coupon_view_tree"/>
+                <field name="arch" type="xml">
+                    <field name="order_id" position="after">
+                        <field name="related_x_payment_state"/>
+                        <field name="coupon_send"/>
+                    </field>
+<!--                    <field name="sale_order_id" position="after">-->
+<!--                        <field name="code_url" widget="url"/>-->
+<!--                    </field>-->
+                </field>
+            </record>
+        </odoo>
+
+    </data>
+</odoo>

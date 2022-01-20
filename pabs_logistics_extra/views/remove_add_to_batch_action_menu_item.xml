@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <delete model="ir.actions.act_window" id="stock_picking_batch.stock_picking_to_batch_action"/>
+        <delete model="ir.actions.act_window" id="stock_picking_batch.stock_picking_to_batch_action_stock_picking"/>
+    </data>
+</odoo>

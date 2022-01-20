@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+            id="report_price_tag_small_button"
+            model="product.product"
+            string="Price Tag Small"
+            report_type="qweb-pdf"
+            name="pabs_tags.report_price_tag_small_template"
+            file="pabs_tags.report_price_tag_small_template"
+            paperformat="pabs_tags.paperformat_tag_price_small"
+    />
+
+
+</odoo>

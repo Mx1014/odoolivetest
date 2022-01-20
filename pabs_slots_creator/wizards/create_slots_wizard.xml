@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_create_slots_wizard_form" model="ir.ui.view">
+            <field name="name">view.create.slots.wizard.form</field>
+            <field name="model">create.slots.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group string="Details">
+                            <field name="x_slot_type" widget="radio" required="1"/>
+                            <field name="x_business_line" required="1"/>
+                            <field name="x_from_date" widget="date" required="1"/>
+                            <field name="x_to_date" widget="date" required="1"/>
+                            <field name="x_slot_number" required="1"/>
+                        </group>
+                        <group string="Exceptions">
+                            <field name="x_sun"/>
+                            <field name="x_mon"/>
+                            <field name="x_tue"/>
+                            <field name="x_wed"/>
+                            <field name="x_thu"/>
+                            <field name="x_fri"/>
+                            <field name="x_sat"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="create_logistics_slots" string="Create" class="btn-primary" type="object"/>
+                        <button string="Discard" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_create_slots_wizard" model="ir.actions.act_window">
+            <field name="name">Create Slots</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.slots.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem action="action_create_slots_wizard" id="create_slots_wizard_menu" parent="pabs_logistics_extra.logistics_configuration_menu"
+                  sequence="30" name="Create Slots" groups="pabs_base.group_logistics_supervisor"/>
+    </data>
+</odoo>

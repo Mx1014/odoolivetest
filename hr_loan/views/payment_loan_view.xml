@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payment_loan_form" model="ir.ui.view">
+        <field name="name">payment.loan.form</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="x_loan_line_ids" widget="many2many_tags"/>
+
+                </group>
+                <group>
+                    <group>
+                        <field name="x_loan_id" readonly="1" force_save="1" invisible="1"/>
+                        <field name="state" invisible="1"/>
+                        <field name="journal_id"/>
+                        <field name="payment_method_id" widget="radio" attrs="{'invisible': [('payment_method_id','=', False)]}"/>
+                        <field name="payment_type" invisible="1"/>
+                        <field name="amount"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="x_bank_type" invisible="1"/>
+                    </group>
+                    <group string="Benefit Pay" attrs="{'invisible':[('x_bank_type', '!=', 'online')]}">
+                        <field name="x_benefit_ref"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="installment_payment_register" class="btn-primary" string="Register Payment"
+                            type="object"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" close="1"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

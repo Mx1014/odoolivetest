@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="review_loans_wizard_view_form" model="ir.ui.view">
+        <field name="name">review.loans.wizard.view.form</field>
+        <field name="model">review.loan</field>
+        <field name="arch" type="xml">
+            <form string="Loans">
+                <group>
+                    <field name="x_employee_name" readonly="1"/>
+                </group>
+                 <field name="x_loan_ids" readonly="1" force_save="1"/>
+                <footer>
+                    <button string="Done" name="action_done" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="plan_calendar_shift_transfer_view_form" model="ir.ui.view">
+        <field name="name">plan.calendar.shift.transfer.view.form</field>
+        <field name="model">plan.calendar</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+
+                <group>
+                     <p>Are You Sure You Want To Change To This Slot?</p>
+                    <group>
+                        <field name="delivery" invisible="1"/>
+                        <field name="period"/>
+                        <field name="x_priority" widget="priority"/>
+                        <field name="x_dn_state" widget="selection_badge"/>
+                    </group>
+                </group>
+                <footer>
+                        <button class="oe_highlight" name="action_save_shift_plan_calendar_transfer" string="Confirm"
+                                type="object"/>
+                                        <button string="Discard" class="btn-secondary" special="cancel" close="1"/>
+
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="plan_calendar_shift_transfer_view_gantt" model="ir.ui.view">
+        <field name="name">plan.calendar.shift.transfer.view.gantt</field>
+        <field name="model">plan.calendar</field>
+        <field name="arch" type="xml">
+            <gantt js_class="planning_gantt"
+                   form_view_id="%(plan_calendar_shift_transfer_view_form)d"
+                   date_start="start_datetime"
+                   date_stop="end_datetime"
+                   default_group_by="business_line"
+                   default_scale="week" plan="false" scales="day,week,month"
+                   precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
+                   decoration-info="status == 'available'" decoration-success="status == 'booked'"
+                   display_unavailability="1"
+                   color="color" edit="1">
+                <field name="status"/>
+                <field name="delivery"
+                       attrs="{'invisible': [('status', '=', 'available'), '&amp;', ('delivery', '=', False)]}"/>
+            </gantt>
+        </field>
+    </record>
+
+    <!--    <record id="action_plan_calendar_shift_inventory_view_gantt" model="ir.actions.act_window">-->
+    <!--        <field name="name">Plan Calendar</field>-->
+    <!--        <field name="type">ir.actions.act_window</field>-->
+    <!--        <field name="res_model">plan.calendar</field>-->
+    <!--        <field name="view_mode">gantt</field>-->
+    <!--        <field name="target">new</field>-->
+    <!--        <field name="domain">[('business_line', '=', bl)],</field>-->
+    <!--        <field name="view_id" ref="plan_calendar_shift_inventory_view_gantt"/>-->
+    <!--    </record>-->
+
+</odoo>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_payslip_run_form_inherit" model="ir.ui.view">
+            <field name="name">payslip.run.form.inherit</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='credit_note']" position="before">
+                    <field name="x_bank_journal_id" required="1" attrs="{'readonly': [('state','=','close')]}"/>
+                    <field name="x_payment_id"/>
+                    <field name="x_move_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//button[@name='action_draft']" position="after">
+                    <button name="print_transfer_request" string="Print Transfer Request" type="object"
+                            attrs="{'invisible': [('state', '!=', 'close')]}" class="oe_highlight"/>
+                    <button name="print_transfer_xlsx" string="Download Monthly Report" type="object"
+                            attrs="{'invisible': [('state', '!=', 'close')]}" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//button[@name='action_open_payslips']" position="after">
+                    <button name="action_view_journal" type="object" class="oe_stat_button" icon="fa-ellipsis-v"
+                            attrs="{'invisible': [('x_move_id','=', False)]}">
+                        <span class="oe_stat_text">Entry</span>
+                    </button>
+                </xpath>
+                <xpath expr="//button[@name='action_validate']" position="replace">
+                    <!--                     <attribue name="attrs">{'invisible': ['|', ('x_bank_journal_id', '=', False), ('state', '!=', 'verify')]}</attribue>-->
+                    <button name="action_validate" type="object" string="Create Draft Entry"
+                            attrs="{'invisible': ['|', ('x_bank_journal_id', '=', False), ('state', '!=', 'verify')]}"
+                            class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
+
+                </xpath>
+            </field>
+        </record>
+
+         <record id="view_hr_leave_inherit" model="ir.ui.view">
+        <field name="name">view.hr.leave.inherit</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.view_hr_holidays_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search//field[@name='employee_id']" position="before">
+                <field name="x_registration_number"/>
+            </xpath>
+        </field>
+    </record>
+
+        <record id="hr_leave_form_view_inherit" model="ir.ui.view">
+            <field name="name">hr.leave.form.view.inherit</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="x_attachement" widget="many2many_binary"/>
+                    <field name="x_manager" invisible="1"/>
+                    <div class="o_td_label">
+                        <label for="x_total" string="Total Leave Days"/>
+                    </div>
+                    <div>
+                        <field name="x_total" readonly="1" force_save="1"/>
+                        <span class="ml8">Days</span>
+                    </div>
+                    <div class="o_td_label">
+                        <label for="leaves_taken" string="Leaves Taken"/>
+                    </div>
+                    <div>
+                        <field name="leaves_taken"/>
+                        <span class="ml8">Days</span>
+                    </div>
+                    <!--                    <widget name="attach_document" string="Attach Document" action="message_post" highlight="1" />-->
+                </xpath>
+
+                <xpath expr="//field[@name='request_unit_hours']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'not in', ('draft', 'confirm'))], 'invisible':
+                        [('leave_type_request_unit', '!=', 'half_day')]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//label[@for='request_unit_hours']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'not in', ('draft', 'confirm'))], 'invisible':
+                        [('leave_type_request_unit', '!=', 'half_day')]}
+                    </attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="edit_holiday_status_form_inherit" model="ir.ui.view">
+            <field name="name">edit.holiday.status.form.inherit</field>
+            <field name="model">hr.leave.type</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='work_entry']" position="after">
+                    <group name="attachment" string="Attachment">
+                        <field name="x_required_attach" widget="radio"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@name='notification']" position="before">
+                    <group name="payslip" string="Payslips">
+                        <field name="x_show_in_payslip"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+<!--        <record id="hr_view_employee_form_inherit" model="ir.ui.view">-->
+<!--            <field name="name">hr.view.employee.form.inherit</field>-->
+<!--            <field name="model">hr.employee</field>-->
+<!--            <field name="inherit_id" ref="hr.view_employee_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='parent_id']" position="after">-->
+<!--                    <field name="x_is_authorized"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="account_view_move_form_batch_inherit" model="ir.ui.view">
+            <field name="name">account.view.move.form.batch.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='open_reconcile_view']" position="after">
+                    <button name="action_view_payment" type="object" class="oe_stat_button" icon="fa-ellipsis-v"
+                            attrs="{'invisible': [('x_payment_slips','=', False)]}">
+                        <span class="oe_stat_text">Payment</span>
+                    </button>
+                    <button name="action_view_single_payment" type="object" class="oe_stat_button" icon="fa-ellipsis-v"
+                            attrs="{'invisible': [('x_single_payment','=', False)]}">
+                        <span class="oe_stat_text">Payment</span>
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="x_batch_payslip_id" invisible="1"/>
+                    <field name="x_payment_slips" invisible="1"/>
+                    <field name="x_single_payslip_id" invisible="1"/>
+                    <field name="x_single_payment" invisible="1" readonly="1"/>
+                    <field name="x_payslip_journal" attrs="{'invisible': [('x_single_payslip_id','=', False)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_post']" position="after">
+                    <button name="action_register_payment" string="Register Payment" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|','|',('x_batch_payslip_id','=', False),('state','!=','posted'),('x_payment_slips','!=', False)]}"/>
+
+                    <button name="action_register_single_payment" string="Register Payment" type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|','|',('x_single_payslip_id','=', False),('state','!=','posted'),('x_single_payment','!=', False)]}"
+                            context="{'default_move_id': active_id}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_salary_rule_form_inherit" model="ir.ui.view">
+            <field name="name">hr.salary.rule.form.inherit</field>
+            <field name="model">hr.salary.rule</field>
+            <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_use_employee"/>
+                </xpath>
+            </field>
+        </record>
+
+<!--        <record id="view_hr_payslip_form_inherit" model="ir.ui.view">-->
+<!--            <field name="name">view.hr.payslip.form.inherit</field>-->
+<!--            <field name="model">hr.payslip</field>-->
+<!--            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//div[@name='button_box']" position="inside">-->
+<!--                    <button name="action_view_journal" type="object" class="oe_stat_button" icon="fa-ellipsis-v"-->
+<!--                            attrs="{'invisible': [('move_id','=', False)]}">-->
+<!--                        <span class="oe_stat_text">Entry</span>-->
+<!--                    </button>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//header" position="inside">-->
+<!--                    <button name="print_payslip" string="Print" type="object"/>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//button[@name='action_print_payslip']" position="replace"/>-->
+<!--                <xpath expr="//notebook" position="inside">-->
+<!--                    <page string="Annual Leave">-->
+<!--                        <group>-->
+<!--                            <field name="currency_id" invisible="1"/>-->
+<!--                            <field name="x_provision"/>-->
+<!--                            <field name="x_usage"/>-->
+<!--                            <field name="x_balance"/>-->
+<!--                        </group>-->
+<!--                    </page>-->
+<!--                </xpath>-->
+<!--                <field name="struct_id" position="after">-->
+<!--                    <field name="x_remaining_days"/>-->
+<!--                </field>-->
+<!--                <xpath expr="//field[@name='worked_days_line_ids']//tree//field[@name='name']" position="after">-->
+<!--                    <field name="x_date_from"/>-->
+<!--                    <field name="x_date_to"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="hr_payroll_structure_type_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr.payroll.structure.type.view.form.inherit</field>
+            <field name="model">hr.payroll.structure.type</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payroll_structure_type_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='wage_type']" position="after">
+<!--                    <label for="x_sequence_number_next"/>-->
+                    <div>
+<!--                        <field name="x_sequence_number_next" style="padding-right: 1.0em"/>-->
+                        <field name="x_sequence_id" required="0" attrs="{'readonly': 0}"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+<!--        <record id="view_hr_employee_grade_form_inherit" model="ir.ui.view">-->
+<!--            <field name="name">view.hr.employee.grade.form.inherit</field>-->
+<!--            <field name="model">hr.payroll.structure</field>-->
+<!--            <field name="inherit_id" ref="hr_payroll.view_hr_employee_grade_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="country_id" position="after">-->
+<!--                    <field name="x_is_final_settlement"/>-->
+<!--                </field>-->
+<!--                <xpath expr="//notebook" position="inside">-->
+<!--                    <page string="Final Settlement" attrs="{'invisible': [('x_is_final_settlement','=',False)]}">-->
+<!--                        <group>-->
+<!--                            <field name="x_provision_rule"/>-->
+<!--                            <field name="x_usage_rule"/>-->
+<!--                        </group>-->
+<!--                    </page>-->
+
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="hr_payroll_view_account_payment_form_inherit" model="ir.ui.view">
+            <field name="name">hr.payroll.view.account.payment.form.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='partner_group']" position="attributes">
+                    <attribute name="invisible"></attribute>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" name="action_view_payroll_entry" type="object" icon="fa-bars"
+                            attrs="{'invisible':[('x_payroll_move_id','=', False)]}">
+                        <span>Entry</span>
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_payroll_move_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

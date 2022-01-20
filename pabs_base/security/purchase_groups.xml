@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="group_procurement_supervisor" model="res.groups">
+            <field name="name">Procurement Supervisor</field>
+            <field name="category_id" ref="base.module_category_operations_purchase"/>
+            <field name="comment">Custom group for procurement supervisors</field>
+        </record>
+        <record id="group_project_manager" model="res.groups">
+            <field name="name">Project Manager</field>
+            <field name="category_id" ref="base.module_category_operations_purchase"/>
+            <field name="comment">Custom group for Project Manager</field>
+        </record>
+    </data>
+</odoo>

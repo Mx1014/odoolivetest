@@ -1,0 +1,19 @@
+<odoo>
+  <data>
+    <record id="view_stock_return_picking_form_return_reason" model="ir.ui.view">
+        <field name="name">stock.return.picking.form.return_reason</field>
+        <field name="model">stock.return.picking</field>
+        <field name="inherit_id" ref="stock.view_stock_return_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="is_reason_required" invisible="1"/>
+                <field name="picking_code" invisible="1"/>
+                <field name="picking_type_id" invisible="1"/>
+                <field name="return_reason_id" options="{'no_create': True, 'no_open': True}" attrs="{
+                                                                                                        'required': [('picking_code', '=', 'outgoing'), ('is_reason_required', '=', True)],
+                                                                                                        'invisible': ['|', ('picking_code','!=', 'outgoing'), ('is_reason_required','=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

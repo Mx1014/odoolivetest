@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="complaint_form"
+            model="helpdesk.ticket"
+            string="Complaint Form"
+            report_type="qweb-pdf"
+            name="pabs_helpdesk.complaint_form_templates"
+            file="pabs_helpdesk.complaint_form_templates"
+            paperformat="pabs_helpdesk.paperformat_complaint"
+    />
+</odoo>

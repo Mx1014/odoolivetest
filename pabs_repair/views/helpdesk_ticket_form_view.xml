@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="helpdesk_ticket_view_form_inherit_stock_user_inherit_pabs_repair" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.view.form.inherit.stock.user.inherit.pabs.repair</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk_repair.helpdesk_ticket_view_form_inherit_stock_user"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_credit_note" class="o_stat_button" type="object" icon="fa-money"
+                            string="Credit Note" attrs="{'invisible': [('x_move_id', '=', [])]}"/>
+                    <field name="x_move_id" invisible="1"/>
+                </xpath>
+                <button name="%(helpdesk_repair.action_repair_order_form)d" position="attributes">
+                    <attribute name="context">
+                        {'default_product_id': product_id, 'default_lot_id': lot_id, 'default_partner_id': partner_id,
+                        'default_ticket_id': id, 'default_company_id': company_id, 'default_warranty_state':
+                        warranty_status, 'default_guarantee_limit':
+                        warranty_end_date}
+                    </attribute>
+                </button>
+                <!--                <button name="action_generate_fsm_task" position="attributes">-->
+                <!--                    <attribute name="attrs">{'invisible': [('use_fsm', '=', False), ('x_is_close', '!=', False)]}</attribute>-->
+                <!--                </button>-->
+                <button name="%(stock.act_stock_return_picking)d" position="attributes">
+                    <attribute name="context">
+                        {'default_ticket_id': id, 'default_company_id': company_id, 'default_x_helpdesk_team_id':
+                        team_id}
+                    </attribute>
+                    <attribute name="attrs">{'invisible': ['|', '|', '|', '|', ('use_product_returns', '=', False),
+                        ('is_collect', '!=', False), ('pickings_count', '!=', 0), ('x_is_close', '!=', False),
+                        ('team_id', '=', 5)]}
+                    </attribute>
+                </button>
+                <button name="%(stock.act_stock_return_picking)d" position="after">
+                    <button type="action" name="%(act_stock_collect_picking)d"
+                            string="Collect"
+                            context="{'default_x_ticket_id': id, 'default_x_product_id': product_id, 'default_x_partner_id': partner_id, 'default_x_helpdesk_team_id': team_id}"
+                            attrs="{'invisible': ['|','|', ('is_collect', '=', False), ('pickings_count', '!=', 0), ('x_is_close', '!=', False), ('ticket_type_id', '=', %(pabs_repair.product_cancellation)d)]}"/>
+
+                    <button name="action_create_credit_note" string="Credit Note" type="object"
+                            attrs="{'invisible': ['|', '|', ('is_collect', '=', False), ('x_move_id','!=', []), ('x_is_close', '!=', False)]}"/>
+                </button>
+                <button name="%(helpdesk_repair.action_repair_order_form)d" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', '|',('use_product_repairs', '=', False),
+                        ('warranty_status',
+                        'not in', ['Expired', False]), ('x_is_close', '!=', False), ('ticket_type_id', '=',
+                        %(pabs_repair.product_cancellation)d)]}
+                    </attribute>
+                </button>
+                <button name="%(helpdesk_repair.action_repair_order_form)d" position="after">
+                    <button name="%(helpdesk_repair.action_repair_order_form)d" type="action"
+                            groups="stock.group_stock_user"
+                            string="Repair"
+                            attrs="{'invisible': ['|', '|', ('use_product_repairs', '=', False), ('warranty_status', 'in', ['Expired', False]), ('x_is_close', '!=', False)]}"
+                            context="{'default_product_id': product_id, 'default_lot_id': lot_id, 'default_partner_id': partner_id, 'default_ticket_id': id, 'default_company_id': company_id, 'default_invoice_method': 'warranty', 'default_warranty_state': warranty_status, 'default_guarantee_limit': warranty_end_date}"/>
+                </button>
+                <field name="team_id" position="before">
+                    <field name="is_collect" attrs="{'readonly': [('pickings_count', '!=', 0)]}"/>
+                    <field name="x_ticket_issue" invisible="1"/>
+                    <field name="x_issue_type" options="{'no_create': 1, 'no_edit': 1}"
+                           attrs="{'invisible': [('ticket_type_id', '=', False)], 'required': [('ticket_type_id', '!=', %(pabs_repair.product_cancellation)d)]}"
+                           domain="[('id','in', x_ticket_issue)]"/>
+                    <!--                    <field name="create_date"/>-->
+                    <!--                    <field name="create_uid"/>-->
+                    <field name="x_move_id" invisible="1"/>
+                </field>
+                <field name="user_id" position="after">
+                    <field name="x_main_comeback_id" attrs="{'invisible': [('x_main_comeback_id', '=', False)]}"/>
+                    <field name="create_date"/>
+                    <field name="create_uid"/>
+
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
+        <!--        attrs="{'invisible': [('use_product_returns', '=', False)]}"-->

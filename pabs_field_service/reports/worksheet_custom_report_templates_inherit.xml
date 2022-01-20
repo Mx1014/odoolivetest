@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="worksheet_custom_page_inherit_pabs_field_service"
+                  inherit_id="industry_fsm_report.worksheet_custom_page">
+            <xpath expr="//div[@class='page']" position="replace">
+                <div class="page">
+                    <div t-if="doc.worksheet_template_id.report_view_id and worksheet_map.get(doc.id)"
+                         style="page-break-inside: avoid">
+                        <t t-set="worksheet" t-value="worksheet_map.get(doc.id)"/>
+                        <t t-call="#{doc.worksheet_template_id.report_view_id.id}"/>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="worksheet_custom_inherit_pabs_field_service"
+                  inherit_id="industry_fsm_report.worksheet_custom">
+            <xpath expr="//t[@t-call='web.html_container']" position="replace">
+                <t t-call="web.html_container">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-call="web.basic_layout">
+                            <t t-call="industry_fsm_report.worksheet_custom_page" t-lang="doc.partner_id.lang"/>
+                        </t>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
+        <!--            <xpath expr="//div[@class='d-flex flex-wrap justify-content-md-around']" position="replace"/>-->
+        <!--            <xpath expr="//h1[@class='mt-4 mb-4']" position="replace"/>-->
+        <!--            <xpath expr="//t" position="replace"/>-->
+        <!--            <xpath expr="//t" position="replace"/>-->

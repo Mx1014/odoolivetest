@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_doc_inherit" inherit_id="account.report_invoice_document">
+            <xpath expr="//th[@name='th_description']" position="after">
+                <th t-if="o.partner_id.x_is_subcontractor" class="text-center">Customer</th>
+                <th t-if="o.partner_id.x_is_subcontractor" class="text-center">Purchase Ref</th>
+                <th t-if="o.partner_id.x_is_subcontractor" class="text-center">Completion Date</th>
+            </xpath>
+
+            <xpath expr="//td[@name='account_invoice_line_name']" position="after">
+                <td t-if="o.partner_id.x_is_subcontractor">
+                    <span t-field="line.x_customer_id"/>
+                </td>
+                <td t-if="o.partner_id.x_is_subcontractor">
+                    <span t-field="line.purchase_line_id.order_id.name"/>
+                </td>
+<!--                <td t-if="o.partner_id.x_sub_engineer">-->
+<!--                    <span t-field="line.x_bill_complete_date"/>-->
+<!--                </td>-->
+
+            </xpath>
+
+            <xpath expr="//td[@name='account_invoice_line_name']" position="replace">
+                <td t-if="o.partner_id.x_is_subcontractor == False" name="account_invoice_line_name"><span t-field="line.name" t-options="{'widget': 'text'}"/></td>
+                <td t-if="o.partner_id.x_is_subcontractor"><span t-field="line.x_so_line.order_id.name"
+                                                             t-options="{'widget': 'text'}"/>-
+                    <span t-field="line.x_so_line.name" t-options="{'widget': 'text'}"/>
+                </td>
+            </xpath>
+            <xpath expr="//div[@name='origin']" position="attributes">
+                <attribute name="t-if">o.invoice_origin and not o.partner_id.x_is_subcontractor</attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='reference']" position="attributes">
+                <attribute name="t-if">o.ref and not o.partner_id.x_is_subcontractor</attribute>
+            </xpath>
+
+        </template>
+
+    </data>
+</odoo>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="crm_lead_view_form_inherit">
+            <field name="name">crm_lead_view_form_inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//label[@for='name']" position="before">
+                    <div>
+                        <h1>
+                            <field name="x_sequence_name" no_label="1" readonly="1" force_save="1"/>
+                        </h1>
+                    </div>
+                    <div>
+                        <h3>
+                            <field name="x_opportunity_type_id" placeholder="Opportunity Type" no_label="1" required="1"
+                                   options="{'no_create': True, 'no_create_edit': True, 'no_quick_create': True}"/>
+                        </h3>
+                    </div>
+                </xpath>
+                <field name="name" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                </field>
+                <field name="name" position="after">
+                    <field name="x_quotation_amount_total" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="crm_case_form_view_oppor_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.oppor.inherited.crm.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_sale_order']//div//span[2]" position="replace">
+                    <span class="o_stat_text">
+                        <field name="sale_order_count"/>
+                        Orders
+                    </span>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_opportunity_type_filter">
+            <field name="name">crm.opportunity.type.filter.assigned</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+            <field name="arch" type="xml">
+                <filter name="stage" position="after">
+                    <filter string="Opportunity Type" name="assigned_partner" domain="[]"
+                            context="{'group_by':'x_opportunity_type_id'}"/>
+                </filter>
+                <field name="city" position="after">
+                    <field name="x_opportunity_type_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="crm_kanban_view_oppor_type_inherit" model="ir.ui.view">
+            <field name="name">crm.opportunity.type.inherited.kanban</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="x_opportunity_type_id" required="1"/>
+                </field>
+                 <field name="name" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

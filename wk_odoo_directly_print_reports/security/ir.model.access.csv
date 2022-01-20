@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_template_all,access.report.template.all,model_report_template,,1,1,1,1
+access_wk_printer_printer_all,access.wk_printer.printer_all,model_wk_printer_printer,,1,1,1,1

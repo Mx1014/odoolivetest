@@ -1,0 +1,28 @@
+<odoo>
+    <record model="ir.ui.view" id="maintenance_issue_form_view">
+        <field name="name">maintenance issue</field>
+        <field name="model">maintenance.issue</field>
+        <field name="arch" type="xml">
+            <form name="Maintenance Issues">
+                <sheet>
+                    <group>
+                        <field name="name" string="Name"/>
+                        <field name="issue_name" string="Name" invisible="1"/>
+                        <field name="categories" widget="many2many_tags" string="Applied Categories"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="maintenance_issue_form_tree">
+        <field name="name">maintenance.issue.form.tree</field>
+        <field name="model">maintenance.issue</field>
+        <field name="arch" type="xml">
+            <tree string="Maintenance Issues">
+                <field name="name" string="Name"/>
+                <field name="categories" widget="many2many_tags" string="Applied Categories"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

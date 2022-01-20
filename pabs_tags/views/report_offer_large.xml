@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+    id="report_offer_large_button"
+    model="product.pricelist.item"
+    string="Offer Tag Large"
+    report_type="qweb-pdf"
+    name="pabs_tags.report_offer_large_template"
+    file="pabs_tags.report_offer_large_template"
+    paperformat="pabs_tags.paperformat_offer_large"
+    />
+</odoo>

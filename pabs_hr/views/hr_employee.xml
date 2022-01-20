@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hr_employee_inherit_pabs_hr" model="ir.ui.view">
+        <field name="name">view.hr.employee.inherit.pabs.hr.employee</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//header" position="inside">
+                <field name="active" invisible="1"/>
+                <button name="action_allocate_leave" string="Allocate Leave" type="object"
+                        attrs="{'invisible': [('active', '=', False)]}" groups="hr_holidays.group_hr_holidays_manager"/>
+                <button name="action_suspend" string="Suspend Slip" type="object"
+                        attrs="{'invisible': [('x_is_expats', '=', True)]}"/>
+                <button name="action_resume" string="Resume Slip" type="object"
+                        attrs="{'invisible': [('x_is_expats', '=', False)]}"/>
+            </xpath>
+            <field name="phone" position="replace"/>
+            <field name="parent_id" position="after">
+                <field name="date_of_join" required="1"/>
+                <field name="short_name"/>
+                <field name="x_duration_of_work" invisible="1"/>
+                <field name="phone" groups="hr.group_hr_user"/>
+                <field name="mobile" groups="hr.group_hr_user"/>
+                <field name="payment_method" required="1" groups="hr.group_hr_user"/>
+                <field name="x_is_expats" readonly="1" invisible="0"/>
+            </field>
+            <field name="bank_account_id" position="after">
+                <field name="x_iban"/>
+                <field name="loan_availability"/>
+            </field>
+            <field name="address_home_id" position="after">
+                <field name="x_country_address" attrs="{'invisible': [('country_id', '=', 23)]}"/>
+            </field>
+            <field name="gender" position="after">
+                <field name="age"/>
+            </field>
+            <field name="emergency_contact" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="emergency_phone" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="x_iban" position="after">
+                <field name="reference_by"/>
+            </field>
+            <field name="country_of_birth" position="after">
+                <field name="religion"/>
+                <field name="x_annual_leave" invisible="1"/>
+                <field name="x_full_paid" invisible="1"/>
+                <field name="x_half_paid" invisible="1"/>
+                <field name="x_unpaid_sick" invisible="1"/>
+                <field name="x_last_annual_leave" invisible="0"/>
+                <field name="x_last_annual_leave_return" invisible="0"/>
+            </field>
+            <field name="permit_no" position="after">
+                <field name="visa_issue_date"/>
+            </field>
+            <field name="registration_number" position="replace"/>
+            <field name="identification_id" position="replace"/>
+            <field name="birthday" position="replace"/>
+            <field name="private_email" position="replace"/>
+            <field name="work_location" position="after">
+                <field name="registration_number" groups="hr.group_hr_user"/>
+                <field name="identification_id" groups="hr.group_hr_user"/>
+                <field name="identification_expiration"/>
+                <field name="birthday" groups="hr.group_hr_user"/>
+                <field name="private_email" groups="hr.group_hr_user"/>
+            </field>
+            <!--            <field name="registration_number" position="attributes">-->
+            <!--                <attribute name="string">Code ID</attribute>-->
+            <!--            </field>-->
+            <field name="emergency_contact" position="before">
+                <field name="first_reference_details"/>
+            </field>
+            <field name="first_reference_details" position="after">
+                <field name="first_name" attrs="{'invisible': [('first_reference_details','!=', True)]}"/>
+                <field name="first_phone" attrs="{'invisible': [('first_reference_details','!=', True)]}"/>
+                <field name="first_relation" attrs="{'invisible': [('first_reference_details','!=', True)]}"/>
+            </field>
+            <field name="first_relation" position="after">
+                <field name="second_reference_details"/>
+            </field>
+            <field name="second_reference_details" position="after">
+                <field name="second_name" attrs="{'invisible': [('second_reference_details','!=', True)]}"/>
+                <field name="second_phone" attrs="{'invisible': [('second_reference_details','!=', True)]}"/>
+                <field name="second_relation" attrs="{'invisible': [('second_reference_details','!=', True)]}"/>
+            </field>
+            <field name="second_relation" position="after">
+                <field name="third_reference_details"/>
+            </field>
+            <field name="third_reference_details" position="after">
+                <field name="third_name" attrs="{'invisible': [('third_reference_details','!=', True)]}"/>
+                <field name="third_phone" attrs="{'invisible': [('third_reference_details','!=', True)]}"/>
+                <field name="third_relation" attrs="{'invisible': [('third_reference_details','!=', True)]}"/>
+            </field>
+
+            <field name="passport_id" position="after">
+                <field name="passport_issue_date"/>
+                <field name="passport_expiration"/>
+                <field name="passport_issue_place"/>
+                <field name="license_availability"/>
+                <field name="license_number" attrs="{'invisible': [('license_availability','!=', 'Yes')]}"/>
+                <field name="license_expiration" attrs="{'invisible': [('license_availability','!=', 'Yes')]}"/>
+                <field name="employee_status"/>
+                <field name="cr_no"/>
+            </field>
+            <field name="leave_manager_id" position="after">
+                <!--                <field name="validation_type"/>-->
+                <field name="responsible_id"/>
+            </field>
+            <xpath expr="//form//sheet//notebook//page[2]" position="after">
+                <page name="attachment" string="Employee Attachment">
+                    <!--                    <button name="action_upload_cpr" type="object" string="CPR"/>-->
+                    <!--                    <button name="action_unlink_attachment" type="object" string="Delete"/>-->
+                    <!--                    <field name="emp_docs"/>-->
+                    <!--                    <group>-->
+                    <!--                        <field name="emp_cpr"/>-->
+                    <!--                    </group>-->
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_public_inherit_pabs_hr" model="ir.ui.view">
+        <field name="name">view.hr.employee.public.inherit.pabs.hr.employee</field>
+        <field name="model">hr.employee.public</field>
+        <field name="inherit_id" ref="hr.hr_employee_public_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='public']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_search_inherit_pabs_hr" model="ir.ui.view">
+        <field name="name">view.hr.employee.search.inherit.pabs.hr.employee</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search//field[@name='name']" position="before">
+                <field name="registration_number"/>
+                <field name="identification_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_tree_inherit_pabs_hr" model="ir.ui.view">
+        <field name="name">view.hr.employee.tree.inherit.pabs.hr.employee</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//field[@name='name']" position="replace">
+                <field name="display_name"/>
+                <field name="registration_number"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_kanban_view_employees_inherit_pabs_hr" model="ir.ui.view">
+        <field name="name">view.hr.kanban.view.employees.inherit.pabs.hr.employee</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban//templates//t//div//div//div//div//strong//field[@name='name']" position="replace">
+                <field name="display_name" placeholder="Employee's Name"/>
+                <br></br>
+                <field name="registration_number"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,76 @@
+<odoo>
+    <data>
+        <record id="logistic_team_contract_list_view" model="ir.ui.view">
+            <field name="name">logistic.team.contract.list.view</field>
+            <field name="model">logistics.team.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Logistic Teams">
+                    <field name="name"/>
+                    <field name="team"/>
+                    <field name="team_owner"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_logistics_team_contract_form" model="ir.ui.view">
+            <field name="name">view.logistics.team.contract.form</field>
+            <field name="model">logistics.team.contract</field>
+            <field name="arch" type="xml">
+                <form string="Logistics Teams">
+                    <header>
+                        <field name="state" widget="statusbar" force_save="1" statusbar_visible="run,expired"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" required="0"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="team" required="1" readonly="1" force_save="1" options="{'no_create': 1, 'no_edit': 1}" domain="[('team_type', '=', 'subcontractor'), ('id', '=', context.get('team_id'))]"/>
+                            <field name="team_owner"/>
+                            <field name="start_date" required="1"/>
+                            <field name="end_date" required="1"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_logistics_team_contract_form_wizard" model="ir.ui.view">
+            <field name="name">view.logistics.team.contract.form</field>
+            <field name="model">logistics.team.contract</field>
+            <field name="arch" type="xml">
+                <form string="Logistics Teams">
+                    <header>
+                        <field name="state" widget="statusbar" force_save="1" statusbar_visible="run,expired"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" required="0"/>
+                            </h1>
+                        </div>
+<!--                        domain="[('id', '=', context.get('team_id'))]"-->
+                        <group>
+                            <field name="team" required="1" readonly="1" force_save="1" options="{'no_open': True}"/>
+                            <field name="team_owner" options="{'no_open': True}"/>
+                            <field name="start_date" required="1"/>
+                            <field name="end_date" required="1"/>
+                        </group>
+                        <footer>
+                            <button string="Create" class="btn-primary" special="save"/>
+                            <button string="Discard" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

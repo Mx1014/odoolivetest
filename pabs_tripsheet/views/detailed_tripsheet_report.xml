@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="Detailed_Tripsheet"
+            model="stock.picking.batch"
+            string="Detailed Tripsheet"
+            report_type="qweb-pdf"
+            name="pabs_tripsheet.detailed_tripsheet_report_template"
+            file="pabs_tripsheet.detailed_tripsheet_report_template"
+            paperformat="pabs_tripsheet.detailed_tripsheet_paperformat"
+    />
+    <report
+            id="picking_lisit"
+            model="stock.picking.batch"
+            string="Picking List"
+            report_type="qweb-pdf"
+            name="pabs_tripsheet.picking_list_template"
+            file="pabs_tripsheet.picking_list_template"
+            paperformat="pabs_tripsheet.picking_list_paperformat"
+    />
+</odoo>

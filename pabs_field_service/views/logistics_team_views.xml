@@ -1,0 +1,68 @@
+<odoo>
+    <data>
+        <record id="view_logistics_team_form_inherit_pabs_field_service" model="ir.ui.view">
+            <field name="name">view.logistics.team.form.inherit.pabs.field.service</field>
+            <field name="model">logistics.team</field>
+            <field name="inherit_id" ref="pabs_logistics_extra.view_logistics_team_form"/>
+            <field name="arch" type="xml">
+                <field name="business_line" position="after">
+                    <field name="x_route_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="industry_fsm.project_task_action_fsm" model="ir.actions.act_window">
+        <field name="name">My Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">map,kanban,gantt,calendar,tree,form,activity</field>
+        <field name="search_view_id" ref="industry_fsm.project_task_view_search_fsm"/>
+        <field name="domain">[('is_fsm', '=', True), ('fsm_done', '=', False), ('x_team_id.related_team_user', '=', uid)]</field>
+        <field name="context">{
+            'fsm_mode': True,
+            'search_default_my_tasks': True,
+            'search_default_planned_future': True,
+            'search_default_planned_today': True,
+        }</field>
+        <field name="help" type="html">
+            <p class='o_view_nocontent_smiling_face'>No future Tasks planned</p>
+            <p>You can create one for yourself by clicking on Create.</p>
+        </field>
+    </record>
+
+
+    <record id="project_task_view_search_fsm_inherit" model="ir.ui.view">
+        <field name="name">project.task.search.fsm.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_search_fsm"/>
+        <field name="arch" type="xml">
+                <filter name="my_tasks" position="attributes">
+                    <attribute name="domain">[('x_team_id.related_team_user', '=', uid)]</attribute>
+                </filter>
+            <filter name="my_tasks" position="after">
+                <filter string="My Created Tasks" name="my_created_tasks" domain="[('user_id', '=', uid)]"/>
+            </filter>
+
+        </field>
+    </record>
+
+
+    <record id="helpdesk_tickets_view_search_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.tickets.view.search.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group">
+                <filter string="Batch" name="x_visit_sheet" context="{'group_by':'x_visit_sheet'}"/>
+                <filter string="Business Line" name="x_task_businessline" context="{'group_by':'x_task_businessline'}"/>
+                <filter string="Brand" name="agents_product" context="{'group_by':'agents_product'}"/>
+                <filter string="Agent" name="agents_partner" context="{'group_by':'brand_agent'}"/>
+                <filter string="Product" name="product" context="{'group_by': 'x_product_id', 'group_by': 'product_id'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+
+    </data>
+</odoo>

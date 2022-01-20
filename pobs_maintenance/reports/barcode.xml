@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+            id="equipment_barcode_report"
+            string="Barcode Label"
+            model="maintenance.equipment"
+            report_type="qweb-pdf"
+            name="pobs_maintenance.report_barcode"
+            file="pobs_maintenance.report_barcode"
+            paperformat="pobs_maintenance.paperformat_label_report"/>
+
+
+    <report
+            id="equipment_barcode_zpl"
+            string="Barcode Label(ZPL)"
+            model="maintenance.equipment"
+            report_type="qweb-text"
+            name="pobs_maintenance.barcode_zpl"
+            file="pobs_maintenance.barcode_zpl"/>
+
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_users_form_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">view.users.form.inherit.pabs.logistics.extra</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <notebook colspan="4" position="inside">
+                <page name="business_line_page" string="Business Lines">
+                   <field name="x_business_line_ids"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

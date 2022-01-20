@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="sale_order_view_inherit_barcode1" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+<!--               <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">-->
+<!--                        <field name ="barcode_scan" attrs="{'column_invisible': [('parent.sale_order_type', '!=', 'cash_memo')]}"/>-->
+<!--               </xpath>-->
+                 <xpath expr="//notebook" position="before">
+                        <h1 class="text-center" id="sales_switch_fields_barcode">
+                            <field name="x_barcode_scan" placeholder="Barcode" attrs="{'invisible': ['|', ('sale_order_type', '!=', 'cash_memo')]}" default_focus="1"/>
+                            <field name="x_no_use" />
+<!--                            <field name="x_barcode_scan" placeholder="Barcode" attrs="{'invisible': ['|', ('sale_order_type', '!=', 'cash_memo'),('x_barcode_scan', '=', False)]}"/>-->
+                        </h1>
+
+               </xpath>
+               <xpath expr="//tree/field[@name='product_id']" position="attributes">
+                   <attribute name="attrs">{'readonly': ['|', ('parent.sale_order_type', '=', 'cash_memo'), ('product_updatable', '=', False)], 'required': [('display_type', '=', False)]}</attribute>
+               </xpath>
+                 <xpath expr="//tree/field[@name='product_uom_qty']" position="attributes">
+                   <attribute name="attrs">{'readonly': [('parent.sale_order_type', '=', 'cash_memo')]}</attribute>
+               </xpath>
+                 <xpath expr="//tree/field[@name='product_uom_qty']" position="attributes">
+                   <attribute name="force_save">1</attribute>
+               </xpath>
+
+            </field>
+        </record>
+
+         <record id="sale_order_view_form_inherit_configure" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.sale.product.inherit.configurator</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//tree/field[@name='product_template_id']" position="attributes">
+                   <attribute name="attrs">{'readonly': ['|', ('parent.sale_order_type', '=', 'cash_memo'), ('product_updatable', '=', False)], 'required': [('display_type', '=', False)]}</attribute>
+               </xpath>
+        </field>
+    </record>
+
+    </data>
+</odoo>

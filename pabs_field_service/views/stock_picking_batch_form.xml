@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_picking_batch_form_inherit_pabs_logistics_extra_inherit_pabs_field_service" model="ir.ui.view">
+        <field name="name">view.stock.picking.batch.form.inherit.pabs.logistics.extra.inherit.pabs.field.service</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="pabs_logistics_extra.view_stock_picking_batch_form_inherit_pabs_logistics_extra"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_ids']//tree//field[@name='x_total_amount']" position="after">
+                <field name="x_repair_total" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

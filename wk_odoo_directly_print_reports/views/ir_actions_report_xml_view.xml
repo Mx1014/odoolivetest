@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+
+<odoo>
+    <record model="ir.ui.view" id="act_report_xml_view_inherit">
+        <field name="name">ir.actions.report.inherit</field>
+        <field name="model">ir.actions.report</field>
+        <field name="inherit_id" ref="base.act_report_xml_view" />
+        <field name="arch" type="xml">
+        <xpath expr="//page[@name='security']" position="before" >
+            <page string="Report Printing" name="print" >
+                <group>
+                    <group>
+                        <field name="report_user_action"/>
+                        <field name="printer_id" attrs="{'invisible': [('report_user_action', '=', 'default')]}"/>
+                        <field name="printer_type" invisible="1"/>
+                        <field name="use_template" attrs="{'invisible': [('printer_type', '!=', 'zpl')]}"/>
+                        <field name="report_template_id" attrs="{'invisible': [('use_template', '=', False)], 'required': [('use_template', '=', True)]}"/>
+                    </group>
+                    <group></group>
+                </group>
+            </page>
+        </xpath>
+        </field>
+    </record>
+</odoo>

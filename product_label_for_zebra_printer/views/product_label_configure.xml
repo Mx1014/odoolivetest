@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+
+
+
+<odoo>
+    <data>
+        <record id="product_label_configure_inherit_form" model="ir.ui.view">
+            <field name="name">product.label.configure.form</field>
+            <field name="model">report.template</field>
+            <field name="inherit_id" ref="wk_odoo_directly_print_reports.report_template_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page[@name='report_tempate']" position="after">
+                    <page string="Product Barcode Settings" name="barcode_config_page">
+                        <group name="barcode_settings">
+                            <group>
+                                <field name="barcode_height" />
+                                <field name="barcode_width" />
+                                <field name="barcode_abscissa" />
+                                <field name="barcode_ordinate" />
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Product Name Settings">
+                        <group>
+                            <group>
+                                <field name="product_height" />
+                                <field name="product_width" />
+                                <field name="product_abscissa" />
+                                <field name="product_ordinate" />
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <report
+            id="report_product_zpl_label"
+            string="Product Label (ZPL Direct)"
+            model="product.product"
+            report_type="qweb-pdf"
+            name="product_label_for_zebra.report_product_label_zpl"
+            file="product_label_for_zebra.report_product_label_zpl"
+            print_report_name="'Products Labels for ZPl"
+        />
+    </data>
+</odoo>

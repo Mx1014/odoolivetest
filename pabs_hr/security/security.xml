@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="module_category_Sales_order">
+        <field name="name">Sales Order</field>
+        <field name="description">Category For Sales Order</field>
+        <!--        <field name="sequence">45</field>-->
+    </record>
+
+    <!--Salesman group-->
+    <record id="group_Salesman" model="res.groups">
+        <field name="name">Salesman</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Salesman</field>
+    </record>
+
+    <!-->Branch Manager group-->
+    <record id="group_Branch_Manager" model="res.groups">
+        <field name="name">Branch Manager</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Branch Manager</field>
+    </record>
+
+    <!-->Retail Manager group-->
+    <record id="group_Retail_Manager" model="res.groups">
+        <field name="name">Retail Manager</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Retail Manager</field>
+    </record>
+
+    <!-->Cashiers group-->
+    <record id="group_Cashiers" model="res.groups">
+        <field name="name">Cashiers</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Retail Cashiers</field>
+    </record>
+
+
+    <!-->Cashiers group-->
+    <record id="group_Master_Cashier" model="res.groups">
+        <field name="name">Master Cashier</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Master Cashier</field>
+    </record>
+
+    <!-->Credit Sales group-->
+    <record id="group_Credit_Sales" model="res.groups">
+        <field name="name">Credit Sales</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Credit Sales</field>
+    </record>
+
+    <!-->AMC Sales group-->
+    <record id="group_AMC_Sales" model="res.groups">
+        <field name="name">AMC Sales</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for AMC Sales</field>
+    </record>
+
+    <!-->AMC Sales group-->
+    <record id="group_Major_Project_Sales" model="res.groups">
+        <field name="name">Major Project Sales</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Major Project Sales</field>
+    </record>
+
+    <!-->Call Center group-->
+    <record id="group_Call_Center" model="res.groups">
+        <field name="name">Call Center</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Call Center</field>
+    </record>
+
+     <!-->Cylinder Salesman group-->
+    <record id="group_Cylinder_Salesman" model="res.groups">
+        <field name="name">Cylinder Salesman</field>
+        <field name="category_id" ref="module_category_Sales_order"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Cylinder Salesman</field>
+    </record>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    <data noupdate="1">-->
+<!--        <record id="unpaid_timeoff_type" model="hr.leave.type">-->
+<!--            <field name="name">Unpaid Leave</field>-->
+<!--            <field name="timesheet_project_id">0</field>-->
+<!--            <field name="timesheet_task_id">0</field>-->
+<!--        </record>-->
+<!--    </data>-->
+</odoo>

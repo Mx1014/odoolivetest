@@ -1,0 +1,67 @@
+<odoo>
+    <data>
+
+        <record id="price_field_service_view_form" model="ir.ui.view">
+            <field name="name">price.field.service.view.form</field>
+            <field name="model">service.price</field>
+            <field name="arch" type="xml">
+                <form version="7.0">
+<!--                        <script>-->
+<!--                            $(document).ready(function(){-->
+<!--                                $('.modal-dialog').css({'width': '30%', 'height': '50%'});-->
+<!--                                $('.modal-content').css({'height': '50%'});-->
+<!--                                $('.modal-body').css({'height': '50%'});-->
+<!--                            });-->
+<!--                        </script>-->
+
+                        <group>
+                            <field name="name" widget="monetary" options="{'currency_field': 'currency_id'}"
+                                   readonly="0"/>
+                            <field name="product_id" invisible="1"/>
+                            <footer>
+                                <button class="oe_highlight" name="add_price" string="Add Price" type="object"/>
+                            </footer>
+
+                        </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_product_product_kanban_material_inherit" model="ir.ui.view">
+            <field name="name">view.product.template.kanban.material.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="industry_fsm.view_product_product_kanban_material"/>
+            <field name="arch" type="xml">
+                <field name="product_template_attribute_value_ids" position="after">
+                    <field name="x_fields_price"/>
+                </field>
+                <xpath expr="//button[@name='fsm_add_quantity']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('x_fields_price', '=', 0.0)]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='fsm_add_quantity']" position="before">
+                    <button type="object" class="col-12 h-100" name="add_price"
+                            attrs="{'invisible': ['|', ('x_fields_price', '!=', 0.0), ('fsm_quantity', '!=', 0)]}"
+                            invisible="context.get('hide_qty_buttons')"
+                            style="position: absolute;top: 0;left: 0;opacity: 0;"/>
+                </xpath>
+                <field name="currency_id" position="after">
+                    <button attrs="{'invisible': [('fsm_quantity', '=', 0)]}"  invisible="context.get('hide_qty_buttons')" name="add_price" type="object" style="border: none;background: none;">
+                            <strong style="color: #00A09D;">Unit Price:
+                                <field name="x_show_price" attrs="{'invisible': [('fsm_quantity', '=', 0)]}"
+                                       widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </strong>
+                        </button>
+                    <li>
+                       <strong attrs="{'invisible': [('fsm_quantity', '=', 0)]}" invisible="not context.get('hide_qty_buttons')" style="color: #00A09D;">Unit Price:
+                                <field name="x_show_price" attrs="{'invisible': [('fsm_quantity', '=', 0)]}"
+                                       widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </strong>
+                    </li>
+
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

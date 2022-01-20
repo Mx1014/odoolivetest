@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem
+            action="action_show_stock_return_reason_list"
+            id="menu_action_show_stock_return_reason_list"
+            parent="pabs_logistics_extra.logistics_configuration_menu"
+            sequence="50"
+        />
+
+        <menuitem
+            action="action_show_stock_return_reason_list"
+            id="menu_action_show_stock_return_reason_list2"
+            parent="pabs_logistics_extra.menu_logistics_config"
+            sequence="50"
+        />
+    </data>
+</odoo>

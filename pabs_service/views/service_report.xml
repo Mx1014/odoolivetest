@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="Service"
+            model="repair.order"
+            string="Service Order/Quotation"
+            report_type="qweb-pdf"
+            name="pabs_service.service_report_template"
+            file="pabs_service.service_report_template"
+            paperformat="pabs_service.paperformat_service_report"
+    />
+    <report
+            id="service_report_by_email"
+            model="repair.order"
+            string="Service Order/Quotation By Email"
+            report_type="qweb-pdf"
+            name="pabs_service.service_report_by_email_template"
+            file="pabs_service.service_report_by_email_template"
+            paperformat="pabs_service.paperformat_service_report_by_email"
+    />
+</odoo>

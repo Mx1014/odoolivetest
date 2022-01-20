@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_sale_order_barcode_inherit_form" model="ir.ui.view">
+            <field name="name">sale.order.barcode.inherit.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form position="inside">
+                    <field name="_barcode_scanned" widget="saleorder_barcode_handler"/>
+                </form>
+
+                <xpath expr="//field[@name='order_line']/tree" position="inside">
+                    <field name="product_barcode" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/kanban" position="inside">
+                    <field name="product_barcode" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/form" position="inside">
+                    <field name="product_barcode" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="options">{'barcode_events': True}</attribute>
+                    <attribute name="widget">field_float_scannable</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <attribute name="barcode_trigger">validate</attribute>
+                </xpath>
+                  <xpath expr="//tree/field[@name='product_id']" position="attributes">
+                   <attribute name="attrs">{'readonly': ['|', ('parent.sale_order_type', '=', 'cash_memo'), ('product_updatable', '=', False)], 'required': [('display_type', '=', False)]}</attribute>
+               </xpath>
+                 <xpath expr="//tree/field[@name='product_uom_qty']" position="attributes">
+                   <attribute name="attrs">{'readonly': [('parent.sale_order_type', '=', 'cash_memo')]}</attribute>
+               </xpath>
+                 <xpath expr="//tree/field[@name='product_uom_qty']" position="attributes">
+                   <attribute name="force_save">1</attribute>
+               </xpath>
+                <xpath expr="//tree/field[@name='product_uom_qty']" position="after">
+                    <button name="reduce_uom_quantity" type="object" invisible="1" style="font-size: 15px;" icon="fa-arrow-circle-down" string="Reduce Quantity -1" class="oe_edit_only" help="Reduce Quantity" attrs="{'column_invisible': [('parent.sale_order_type','!=', 'cash_memo')]}"/>
+
+<!--                    style="border-radius: 50%;font-size: 10px;background-color: #e7e7e7;"-->
+                </xpath>
+                 <xpath expr="//notebook" position="before">
+                        <h3 class="text-center">
+                            <field name="x_barcode_scan" placeholder="Barcode" attrs="{'invisible': [('sale_order_type', '!=', 'cash_memo')], 'readonly': [('state', '!=', 'draft')]}" />
+                        </h3>
+
+               </xpath>
+            </field>
+        </record>
+
+         <record id="sale_order_view_form_inherit_configure" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.sale.product.inherit.configurator</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//tree/field[@name='product_template_id']" position="attributes">
+                   <attribute name="attrs">{'readonly': ['|', ('parent.sale_order_type', '=', 'cash_memo'), ('product_updatable', '=', False)], 'required': [('display_type', '=', False)]}</attribute>
+               </xpath>
+        </field>
+    </record>
+
+
+    </data>
+</odoo>

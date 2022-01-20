@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_new_building" model="ir.ui.view">
+        <field name="name">sale.order.form.new.building</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="is_new_building" attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}" groups="new_building_vat.group_enable_newbuilding"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="New Building Documents" name="newbuilding_documents" attrs="{'invisible': [('is_new_building', '=', False)]}">
+                    <group>
+                        <group>
+                            <field name="cpr_attachment" attrs="{'required': [('is_new_building', '=', True)], 'readonly': [('state', '=', ['done', 'cancel'])]}"/>
+                            <field name="zero_rated_attachment" attrs="{'required': [('is_new_building', '=', True)], 'readonly': [('state', '=', ['done', 'cancel'])]}"/>
+                            <field name="building_permit_attachment" attrs="{'required': [('is_new_building', '=', True)], 'readonly': [('state', '=', ['done', 'cancel'])]}"/>
+                        </group>
+                        <group>
+                            <field name="deadtile_attachment" attrs="{'readonly': [('state', '=', ['done', 'cancel'])]}"/>
+                            <field name="mazaya_attachment" attrs="{'readonly': [('state', '=', ['done', 'cancel'])]}"/>
+                            <field name="other_attachment" attrs="{'readonly': [('state', '=', ['done', 'cancel'])]}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

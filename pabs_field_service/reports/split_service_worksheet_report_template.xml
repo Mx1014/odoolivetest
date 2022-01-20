@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="split_service_worksheet_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div style="font-size:25px">
+                            <center>
+                                <h1>
+                                    <span>Service Worksheet Report</span>
+                                </h1>
+                            </center>
+                        </div>
+
+                        <div style="float:left; padding-bottom:5mm">
+                            <table>
+                                <tr>
+                                    <td style="width:150px">
+                                        <strong style="">Customer Name:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.x_task_id.partner_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">Invoice Address:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-if="o.x_task_id.sale_order_id.partner_invoice_id.street_number">
+                                            <strong>H:</strong>
+                                            <span t-field="o.x_task_id.sale_order_id.partner_invoice_id.street_number"/>
+                                        </t>
+                                        <t t-if="o.x_task_id.sale_order_id.partner_invoice_id.x_flat">
+                                            <strong style="padding-left:2mm">F:</strong>
+                                            <span t-field="o.x_task_id.sale_order_id.partner_invoice_id.x_flat"/>
+                                        </t>
+                                        <t t-if="o.x_task_id.sale_order_id.partner_invoice_id.x_address_road">
+                                            <strong style="padding-left:2mm">, R:</strong>
+                                            <span t-field="o.x_task_id.sale_order_id.partner_invoice_id.x_address_road"/>
+                                        </t>
+                                        <t t-if="o.x_task_id.sale_order_id.partner_invoice_id.x_address_block">
+                                            <strong style="padding-left:2mm">, B:</strong>
+                                            <span t-field="o.x_task_id.sale_order_id.partner_invoice_id.x_address_block"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">Delivery Address:</strong>
+                                    </td>
+                                    <t t-if="o.x_task_id.partner_id.street_number">
+                                        <td>
+                                            <strong>H:</strong>
+                                            <span t-field="o.x_task_id.partner_id.street_number"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.x_task_id.partner_id.x_flat">
+                                        <td>
+                                            <strong style="; padding-left:2mm">F:</strong>
+                                            <span t-field="o.x_task_id.partner_id.x_task_id.partner_id.x_flat"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.x_task_id.partner_id.x_address_road">
+                                        <td>
+                                            <strong style="; padding-left:2mm">, R:</strong>
+                                            <span t-field="o.x_task_id.partner_id.x_address_road"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.x_task_id.partner_id.x_address_block">
+                                        <td>
+                                            <strong style="; padding-left:2mm">, B:</strong>
+                                            <span t-field="o.x_task_id.partner_id.x_address_block"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">Phone:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-if="o.x_task_id.partner_id.phone">
+                                            <span t-field="o.x_task_id.partner_id.phone"/>
+                                        </t>
+                                        <t t-if="o.x_task_id.partner_id.mobile">
+                                            /
+                                            <span t-field="o.x_task_id.partner_id.mobile"/>
+                                        </t>
+                                        <t t-if="o.x_task_id.partner_id.x_mobile">
+                                            /
+                                            <span t-field="o.x_task_id.partner_id.x_mobile"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">Customer TRN:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.x_task_id.partner_id.vat"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div style="float:right; padding-bottom:5mm">
+                            <table>
+                                <!--                                <tr>-->
+                                <!--                                    <td style="width:90px">-->
+                                <!--                                        <t t-if="o.state == 'confirmed'">-->
+                                <!--                                            <strong>Service Order:</strong>-->
+                                <!--                                        </t>-->
+                                <!--                                        <t t-if="o.state == 'draft'">-->
+                                <!--                                            <strong>Service Quote:</strong>-->
+                                <!--                                        </t>-->
+                                <!--                                    </td>-->
+                                <!--                                    <td>-->
+                                <!--                                        <span t-field="o.name"/>-->
+                                <!--                                    </td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td style="width:160px">-->
+                                <!--                                        <t t-if="o.state == 'confirmed'">-->
+                                <!--                                            <strong>Service Order Date:</strong>-->
+                                <!--                                        </t>-->
+                                <!--                                        <t t-if="o.state == 'draft'">-->
+                                <!--                                            <strong>Service Quote Date:</strong>-->
+                                <!--                                        </t>-->
+                                <!--                                    </td>-->
+                                <!--                                    <td>-->
+                                <!--                                        <span t-field="o.repair_date"/>-->
+                                <!--                                    </td>-->
+                                <!--                                </tr>-->
+                                <tr>
+                                    <td>
+                                        <strong style="">Supervisor:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.x_task_id.user_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Technician:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.x_technician_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Customer Code:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.x_task_id.partner_id.x_code"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <table style="border-style: solid; width: 100%;" class="table-sm o_main_table">
+                            <tr style="">
+                                <td style="width:300px">
+                                    <strong style="">Model/Product:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_product_id"/>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Brand Agent:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_product_brand.partner_id"/>
+                                </td>
+                                <td>
+                                    <strong style="">Brand Name:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_product_brand"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Warranty Status:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_warranty_state"/>
+                                </td>
+                                <td>
+                                    <strong style="">Warranty Expiry Date:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_warranty_expiry_date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Serial Number:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_product_serial"/>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Problem:</strong>
+                                </td>
+                                <td>
+                                    <!--                                    <span t-field="o.x_product.serial_no"/>-->
+                                </td>
+                                <td>
+                                    <strong style="">Solution:</strong>
+                                </td>
+                                <td>
+                                    <!--                                    <span t-field="o.x_product.serial_no"/>-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Diagnosis:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_diagnosis"/>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <table style="width:100%" class="table-sm o_main_table">
+                            <center>
+                                <strong>Estimate of Spare Parts and Labour Charge</strong>
+                            </center>
+                            <thead>
+                                <tr style="border-bottom: 1px solid black; border-top: 1px solid black">
+                                    <th>
+                                        <strong style="">SN</strong>
+                                    </th>
+                                    <th style=";width: 50%;">
+                                        <strong>
+                                            Parts
+                                        </strong>
+                                    </th>
+                                    <th>
+                                        <strong style="">QTY
+                                        </strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong style="">Unit Price
+                                        </strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong style="">
+                                            Gross
+                                        </strong>
+                                    </th>
+                                    <th>
+                                        <strong>
+                                            Disc
+                                        </strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong>Amount</strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong style="">
+                                            Tax%
+                                        </strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="count" t-value="1"></t>
+                                <t t-foreach="o.x_task_id.sale_order_id.order_line" t-as="line">
+                                    <t t-if="line.product_template_id.type in ['product', 'consu']">
+                                        <tr style="">
+                                            <td class="text-center">
+                                                <span>123</span>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.product_template_id"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="'{:,.1f}'.format(line.product_uom_qty)"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.3f}'.format(line.price_unit / (100 + line.tax_id.amount) * 100)"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.3f}'.format((line.price_unit / (100 + line.tax_id.amount) * 100) * line.product_uom_qty)"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="line.x_discount_amount"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.3f}'.format(((line.price_unit * line.product_uom_qty) / (100 + line.tax_id.amount) * 100) - line.x_discount_amount)"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="'{:,.0f}'.format(line.tax_id.amount)"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br></br>
+                        <table style="width:100%" class="table-sm o_main_table">
+                            <thead>
+                                <tr style="border-bottom: 1px solid black; border-top: 1px solid black">
+                                    <th>
+                                        <strong style="">SN</strong>
+                                    </th>
+                                    <th style=";width: 50%;">
+                                        <strong>
+                                            Labour Charge
+                                        </strong>
+                                    </th>
+                                    <th>
+                                        <strong style="">QTY
+                                        </strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong style="">Unit Price
+                                        </strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong style="">
+                                            Gross
+                                        </strong>
+                                    </th>
+                                    <th>
+                                        <strong>
+                                            Disc
+                                        </strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong>Amount</strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong style="">
+                                            Tax%
+                                        </strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="count" t-value="1"></t>
+                                <t t-foreach="o.x_task_id.sale_order_id.order_line" t-as="line">
+                                    <t t-if="line.product_template_id.type == 'service'">
+                                        <tr style="">
+                                            <td class="text-center">
+                                                <t t-esc="count"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.product_template_id"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="'{:,.1f}'.format(line.product_uom_qty)"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.3f}'.format(line.price_unit / (100 + line.tax_id.amount) * 100)"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.3f}'.format((line.price_unit / (100 + line.tax_id.amount) * 100) * line.product_uom_qty)"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="line.x_discount_amount"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.3f}'.format(((line.price_unit * line.product_uom_qty) / (100 + line.tax_id.amount) * 100) - line.x_discount_amount)"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="'{:,.0f}'.format(line.tax_id.amount)"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div class="clearfix">
+                            <div id="total" class="row">
+                                <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                    <table class="table-sm o_main_table"
+                                           style="float:right; margin-top:10mm">
+                                        <tr class="border-black o_subtotal" style="padding-right:10mm">
+                                            <td colspan="2">
+                                                <span>Subtotal</span>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="o.x_task_id.sale_order_id.amount_untaxed"/>
+                                            </td>
+                                        </tr>
+                                        <tr style="padding-right:10mm; border-bottom: 1px solid black">
+                                            <td colspan="2">
+                                                <span>Vat</span>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-esc="o.x_task_id.sale_order_id.amount_tax"/>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid black">
+                                            <td colspan="2">
+                                                <strong>Total Inclusive</strong>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.3f}'.format(o.x_task_id.sale_order_id.amount_total)"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h6>
+                                <strong>Terms and Condition:</strong>
+                            </h6>
+<!--                            <span t-field="o.internal_notes"/>-->
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

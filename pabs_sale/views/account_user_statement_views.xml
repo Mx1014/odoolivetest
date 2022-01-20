@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_user_statement_tree" model="ir.ui.view">
+        <field name="name">account.user.statement.tree</field>
+        <field name="model">account.user.statement</field>
+        <field name="arch" type="xml">
+            <tree string="Statements">
+                <field name="user_id"/>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="state"/>
+                <field name="start_at"/>
+                <field name="stop_at"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="balance_start" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="balance_end" widget="monetary" options="{'currency_field': 'currency_id'}" string="Closing Balance" sum="End"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="account_user_statement_view_form" model="ir.ui.view">
+        <field name="name">account.user.statement.form</field>
+        <field name="model">account.user.statement</field>
+        <field name="arch" type="xml">
+            <form string="Account User Statement" create="0">
+                <header>
+                    <button name="action_to_validate" string="To Validate" class="oe_highlight" type="object" states="open" />
+                    <button name="action_confirm" string="Validate" class="oe_highlight" type="object"  invisible="1" groups="sales_team.group_sale_manager"/> <!-- attrs="{'invisible': ['|', ('all_lines_reconciled', '=', False), ('state', '!=', 'to_validate')]}"-->
+                    <button name="view_journal_statement" string="Validate" type="object"  invisible="1" groups="sales_team.group_sale_manager"/> <!--attrs="{'invisible': ['|', ('all_lines_reconciled', '=', True),('state', '!=', 'to_validate')]}"-->
+                    <field name="state" widget="statusbar" statusbar_visible="open,to_validate,confirm"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                         <button name="action_view_quotation" class="oe_stat_button" icon="fa-list-alt" type="object">
+                            <field name="quote_count" widget="statinfo" string="Quotations"/>
+                        </button>
+                        <button name="action_view_order" class="oe_stat_button" icon="fa-list-alt" type="object">
+                            <field name="order_count" widget="statinfo" string="Orders"/>
+                        </button>
+                        <button name="action_view_invoice" class="oe_stat_button" icon="fa-pencil-square-o" type="object" context="{'default_type': 'out_invoice', 'default_user_statement_id': id}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                        </button>
+                        <button name="action_view_credit_note" class="oe_stat_button" icon="fa-pencil-square-o" type="object" context="{'default_type': 'out_refund', 'default_user_statement_id': id}">
+                            <field name="credit_note_count" widget="statinfo" string="Credit Note" />
+                        </button>
+                    </div>
+                    <div class="oe_title oe_inline">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="id" invisible="1"/>
+                            <field name="user_id" />
+                            <field name="bank_statement_id" groups="sales_team.group_sale_manager"/>
+                            <field name="all_lines_reconciled" invisible="1"/>
+                            <field name="date" options="{'datepicker': {'warn_future': true}}" invisible="1"/>
+                            <field name="start_at"/>
+                            <field name="stop_at"/>
+                            <field name='company_id' options="{'no_create': True}" groups="base.group_multi_company" invisible="1"/>
+                        </group>
+                        <group>
+                            <label for="balance_start"/>
+                            <div>
+                                <field class="oe_inline" name="balance_start"/>
+                            </div>
+                            <label for="balance_end"/>
+                            <div>
+                                <field class="oe_inline" name="balance_end"/>
+                            </div>
+                        </group>
+                    </group>
+
+<!--                    <notebook>-->
+<!--                        <page string="Transactions" name="statement_line_ids">-->
+<!--                            <field name="bank_statement_line_ids">-->
+<!--                                <tree editable="bottom" string="Statement lines" limit="500">-->
+<!--                                    <field name="sequence" widget="handle"/>-->
+<!--                                    <field name="journal_entry_ids" invisible="1"/>-->
+<!--                                    <field name="date" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>-->
+<!--                                    <field name="name" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>-->
+<!--                                    <field name="partner_id" domain="['|',('parent_id','=',False),('is_company','=',True)]"-->
+<!--                                        attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>-->
+<!--                                    <field name="journal_id" optional="hidden"/>-->
+<!--                                    <field name="ref" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }" groups="base.group_no_one"/>-->
+<!--                                    <field name="transaction_type" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }" optional="hidden"/>-->
+<!--                                    <field name="note" optional="hidden"/>-->
+<!--                                    <field name="amount" attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>-->
+<!--                                    <field name="journal_currency_id" invisible="1"/>-->
+<!--                                    <field name="amount_currency" invisible="1"/>-->
+<!--                                    <field name="currency_id" invisible="1" />-->
+<!--                                    <field name="bank_account_id" invisible="1" />-->
+<!--                                    <field name="account_number" optional="hidden"/>-->
+<!--                                </tree>-->
+<!--                            </field>-->
+<!--                        </page>-->
+<!--                    </notebook>-->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!--     <record id="account_user_statement_view_search" model="ir.ui.view">-->
+<!--        <field name="name">account.user.statement.search</field>-->
+<!--        <field name="model">account.user.statement</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <search>-->
+<!--              <field name="date"/>-->
+<!--            </search>-->
+<!--            <group expand="0" string="Group By">-->
+<!--              <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>-->
+<!--            </group>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <menuitem id="statement_config_main" name="User Statement" parent="pabs_sale.menu_sale_session" sequence="2"/>
+
+    <record id="action_account_user_statement" model="ir.actions.act_window">
+        <field name="name">All</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.user.statement</field>
+        <field name="view_mode">tree,graph,pivot,form</field>
+    </record>
+
+    <record id="action_account_user_statement_to_validate" model="ir.actions.act_window">
+        <field name="name">To Validate</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.user.statement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'to_validate')]</field>
+    </record>
+
+     <record id="action_account_user_statement_open" model="ir.actions.act_window">
+        <field name="name">Open</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.user.statement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'open')]</field>
+    </record>
+
+     <record id="action_account_user_statement_validate" model="ir.actions.act_window">
+        <field name="name">Validated</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.user.statement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'confirm')]</field>
+    </record>
+
+
+
+    <menuitem id="menu_account_user_statement"
+        action="pabs_sale.action_account_user_statement"
+        parent="pabs_sale.statement_config_main"
+        groups="sales_team.group_sale_manager"
+        sequence="6"/>
+
+     <menuitem id="menu_account_user_statement_open"
+        action="pabs_sale.action_account_user_statement_open"
+        parent="pabs_sale.statement_config_main"
+        groups="sales_team.group_sale_manager"
+        sequence="7"/>
+
+    <menuitem id="menu_account_user_statement_to_validate"
+        action="pabs_sale.action_account_user_statement_to_validate"
+        parent="pabs_sale.statement_config_main"
+        groups="sales_team.group_sale_manager"
+        sequence="8"/>
+
+     <menuitem id="menu_account_user_statement_validate"
+        action="pabs_sale.action_account_user_statement_validate"
+        parent="pabs_sale.statement_config_main"
+        groups="sales_team.group_sale_manager"
+        sequence="9"/>
+
+</odoo>

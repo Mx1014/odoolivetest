@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            string="Purchase Order"
+            id="purchase.action_report_purchase_order"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            name="purchase.report_purchaseorder"
+            file="purchase.report_purchaseorder"
+            paperformat="pap_purchase.paperformat_purchase_report"
+            print_report_name="
+                (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+    />
+    <report
+            string="Call for Tenders"
+            id="purchase_requisition.action_report_purchase_requisitions"
+            model="purchase.requisition"
+            report_type="qweb-pdf"
+            name="purchase_requisition.report_purchaserequisitions"
+            file="purchase_requisition.report.report_purchaserequisitions"
+            print_report_name="'Tender - %s' % (object.name)"
+            paperformat="pap_purchase.paperformat_purchase_agrement_report"
+    />
+</odoo>

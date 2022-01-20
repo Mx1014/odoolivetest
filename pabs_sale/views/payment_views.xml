@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_payment_register_custom_form" model="ir.ui.view">
+        <field name="name">account.payment.register.custom.form</field>
+        <field name="model">account.payment.register.custom</field>
+        <field name="arch" type="xml">
+            <form string="Register Payment">
+                <group id="group_journal_buttons">
+                </group>
+                <group string="Payment">
+                    <field name="line_ids" nolabel="1">
+                        <tree string="Payment Lines" editable="bottom" create="0">
+                            <field name="journal_id" widget="selection" force_save="1" optional="show"/>
+                            <field name="type" invisible="1"/>
+                            <field name="team_id" optional="hidden"/>
+                            <field name="cheque_date" attrs="{'readonly': ['|',('bank_type', '!=', 'cheque'),('type', '!=', 'bank')], 'required': [('bank_type', '=', 'cheque')]}"/>
+                            <field name="cheque_number" string="Cheque No." attrs="{'readonly': ['|',('bank_type', '!=', 'cheque'),('type', '!=', 'bank')], 'required': [('bank_type', '=', 'cheque')]}"/>
+                            <field name="bank_id" string="Bank Name" attrs="{'readonly': ['|',('bank_type', '!=', 'cheque'),('type', '!=', 'bank'), ('bank_type', '!=', False)], 'required': [('bank_type', '=', 'cheque')]}"/>
+                            <field name="account_number" string="Bank Account" attrs="{'readonly': ['|',('bank_type', '!=', 'cheque'),('type', '!=', 'bank'), ('bank_type', '!=', False)], 'required': [('bank_type', '=', 'cheque')]}"/>
+                            <field name="cheque_type" attrs="{'readonly': ['|',('bank_type', '!=', 'cheque'),('type', '!=', 'bank')]}" invisible="1"/>
+                            <field name="tid" string="TID Number" domain="[('id','in', domain_tid)]" attrs="{'readonly': ['|',('bank_type', '!=', 'card'), ('type', '!=', 'bank'), ('bank_type', '!=', False)], 'required': [('bank_type', '=', 'card')]}" options="{'no_create': True}"/>
+                            <field name="batch" attrs="{'readonly': ['|',('bank_type', '!=', 'card'), ('type', '!=', 'bank'), ('bank_type', '!=', False)], 'required': [('bank_type', '=', 'card')]}"/>
+                            <field name="auth" string="Auth Code" attrs="{'readonly': ['|',('bank_type', '!=', 'card'), ('type', '!=', 'bank')], 'required': [('bank_type', '=', 'card')]}"/>
+                            <field name="benefit_ref" string="BPay Ref" attrs="{'invisible': [('bank_type', '!=', 'online')]}"/>
+                            <field name="payment_date" invisible="1"/>
+                            <field name="payment_method_id" invisible="1" force_save="1"/>
+                            <field name="payment_methods" invisible="1"/>
+                            <field name="currency_id" invisible="1" force_save="1"/>
+                            <field name="bank_type" invisible="1"/>
+                            <field name="domain_tid" invisible="1" widget="many2many_tags"/>
+                            <field name="communication" invisible="1"/>
+                            <field name="invoice_ids" invisible="1"/>
+                            <field name="amount" sum="Paid Amount"/>
+                        </tree>
+                    </field>
+                </group>
+                <div class="float-right">
+                    <group>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="amount"/>
+                        <field name="due_amount"/>
+                        <field name="change" string="Change to be given"/>
+                    </group>
+                </div>
+                <div class="float-left">
+                     <group name="payment_difference" attrs="{'invisible': [('payment_difference', '=', 0.0)]}" groups="account.group_account_user">
+                                <label for="payment_difference"/>
+                                <div>
+                                    <field name="payment_difference"/>
+                                    <field name="payment_difference_handling" widget="radio" nolabel="1"/>
+                                    <div attrs="{'invisible': [('payment_difference_handling','=','open')]}">
+                                        <label for="writeoff_account_id" class="oe_edit_only" string="Post Difference In"/>
+                                        <field name="writeoff_account_id" options="{'no_create': True}" string="Post Difference In" attrs="{'required': [('payment_difference_handling', '=', 'reconcile')]}"/>
+                                        <label for="writeoff_label" class="oe_edit_only" string="Label"/>
+                                        <field name="writeoff_label" attrs="{'required': [('payment_difference_handling', '=', 'reconcile')]}"/>
+                                    </div>
+                                </div>
+                            </group>
+                </div>
+                <footer>
+                    <button string="Create Payment" name="create_payments" type="object" class="oe_highlight"/>
+                    <button name="cancel_payments" string="Cancel" class="btn btn-secondary" type="object"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+     <record model="ir.ui.view" id="account_payment_view_list_inherits">
+      <field name="name">payment_view_list_inherits</field>
+      <field name="model">account.payment</field>
+      <field name="inherit_id" ref="account.view_account_payment_tree"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='partner_id']" position="after">
+            <field name="cheque_number"/>
+            <field name="cheque_date"/>
+            <field name="bank_id"/>
+            <field name="x_cheque_type"/>
+            <field name="communication"/>
+        </xpath>
+          <xpath expr="//field[@name='payment_method_id']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+      </field>
+    </record>
+
+    <record id="view_account_payment_form_inherit_pabs_sale" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.pabs.sale</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='right_column']" position="after">
+                <group name="cheque_bank_details">
+                    <field name="cheque_date"/>
+                    <field name="cheque_number"/>
+                    <field name="bank_id"/>
+                    <field name="account_number"/>
+                    <field name="x_cheque_type"/>
+                    <field name="batch_payment_id" invisible="1"/>
+                    <field name="x_is_check_return" invisible="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="after">
+                <widget name="web_ribbon"  bg_color="bg-danger" text="Cheque Returned" attrs="{'invisible': ['|', ('batch_payment_id','!=', False), ('x_is_check_return', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

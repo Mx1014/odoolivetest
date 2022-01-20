@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rejoin_popup_wizard_view_form" model="ir.ui.view">
+        <field name="name">rejoin.popup.popup.wizard.form</field>
+        <field name="model">rejoin.popup</field>
+        <field name="arch" type="xml">
+            <form string="Rejoin">
+                <group>
+                    <h4>Please Add Rejoin Date</h4>
+                    <field name="rejoin_date"/>
+                    <h4>Please Choose Timeoff Type if The Employee Has Been Late</h4>
+                    <field name="x_holiday_status_id"></field>
+                </group>
+                <footer>
+                    <button string="Done" name="action_validate" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

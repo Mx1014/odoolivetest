@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_settlement_view_form" model="ir.ui.view">
+        <field name="name">hr.settlement.form</field>
+        <field name="model">hr.settlement</field>
+        <field name="arch" type="xml">
+            <form string="settlement Loan">
+                <header>
+                    <button name="action_validate"
+                            attrs="{'invisible': [('state', '!=', 'final_review')]}"
+                            string="Validate"
+                            type="object"/>
+                    <button name="action_review_loans"
+                            attrs="{'invisible': ['|', ('state', '!=', 'review_loans'), ('x_related_is_settelment', '=', False)]}"
+                            string="Review Loans"
+                            type="object"/>
+                    <button name="action_create_slip"
+                            attrs="{'invisible': ['|', ('state', '!=', 'final_slip'), ('x_related_is_encashment', '=', True)]}"
+                            string="Create Final Slip"
+                            type="object"/>
+                    <!--                    <button name="action_final_review"-->
+                    <!--                            attrs="{'invisible': [('state', '!=', 'final_review')]}"-->
+                    <!--                            string="Final Review"-->
+                    <!--                            type="object"/>-->
+                    <button name="generate_indemnity"
+                            string="Compute Sheet"
+                            type="object"
+                            attrs="{'invisible': ['|', '|', '|', '|', ('indemnity_generate', '=', True), ('id', '=', False),
+                            ('x_related_is_settelment', '=', False), ('state', '!=', 'draft'), ('nationality', '=', 23)]}"/>
+                    <button name="compute_sheet"
+                            string="Compute Sheet"
+                            type="object"
+                            attrs="{'invisible': ['|', '|', '|', '|', ('id', '=', False) ,
+                            ('x_related_is_settelment', '=', False), ('state', '!=', 'draft'), ('nationality', '!=', 23)]}"/>
+                    <button name="compute_sheet_encashment"
+                            string="Compute Sheet"
+                            type="object"
+                            attrs="{'invisible': ['|', '|', '|', ('id', '=', False) , ('state', '!=', 'draft'),
+                            ('x_related_is_encashment', '=', False)]}"/>
+                    <!--                              attrs="{'invisible': ['|', ('nationality', '=', 23)]}"-->
+                    <!--                    <button name="action_reset_to_draft"-->
+                    <!--                            attrs="{'invisible': [('state', '=', 'draft')]}" string="Reset To Draft"-->
+                    <!--                            type="object"/>-->
+                    <button name="action_print_report_encashment"
+                            attrs="{'invisible': ['|', ('state', '!=', 'final_review'), ('x_related_is_encashment', '=', False)]}"
+                            string="Print Report"
+                            type="object"/>
+                    <button name="action_print_report_settlement"
+                            attrs="{'invisible': ['|', ('state', '!=', 'final_review'), ('x_related_is_settelment', '=', False)]}"
+                            string="Print Report"
+                            type="object"/>
+                    <button name="action_vacation_payment"
+                            attrs="{'invisible': ['|', '|', '|', ('id', '=', False) , ('state', '!=', 'draft'),
+                            ('x_related_is_vacation_payment', '=', False)]}"
+                            string="Compute Sheet"
+                            type="object"/>
+                    <button name="action_vacation_payment_approve"
+                            attrs="{'invisible': ['|', '|', '|', ('id', '=', False) , ('state', '!=', 'approved'),
+                            ('x_related_is_vacation_payment', '=', False)]}"
+                            string="Approve"
+                            type="object"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,validated,final_review"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_accounting_entry" type="object" class="oe_stat_button"
+                                icon="fa-bars" attrs="{'invisible': [('x_related_is_encashment', '=', False)]}">
+                            <field name="x_journal_count" string="Entry" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_vacation_payment_settelment" type="object" class="oe_stat_button"
+                                icon="fa-filter" attrs="{'invisible': [('x_related_is_settelment', '=', False)]}">
+                            <field name="x_vacation_payment_count" string="Entry" widget="statinfo"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title" name="title">
+                        <label for="name" string="Description"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Employee Details">
+                            <field name="employee_name" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="cpr"/>
+                            <field name="department"/>
+                            <field name="nationality"/>
+                            <field name="employee_code" invisible="1"/>
+                            <field name="x_related_is_settelment" invisible="1"/>
+                            <field name="x_related_is_encashment" invisible="1"/>
+                            <field name="x_related_is_vacation_payment" invisible="1"/>
+                            <field name="x_loan_and_credit_amount" invisible="0"/>
+                            <!--                            <field name="type_of_settlement"/>-->
+                            <field name="x_working_days" invisible="0"/>
+                            <field name="x_notice_period"
+                                   attrs="{'required': [('x_related_is_settelment', '=', True)]}"/>
+                            <field name="resignation_date"
+                                   attrs="{'invisible': [('x_related_is_settelment', '=', False)], 'required': [('x_related_is_settelment', '=', True)]}"/>
+                            <field name="x_name"/>
+                            <field name="x_count_days" invisible="1"/>
+                            <field name="x_deduction_amount" invisible="1"/>
+                            <field name="x_total_vacation" invisible="1"/>
+                            <field name="x_total_input" invisible="1"/>
+                            <field name="x_total_indeminty" invisible="1"/>
+                            <field name="x_total_deduction" invisible="1"/>
+                            <field name="x_total_encashment" invisible="1"/>
+                        </group>
+                        <!--                        <group string="Accounting">-->
+                        <!--&lt;!&ndash;                            <field name="journal_id"/>&ndash;&gt;-->
+                        <!--                            <field name="settlement_type" required="1" options='{"no_open": True}'/>-->
+                        <!--                            <field name="x_move_id" invisle/>-->
+                        <!--                            <field name="date"/>-->
+                        <!--                            <field name="passport_no" invisible="1"/>-->
+                        <!--                            <field name="currency_id" invisible="1"/>-->
+                        <!--                            <field name="company_id" invisible="1"/>-->
+                        <!--                        </group>-->
+                        <group string="Contract Details">
+                            <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="join_date"/>
+                            <field name="verification_leaving_date"
+                                   attrs="{'invisible': [('x_related_is_settelment', '=', False)], 'required': [('x_related_is_settelment', '=', True)]}"/>
+                            <field name="x_salary_per_day"/>
+                            <field name="basic_salary"/>
+                            <field name="x_employee_contract"/>
+                            <field name="settlement_type" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                   options="{'no_open': True, 'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}"/>
+                            <field name="x_move_id" invisible="1"/>
+                            <field name="passport_no" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <!--                        <page string="Worked Days" name="work_days"-->
+                        <!--                              attrs="{'invisible': [('x_related_is_settelment', '=', False)]}">-->
+                        <!--                            <group>-->
+                        <!--                                <field name="x_employee_leaves" nolabel="1" readonly="1">-->
+                        <!--                                    <form>-->
+                        <!--                                        <group>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field name="x_set_id" invisible="1"/>-->
+                        <!--                                                <field name="settlement_annual_leave" readonly="1"/>-->
+                        <!--                                                <field name="settlement_overtime_leave" readonly="1"/>-->
+                        <!--                                                <field name="x_annual_id" readonly="1"/>-->
+                        <!--                                                <field name="x_overtime_id" readonly="1"/>-->
+                        <!--                                            </group>-->
+                        <!--                                        </group>-->
+                        <!--                                    </form>-->
+                        <!--                                    <tree>-->
+                        <!--                                        <field name="x_set_id" invisible="1"/>-->
+                        <!--                                        <field name="settlement_annual_leave"/>-->
+                        <!--                                        <field name="settlement_overtime_leave"/>-->
+                        <!--                                        <field name="x_annual_id"/>-->
+                        <!--                                        <field name="x_overtime_id"/>-->
+                        <!--                                    </tree>-->
+
+
+                        <!--                                </field>-->
+                        <!--                                &lt;!&ndash;                                    <field name="x_annual_id"/>&ndash;&gt;-->
+                        <!--                                &lt;!&ndash;                                    <field name="x_overtime_id"/>&ndash;&gt;-->
+                        <!--                                &lt;!&ndash;                                    <field name="duration_of_work"/>&ndash;&gt;-->
+                        <!--                                &lt;!&ndash;                                    <field name="total_duration_days"/>&ndash;&gt;-->
+                        <!--                                &lt;!&ndash;                                    <field name="due_days"/>&ndash;&gt;-->
+                        <!--                            </group>-->
+                        <!--                            <field name="x_deduction_days" nolabel="1" readonly="1">-->
+                        <!--                                <form>-->
+                        <!--                                    <group>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="x_id" invisible="1"/>-->
+                        <!--                                            <field name="difference_days" readonly="1"/>-->
+                        <!--                                            <field name="deduction_amount" readonly="1"/>-->
+                        <!--                                        </group>-->
+                        <!--                                    </group>-->
+                        <!--                                </form>-->
+                        <!--                                <tree>-->
+                        <!--                                    <field name="x_id" invisible="1"/>-->
+                        <!--                                    <field name="difference_days"/>-->
+                        <!--                                    <field name="deduction_amount"/>-->
+                        <!--                                </tree>-->
+                        <!--                            </field>-->
+                        <!--                        </page>-->
+                        <page string="Computation"
+                              name="computation"
+                              attrs="{'invisible': [('x_related_is_settelment', '=', False)]}">
+                            <group>
+                                <group>
+                                    <field name="x_employee_slips" readonly="1" force_save="1"/>
+                                    <field name="verification_leaving_reason"/>
+                                    <field name="x_employee_status"/>
+                                    <field name="rejoin_date" attrs="{'invisible': [('nationality', '=', 23)]}"/>
+                                    <field name="duration_of_work"/>
+                                </group>
+                                <group string="Ticket Details"
+                                       attrs="{'invisible': ['|', ('nationality', '=', 23), ('x_related_is_settelment', '=', False)]}">
+                                    <field name="ticket_price"/>
+                                    <field name="ticket_covered_price"/>
+                                    <field name="air_line"/>
+                                    <field name="ticket_number"/>
+                                </group>
+                                <group string="Visa Details"
+                                       attrs="{'invisible': ['|', ('nationality', '=', 23), ('x_related_is_settelment', '=', False)]}">
+                                    <!--                                    <field name="x_pay"/>-->
+                                    <field name="x_visa_issue_date"/>
+                                    <field name="x_visa_expiry_date"/>
+                                    <field name="indemnity_generate" invisible="1"/>
+                                </group>
+                            </group>
+                            <group string="Leaves Taken" invisible="1">
+                                <field name="x_employee_leaves" nolabel="1" readonly="1" style="width: 1110px">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="x_set_id" invisible="1"/>
+                                                <field name="settlement_annual_leave" readonly="1"/>
+                                                <field name="settlement_overtime_leave" readonly="1"/>
+                                                <field name="x_annual_id" readonly="1"/>
+                                                <field name="x_overtime_id" readonly="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="x_set_id" invisible="1"/>
+                                        <field name="settlement_annual_leave"/>
+                                        <field name="settlement_overtime_leave"/>
+                                        <field name="x_annual_id"/>
+                                        <field name="x_overtime_id"/>
+                                    </tree>
+                                </field>
+                                <!--                                    <field name="x_annual_id"/>-->
+                                <!--                                    <field name="x_overtime_id"/>-->
+                                <!--                                    <field name="duration_of_work"/>-->
+                                <!--                                    <field name="total_duration_days"/>-->
+                                <!--                                    <field name="due_days"/>-->
+                            </group>
+                            <group string="Resignation Penalty">
+                                <field name="x_deduction_days" nolabel="1" readonly="1" style="width: 1110px">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="x_id" invisible="1"/>
+                                                <field name="difference_days" readonly="1"/>
+                                                <field name="deduction_amount" readonly="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="x_id" invisible="1"/>
+                                        <field name="difference_days"/>
+                                        <field name="deduction_amount"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Indemnity"
+                                   attrs="{'invisible': ['|', ('x_related_is_settelment', '=', False), ('nationality', '=', 23)]}">
+                                <field name="indemnity_ids" nolabel="1" readonly="1" style="width: 1110px">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="indemnity_id" readonly="1"/>
+                                                <field name="x_period" readonly="1"/>
+                                                <field name="x_date_of_join" readonly="1"/>
+                                                <field name="x_date_to" readonly="1"/>
+                                                <field name="x_total_working_days" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="x_unpaid_leave" readonly="1"/>
+                                                <field name="x_final_working_days" readonly="1"/>
+                                                <field name="x_indemnity_balance" readonly="1"/>
+                                                <field name="x_indemnity_amount" readonly="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="indemnity_id" invisible="1"/>
+                                        <field name="x_period"/>
+                                        <field name="x_date_of_join"/>
+                                        <field name="x_date_to"/>
+                                        <field name="x_total_working_days"/>
+                                        <field name="x_unpaid_leave"/>
+                                        <field name="x_final_working_days" sum="working_days"/>
+                                        <field name="x_indemnity_balance" sum="balance"/>
+                                        <field name="x_indemnity_amount" sum="amount"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <!--                            <group string="Other Inputs">-->
+                            <!--                                <field name="x_input_line" nolabel="1" readonly="0">-->
+                            <!--                                    <form>-->
+                            <!--                                        <field name="x_settlement_id" invisible="1"/>-->
+                            <!--                                        <field name="x_input_type_id"/>-->
+                            <!--                                        <field name="x_amount"/>-->
+                            <!--                                    </form>-->
+                            <!--                                    <tree editable="bottom">-->
+                            <!--                                        <field name="x_settlement_id" invisible="1"/>-->
+                            <!--                                        <field name="x_input_type_id"/>-->
+                            <!--                                        <field name="x_amount"/>-->
+                            <!--                                    </tree>-->
+                            <!--                                </field>-->
+                            <!--                            </group>-->
+                            <group string="Vacation Payment">
+                                <field name="x_vacation_payments" nolabel="1" readonly="1" style="width: 1110px">
+                                    <form>
+                                        <field name="x_sett_id" invisible="1"/>
+                                        <field name="x_leave_type"/>
+                                        <field name="x_total_leaves_taken"/>
+                                        <field name="x_leaves_taken"/>
+                                        <field name="x_leave"/>
+                                        <field name="x_total"/>
+                                        <!--                                        <field name="x_due_days"/>-->
+                                        <!--                                        <field name="x_vacation_payment"/>-->
+                                        <!--                                        <field name="x_grand_total"/>-->
+                                    </form>
+                                    <tree editable="bottom">
+                                        <!--                                        <field name="x_sett_id" invisible="1"/>-->
+                                        <!--                                        <field name="x_due_days"/>-->
+                                        <!--                                        <field name="x_vacation_payment"/>-->
+                                        <!--                                        <field name="x_grand_total"/>-->
+                                        <field name="x_sett_id" invisible="1"/>
+                                        <field name="x_leave_type"/>
+                                        <field name="x_total_leaves_taken"/>
+                                        <field name="x_leaves_taken"/>
+                                        <field name="x_leave"/>
+                                        <field name="x_total"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Provisions" name="provisions"
+                              attrs="{'invisible': [('x_related_is_settelment', '=', False)]}" invisible="1">
+                            <field name="x_anual_proviosn" nolabel="1" readonly="1">
+                                <form>
+                                    <field name="x_id" invisible="1"/>
+                                    <field name="anual_amount"/>
+                                    <field name="anual_provision_amount"/>
+                                    <field name="total"/>
+                                </form>
+                                <tree editable="bottom">
+                                    <field name="x_id" invisible="1"/>
+                                    <field name="anual_amount"/>
+                                    <field name="anual_provision_amount"/>
+                                    <field name="total"/>
+
+                                </tree>
+                            </field>
+                            <field name="x_indemnity_proviosn" nolabel="1" readonly="1">
+                                <form>
+                                    <field name="x_id" invisible="1"/>
+                                    <field name="indemnity_amount"/>
+                                    <field name="indemnity_provision_amount"/>
+                                    <field name="total"/>
+                                </form>
+                                <tree editable="bottom">
+                                    <field name="x_id" invisible="1"/>
+                                    <field name="indemnity_amount"/>
+                                    <field name="indemnity_provision_amount"/>
+                                    <field name="total"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <!--                        <page string="Ticket Details/Visa Details" name="ticket_details"-->
+                        <!--                              attrs="{'invisible': ['|', ('nationality', '=', 23), ('x_related_is_settelment', '=', False)]}">-->
+                        <!--                            <group>-->
+                        <!--                                <group>-->
+                        <!--                                    <field name="ticket_price"/>-->
+                        <!--                                    <field name="air_line"/>-->
+                        <!--                                    <field name="ticket_number"/>-->
+                        <!--                                </group>-->
+                        <!--                                <group>-->
+                        <!--                                    &lt;!&ndash;                                    <field name="x_pay"/>&ndash;&gt;-->
+                        <!--                                    <field name="x_visa_issue_date"/>-->
+                        <!--                                    <field name="x_visa_expiry_date"/>-->
+                        <!--                                    <field name="indemnity_generate" invisible="1"/>-->
+                        <!--                                </group>-->
+                        <!--                            </group>-->
+                        <!--                        </page>-->
+                        <!--                        <page string="Indemnity" name="indemnity"-->
+                        <!--                              attrs="{'invisible': ['|', ('x_related_is_settelment', '=', False), ('nationality', '=', 23)]}">-->
+                        <!--                            <group>-->
+                        <!--                                <field name="indemnity_ids" nolabel="1" readonly="1">-->
+                        <!--                                    <form>-->
+                        <!--                                        <group>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field name="indemnity_id" readonly="1"/>-->
+                        <!--                                                <field name="x_period" readonly="1"/>-->
+                        <!--                                                <field name="x_date_of_join" readonly="1"/>-->
+                        <!--                                                <field name="x_total_working_days" readonly="1"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field name="x_unpaid_leave" readonly="1"/>-->
+                        <!--                                                <field name="x_final_working_days" readonly="1"/>-->
+                        <!--                                                <field name="x_indemnity_balance" readonly="1"/>-->
+                        <!--                                                <field name="x_indemnity_amount" readonly="1"/>-->
+                        <!--                                            </group>-->
+                        <!--                                        </group>-->
+                        <!--                                    </form>-->
+                        <!--                                    <tree>-->
+                        <!--                                        <field name="indemnity_id" invisible="1"/>-->
+                        <!--                                        <field name="x_period"/>-->
+                        <!--                                        <field name="x_date_of_join"/>-->
+                        <!--                                        <field name="x_total_working_days"/>-->
+                        <!--                                        <field name="x_unpaid_leave"/>-->
+                        <!--                                        <field name="x_final_working_days"/>-->
+                        <!--                                        <field name="x_indemnity_balance" sum="balance"/>-->
+                        <!--                                        <field name="x_indemnity_amount" sum="amount"/>-->
+                        <!--                                    </tree>-->
+                        <!--                                </field>-->
+                        <!--                            </group>-->
+                        <!--                        </page>-->
+                        <page string="Encashment" name="encashment"
+                              attrs="{'invisible': [('x_related_is_encashment', '=', False)]}">
+                            <group string="Encashment Payment" no_label="1">
+                                <field name="x_encashment_leaves" nolabel="1" editable="bottom" style="width: 1110px">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="x_leave_type"
+                                                       domain="[('x_filter_leave_type','=',True)]"
+                                                       options="{'no_open': True, 'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}"/>
+                                                <field name="x_current_balance"/>
+                                                <field name="x_id" readonly="1" invisible="1"/>
+                                                <!--<field name="x_annual_leave" readonly="1"/>-->
+                                                <!--                                                <field name="x_overtime_leave" readonly="1"/>-->
+                                                <!--                                                <field name="x_requested_annual_leave" readonly="0"/>-->
+                                                <!--                                                <field name="x_requested_overtime_leave" readonly="0"/>-->
+                                            </group>
+                                            <group>
+                                                <field name="x_requested_days"/>
+                                                <field name="x_remaining_balance"/>
+
+
+                                                <!--                                                <field name="x_annual_id" readonly="1"/>-->
+                                                <!--                                                <field name="x_overtime_id" readonly="1"/>-->
+                                                <!--                                                <field name="annual_amount" readonly="1"/>-->
+                                                <!--                                                                                                <field name="overtime_amount" readonly="1"/>-->
+                                                <!--                                                <field name="total_amount" readonly="1"/>-->
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="x_leave_type"
+                                               domain="[('x_filter_leave_type','=',True)]"
+                                               options="{'no_open': True, 'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}"/>
+                                        <field name="x_current_balance"/>
+                                        <field name="x_requested_days"/>
+                                        <field name="x_remaining_balance" force_save="1"/>
+                                        <field name="total_amount" force_save="1" sum="total"/>
+                                        <field name="x_id" invisible="1"/>
+                                        <!--                                        <field name="x_annual_leave"/>-->
+                                        <!--                                        <field name="x_overtime_leave"/>-->
+                                        <!--                                        <field name="x_requested_annual_leave"/>-->
+                                        <!--                                        <field name="x_requested_overtime_leave"/>-->
+                                        <field name="x_annual_id" invisible="1"/>
+                                        <field name="x_overtime_id" invisible="1"/>
+                                        <!--                                        <field name="annual_amount"/>-->
+                                        <!--                                        <field name="overtime_amount"/>-->
+                                        <!--                                        <field name="total_amount"/>-->
+                                    </tree>
+                                </field>
+                                <!--                                <group string="Available Leaves">-->
+                                <!--                                    <label for="x_annual_leave"/>-->
+                                <!--                                    <div class="o_row" name="x_annual_leave">-->
+                                <!--                                        <field name="x_annual_leave" readonly="1" force_save="1"/>-->
+                                <!--                                        <span>/ Day</span>-->
+                                <!--                                    </div>-->
+                                <!--                                    <label for="x_overtime_leave"/>-->
+                                <!--                                    <div class="o_row" name="x_overtime_leave">-->
+                                <!--                                        <field name="x_overtime_leave" readonly="1" force_save="1"/>-->
+                                <!--                                        <span>/ Day</span>-->
+                                <!--                                    </div>-->
+                                <!--                                </group>-->
+                                <!--                                <group string="Requested Leaves">-->
+                                <!--                                    <label for="x_requested_annual_leave"/>-->
+                                <!--                                    <div class="o_row" name="x_requested_annual_leave">-->
+                                <!--                                        <field name="x_requested_annual_leave"-->
+                                <!--                                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
+                                <!--                                        <span>/ Day</span>-->
+                                <!--                                    </div>-->
+                                <!--                                    <label for="x_requested_overtime_leave"/>-->
+                                <!--                                    <div class="o_row" name="x_requested_overtime_leave">-->
+                                <!--                                        <field name="x_requested_overtime_leave"-->
+                                <!--                                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
+                                <!--                                        <span>/ Day</span>-->
+                                <!--                                    </div>-->
+
+                                <!--                                </group>-->
+                                <!--                                <group string="Leave Refrence">-->
+                                <!--                                    <field name="x_annual_id"/>-->
+                                <!--                                    <field name="x_overtime_id"/>-->
+                                <!--                                </group>-->
+                            </group>
+                        </page>
+                        <page string="Vacation Payment" name="vacation_payment"
+                              attrs="{'invisible': [('x_related_is_vacation_payment', '=', False)]}">
+                            <group string="Ticket Details"
+                                   attrs="{'invisible': [('nationality', '=', 23)]}">
+                                <group>
+                                    <field name="ticket_price"/>
+                                    <field name="ticket_covered_price"/>
+                                    <field name="air_line"/>
+                                </group>
+                                <group>
+                                    <field name="ticket_number"/>
+                                    <field name="x_traveling_date"/>
+                                    <field name="x_rejoining_date"/>
+                                </group>
+                            </group>
+                            <group string="Encashment Vacation Payment" no_label="1">
+                                <field name="vacation_payment_line" nolabel="1" editable="bottom"
+                                       style="width: 1110px" attrs="{'readonly': [('state', '!=', 'approved')]}">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="x_leave_type"
+                                                       domain="[('x_filter_leave_type','=',True)]"
+                                                       options="{'no_open': True, 'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}"/>
+                                                <field name="x_current_balance"/>
+                                                <field name="x_id" readonly="1" invisible="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="x_requested_days" readonly="1"/>
+                                                <field name="x_remaining_balance"/>
+                                            </group>
+                                            <group>
+                                                <field name="x_date_from"/>
+                                                <field name="x_date_to"/>
+                                                <field name="x_unpaid_days" readonly="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="x_leave_type"
+                                               domain="[('x_filter_leave_type','=',True)]"
+                                               options="{'no_open': True, 'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}"/>
+                                        <field name="x_current_balance"/>
+                                        <field name="x_requested_days"/>
+                                        <field name="x_date_from"/>
+                                        <field name="x_date_to"/>
+                                        <field name="x_unpaid_days"/>
+                                        <field name="x_remaining_balance" force_save="1"/>
+                                        <field name="total_amount" force_save="1" sum="total"/>
+                                        <field name="x_id" invisible="1"/>
+                                        <field name="x_annual_id" invisible="1"/>
+                                        <field name="x_overtime_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Indemnity Vacation Payment" no_label="1">
+                                <field name="indemnity_vacation_payment_line" nolabel="1" readonly="1"
+                                       style="width: 1110px">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="indemnity_id" readonly="1"/>
+                                                <field name="x_period" readonly="1"/>
+                                                <field name="x_date_of_join" readonly="1"/>
+                                                <field name="x_date_to" readonly="1"/>
+                                                <field name="x_total_working_days" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="x_unpaid_leave" readonly="1"/>
+                                                <field name="x_final_working_days" readonly="1"/>
+                                                <field name="x_indemnity_balance" readonly="1"/>
+                                                <field name="x_indemnity_amount" readonly="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="indemnity_id" invisible="1"/>
+                                        <field name="x_period"/>
+                                        <field name="x_date_of_join"/>
+                                        <field name="x_date_to"/>
+                                        <field name="x_total_working_days"/>
+                                        <field name="x_unpaid_leave"/>
+                                        <field name="x_final_working_days" sum="working_days"/>
+                                        <field name="x_indemnity_balance" sum="balance"/>
+                                        <field name="x_indemnity_amount" sum="amount"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <field name="x_applied_amount" attrs="{'readonly': [('state', '!=', 'approved')]}"/>
+                                    <field name="x_deduct_amount" attrs="{'readonly': [('state', '!=', 'approved')]}"/>
+                                    <field name="note"/>
+                                    <field name="x_employee_slips" readonly="1" force_save="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="settlement_total">
+                        <field name="net_salary" widget='monetary'
+                               attrs="{'invisible': [('x_related_is_encashment', '=', True)]}"/>
+                        <field name="total_amount" widget='monetary'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_settlement_view_tree" model="ir.ui.view">
+        <field name="name">hr.settlement.tree</field>
+        <field name="model">hr.settlement</field>
+        <field name="arch" type="xml">
+            <tree string="employee tree">
+                <field name="x_name"/>
+                <field name="employee_name"/>
+                <field name="settlement_type"/>
+                <field name="resignation_date"/>
+                <field name="verification_leaving_date"/>
+                <field name="verification_leaving_reason"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_settlement_view_search" model="ir.ui.view">
+        <field name="name">hr.settlement.search</field>
+        <field name="model">hr.settlement</field>
+        <field name="arch" type="xml">
+            <search string="Search Loan">
+                <field name="employee_code"/>
+                <field name="cpr"/>
+                <field name="employee_name"/>
+                <field name="x_name"/>
+
+                <filter string="Draft" name="state" domain="[('state','=','draft')]"/>
+                <filter string="Validated" name="state" domain="[('state','=','validated')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Employee" name='group_by_employee' domain="[]"
+                            context="{'group_by':'employee_name'}"/>
+                    <filter string="State" name='group_by_state' domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Settlement Type" name='group_by_settlement_type' domain="[]"
+                            context="{'group_by': 'settlement_type'}"/>
+                    <filter string="Resignation Date" name='group_by_resignation_datee' domain="[]"
+                            context="{'group_by': 'resignation_date'}"/>
+                    <filter string="Department" name='group_by_department' domain="[]"
+                            context="{'group_by': 'department'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hr_settlement" model="ir.actions.act_window">
+        <field name="name">Settlement</field>
+        <field name="res_model">hr.settlement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('employee_name', '!=', False)]</field>
+    </record>
+
+    <menuitem id="hr_menu_settlement"
+              name="Settlement"
+              action="action_hr_settlement"
+              parent="hr.menu_hr_root"
+              sequence="7"
+              groups="base.group_user"/>
+</odoo>

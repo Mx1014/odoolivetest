@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_task_form2_inherit_pabs_repair" model="ir.ui.view">
+            <field name="name">view.task.form2.inherit.pabs.repair</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <field name="stage_id" position="after">
+                    <field name="x_repair_id" invisible="1"/>
+                </field>
+                <field name="partner_id" position="after">
+                    <field name="x_date_start"/>
+                    <field name="x_technician"/>
+                </field>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_repair_form_view" class="oe_stat_button" icon="fa-wrench"
+                            type="object" attrs="{'invisible': [('x_repair_id', '=', False)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Repair</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_task_form2_inherited_pabs_repair" model="ir.ui.view">
+            <field name="name">view.task.form2.inherited.pabs.repair</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='timesheet_ids']" position="attributes">
+                    context="{'default_project_id': project_id, 'default_name':''}">
+                    <attribute name="context">{'default_project_id': project_id, 'default_name':'', 'default_repair_id':
+                        x_repair_id}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='timesheet_ids']/tree/field[@name='date']" position="before">
+                    <field name="repair_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_reschedule_task_form" model="ir.ui.view">
+            <field name="name">view.reschedule.task.form</field>
+            <field name="model">task.reschedule</field>
+            <field name="arch" type="xml">
+                <form>
+                    <h2>Mark Task As Done Or Reschedule It.</h2>
+                    <field name="name" invisible="1"/>
+                    <footer>
+                        <button name="done_task" string="Done" class="btn-primary" type="object"/>
+                        <button name="reschedule_task" string="Reschedule" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="project_task_view_list_fsm_inherit_repair" model="ir.ui.view">
+        <field name="name">project.task.view.list.fsm.inherit.pabs.repair</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_list_fsm"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="before">
+                <field name="x_technician"/>
+            </field>
+        </field>
+        </record>
+        <record id="view_repair_order_tree_inherit" model="ir.ui.view">
+            <field name="name">repair.tree.inherit</field>
+            <field name="model">repair.order</field>
+            <field name="inherit_id" ref="repair.view_repair_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="before">
+                    <field name="technician"/>
+                </field>
+
+                <field name="name" position="before">
+                    <field name="currency_id" invisible="1"/>
+                </field>
+                <field name="product_qty" position="replace"/>
+                <field name="company_id" position="after">
+                    <field name="product_qty" optional="show" string="Quantity"/>
+                    <field name="amount_total" optional="show" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

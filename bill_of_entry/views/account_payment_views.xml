@@ -1,0 +1,21 @@
+<odoo>
+  <data>
+
+         <record model="ir.ui.view" id="bill_of_entry.view_account_payment_invoice_form_inherit_entry">
+           <field name="name">view.account.payment.invoice.form.inherit.entry</field>
+           <field name="model">account.payment</field>
+           <field name="inherit_id" ref="account.view_account_payment_form"/>
+           <field name="arch" type="xml">
+             <xpath expr="//label[@for='amount']" position="before">
+                 <field name="x_manual_exchange"/>
+                 <label for="x_rate" attrs="{'invisible': [('x_manual_exchange','=', False)]}"/>
+                 <div name="x_rate" class="o_row">
+                      <field name="x_rate" nolabel="1" attrs="{'invisible': [('x_manual_exchange','=', False)], 'required': [('x_manual_exchange','!=', False)]}"/>
+                      <field name="x_amount_rate" nolabel="1" attrs="{'invisible': [('x_manual_exchange','=', False)], 'required': [('x_manual_exchange','!=', False)]}"/>
+                 </div>
+             </xpath>
+           </field>
+         </record>
+
+  </data>
+</odoo>

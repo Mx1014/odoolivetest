@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payslip_popup_wizard_view_form" model="ir.ui.view">
+        <field name="name">payslip.popup.wizard.form</field>
+        <field name="model">payslip.popup</field>
+        <field name="arch" type="xml">
+            <form string="Slip">
+                <group>
+                    <field name="x_payslip" invisible="1"/>
+                    <span>Are You Sure To Generate Slip</span>
+                </group>
+                <footer>
+                    <button string="Done" name="action_payslip_done" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

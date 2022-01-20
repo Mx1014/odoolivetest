@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+            id="account_followup.action_report_followup"
+            string="Print Follow-up Letter"
+            model="res.partner"
+            report_type="qweb-pdf"
+            file="account_followup.report_followup_print_all"
+            name="account_followup.report_followup_print_all"
+             paperformat="pabs_account.paperformat_followup_report"
+            print_report_name="'Followups'"
+            menu="False"
+    />
+</odoo>

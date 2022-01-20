@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_delivery_document_pabs_delivery_report_inherit"
+              inherit_id="pabs_delivery_report.report_delivery_document_pabs_delivery_report">
+        <xpath expr="//div[hasclass('page')]//div[3]//div//table" position="inside">
+            <tr t-if="o.x_helpdesk_ticket_id">
+                <td>
+                    <strong>Helpdesk Ticket:</strong>
+                </td>
+                <td>
+                    <span t-field="o.x_helpdesk_ticket_id"/>
+                </td>
+            </tr>
+
+        </xpath>
+    </template>
+</odoo>

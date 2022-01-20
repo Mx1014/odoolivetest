@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="product_barcode_label_transfer_template_view_zpl"
+                  inherit_id="stock.label_transfer_template_view_zpl">
+            <xpath expr="//t[@t-foreach='docs']" position="replace">
+                <t t-foreach="docs" t-as="picking">
+                    <t t-foreach="picking.move_lines" t-as="move">
+                        <t t-foreach="move.move_line_ids" t-as="move_line">
+                            <t t-if="move_line.product_uom_id.category_id.measure_type == 'unit'">
+                                <t t-set="qty" t-value="int(move_line.qty_done)"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="qty" t-value="1"/>
+                            </t>
+                            <t t-foreach="range(qty)" t-as="item">
+                                <t t-translation="off">
+                                    ^XA
+                                    ^FO0,0
+                                    ^LT90^
+                                    ^FT150,0^A0B,20,20^FB600
+                                    ^A0N,30,48^FD<t t-esc="move_line.product_id.default_code"/>^FS
+                                    ^FT90,0^A0B,30,48^FB600
+                                     ^FO150,25
+                                    <t t-if="move_line.product_id.tracking != 'none' and (move_line.lot_id or move_line.lot_name)">
+                                        ^A0N,25,19^FDLN/SN:<t t-esc="move_line.lot_id.name or move_line.lot_name"/>^FS
+                                        ^FO0,0^BY3
+                                        ^BCN,100,Y,N,N
+                                        ^FD<t t-esc="move_line.lot_id.name or move_line.lot_name"/>^FS
+                                    </t>
+                                    <t t-if="move_line.product_id.tracking == 'none' and move_line.product_id.barcode">
+                                        ^BCN,100,Y,N,N
+                                        ^FD<t t-esc="move_line.product_id.barcode"/>^FS
+                                    </t>
+                                    ^XZ
+                                </t>
+                            </t>
+                        </t>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>
+
+
+

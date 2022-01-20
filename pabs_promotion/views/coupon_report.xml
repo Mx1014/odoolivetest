@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sale_coupon_inherited_report" inherit_id="sale_coupon.report_coupon">
+        <xpath expr="//t[@t-call='web.internal_layout']" position="replace">
+            <t t-call="web.basic_layout">
+                <div class="page text-center"
+                     t-attf-style="background-image:url('/pabs_promotion/static/img/coupon.jpg'); background-size:107mm 204mm; width:107mm; height:204mm;">
+                    <span t-field="o.code" class="text-center"
+                          style="position: fixed;top: 70.5mm;left: 30mm;color: red;"/>
+                    <!--                            <svg viewBox="0 0 0 0">-->
+                    <span t-field="o.partner_id" class="text-left"
+                          style="position: fixed;top: 79.5mm;left: 30mm;font-size: 14px;"/>
+                    <!--                             </svg x="140" y="360">-->
+                    <span t-field="o.customer_cpr" class="text-center" style="position: fixed;top: 88.0mm;left: 30mm;"/>
+                    <span t-field="o.customer_phone" class="text-center"
+                          style="position: fixed;top: 96.5mm;left: 30mm;"/>
+                    <span t-field="o.order_id" class="text-center" style="position: fixed;top: 105.0mm;left: 30mm;"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+     <template id="sale_coupon_report_barcode_template">
+                    <t t-call="web.basic_layout">
+                        <div class="page text-center" t-attf-style="background-image:url('/pabs_promotion/static/img/coupon-barcode.jpg'); background-size:107mm 204mm; width:107mm; height:204mm;">
+                             <div>
+                                <img  t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.code, 600, 100)" style="position: fixed;top: 187.0mm;left: 15.0mm;width:300px;height:50px;"/>
+<!--                                <center><span t-field="o.code" style="position: fixed;top: 200.0mm;left: 30.0mm;"/></center>-->
+                             </div>
+                        </div>
+            </t>
+
+    </template>
+
+
+        <report
+            id="sale_coupon_report_barcodes"
+            model="sale.coupon"
+            string="Split Coupons Barcode"
+            report_type="qweb-pdf"
+            name="pabs_promotion.sale_coupon_report_barcode"
+            file="pabs_promotion.sale_coupon_report_barcode"
+            print_report_name="'Coupons - %s' % (object.partner_id.name)"
+        />
+
+
+        <template id="sale_coupon_report_barcode">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="pabs_promotion.sale_coupon_report_barcode_template"/>
+                </t>
+            </t>
+        </template>
+
+     <template id="sale_coupon_report_link_template">
+                    <t t-call="web.basic_layout">
+                        <div class="page text-center" t-attf-style="background-image:url('/pabs_promotion/static/img/link.jpg'); background-size:107mm 204mm; width:107mm; height:204mm;">
+                             <div>
+                                 <a style="position: fixed;top: 187.0mm;left: 30.0mm;width:300px;height:50px;color: transparent;"   target="_blank" t-attf-href="https://{{o.code_url}}">link</a>
+                            </div>
+                        </div>
+            </t>
+
+    </template>
+
+
+        <report
+            id="sale_coupon_report_barcodes_link"
+            model="sale.coupon"
+            string="Split Coupons Link"
+            report_type="qweb-pdf"
+            name="pabs_promotion.sale_coupon_report_link"
+            file="pabs_promotion.sale_coupon_report_link"
+            print_report_name="'Coupons - %s' % (object.partner_id.name)"
+        />
+
+
+        <template id="sale_coupon_report_link">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="pabs_promotion.sale_coupon_report_link_template"/>
+                </t>
+            </t>
+        </template>
+
+    <record id="paperformat_coupon" model="report.paperformat">
+        <field name="name">Coupon</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">207</field>
+        <field name="page_width">110</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">2.5</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">2.0</field>
+        <field name="margin_right">2.5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">50</field>
+    </record>
+
+</odoo>

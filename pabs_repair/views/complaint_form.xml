@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="complaint_form"
+            model="helpdesk.ticket"
+            string="Customer Service Ticket"
+            report_type="qweb-pdf"
+            name="pabs_repair.complaint_form_templates"
+            file="pabs_repair.complaint_form_templates"
+            paperformat="pabs_repair.paperformat_complaint"
+    />
+     <report
+            id="complaint_form_by_email"
+            model="helpdesk.ticket"
+            string="Customer Service Ticket By Email"
+            report_type="qweb-pdf"
+            name="pabs_repair.complaint_form_templates_by_email"
+            file="pabs_repair.complaint_form_templates_by_email"
+            paperformat="pabs_repair.paperformat_complaint_by_email"
+    />
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_cash_deposit_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <!--                        <div style="padding: 58mm 0mm 0mm 9mm ;">-->
+                        <!--                        <div style="margin-left: 38mm; padding-top: 12mm; height: 7.5mm; font-size: 15px;">-->
+                        <!--                            <span t-field="o.journal_id.bank_account_id.acc_holder_name"/>-->
+                        <!--                        </div>-->
+                        <!--                        <br/>-->
+                        <!--                        <div style="margin-left: 78mm; margin-top: 3mm; letter-spacing: 5.7mm;">-->
+                        <!--                            <span t-field="o.journal_id.bank_account_id.acc_number"/>-->
+                        <!--                        </div>-->
+                        <div style="margin-left: 15mm;">
+                            <div style="margin-left: 10mm; padding-top: 39mm; height: 6mm; font-size: 15px;">
+                                <span t-field="o.destination_journal_id.bank_account_id.acc_holder_name"/>
+                            </div>
+                            <div style="position: absolute; top: 0; right: 30mm; padding-top: 36mm; height: 6mm; font-size: 15px;">
+                                <span t-field="o.payment_date"/>
+                            </div>
+                            <div style="padding-top: 10mm; margin-left: 183mm; font-size: 15px;">
+                                <span t-field="o.destination_journal_id.bank_account_id.acc_number"/>
+                            </div>
+
+
+                            <div style="margin: 12mm 0mm 0mm 187mm; width: 48mm;">
+                                <t t-foreach="o.x_cashbox_id" t-as="line">
+                                    <t t-if="line.coin_value >= 0.050">
+                                        <div style="margin-top: 1.75mm; width: 18mm; font-size: 15px; float: left; text-align: left;">
+                                            <span t-field="line.number"/>
+                                        </div>
+                                        <div style="margin-top: 1.75mm; width: 30mm; font-size: 15px; float: left; text-align: right;">
+                                            <span t-field="line.subtotal"/>
+                                        </div>
+                                        <br/>
+                                    </t>
+                                </t>
+                            </div>
+
+                            <div style="margin-left: 206mm; margin-top: 25mm; width: 30mm; height: 7.5mm; text-align: right; font-size: 15px;">
+                                <span t-field="o.amount"/>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

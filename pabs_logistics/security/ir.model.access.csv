@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_slot_allocation_time,access_slot_allocation_time,model_slot_allocation_time,,1,1,1,1
+access_slot_allocation_vehicle,access_slot_allocation_vehicle,model_slot_allocation_vehicle,,1,1,1,1

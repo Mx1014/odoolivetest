@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="Payslip"
+            model="hr.payslip"
+            string="Payslip Report"
+            report_type="qweb-pdf"
+            name="pabs_hr.payslip_report_template"
+            file="pabs_hr.payslip_report_template"
+            paperformat="pabs_hr.paperformat_payslip_report"
+    />
+
+    <report
+            id="Payslip  Letter Head"
+            model="hr.payslip"
+            string="Payslip Report Head Letter"
+            report_type="qweb-pdf"
+            name="pabs_hr.payslip_report_template_head_letter"
+            file="pabs_hr.payslip_report_template_head_letter"
+            paperformat="pabs_hr.paperformat_payslip_report_head_letter"
+    />
+
+    <report
+            id="joining_form"
+            model="hr.employee"
+            string="Joining Form"
+            report_type="qweb-pdf"
+            name="pabs_hr.joining_form"
+            file="pabs_hr.joining_form"
+            paperformat="pabs_hr.paperformat_joining_form_report"
+    />
+
+    <report
+            id="salary_certificate"
+            model="hr.contract"
+            string="Salary Certificate"
+            report_type="qweb-pdf"
+            name="pabs_hr.salary_certificate"
+            file="pabs_hr.salary_certificate"
+            paperformat="pabs_hr.paperformat_salary_certificate"
+    />
+</odoo>

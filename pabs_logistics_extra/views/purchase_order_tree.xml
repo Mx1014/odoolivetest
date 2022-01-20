@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_tree_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">purchase.order.tree.inherit.pabs.logistics.extra</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="x_industry_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+    view_purchase_order_filter
+     <record id="view_purchase_order_filter_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">request.quotation.select.inherit.pabs.logistics.extra</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search//field[@name='product_id']" position="after">
+                <field name="x_industry_id"/>
+            </xpath>
+            <xpath expr="//search//group" position="inside">
+                <filter string="Industry" name="industry" domain="[]" context="{'group_by': 'x_industry_id'}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="purchase_order_view_search_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">purchase.order.select.inherit.pabs.logistics.extra</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search//field[@name='product_id']" position="after">
+                <field name="x_industry_id"/>
+            </xpath>
+            <xpath expr="//search//group" position="inside">
+                <filter string="Industry" name="industry" domain="[]" context="{'group_by': 'x_industry_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

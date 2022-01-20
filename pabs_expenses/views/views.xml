@@ -1,0 +1,578 @@
+<odoo>
+
+
+    <record id="res_config_settings_view_form_inh" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.hr.expense.payment</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="85"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@data-key='hr_expense']//div" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane"/>
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Default Purchase Journal</span>
+                        <div class="text-muted">
+                            Default Purchase Journal
+                        </div>
+                        <div class="text-muted">
+                            <field name="default_x_purchase_journal"/>
+                        </div>
+                    </div>
+                </div>
+                <!--                <div class="col-12 col-lg-6 o_setting_box">-->
+                <!--                    <div class="o_setting_left_pane"/>-->
+                <!--                    <div class="o_setting_right_pane">-->
+                <!--                        <span class="o_form_label">Default Payroll Payable Account</span>-->
+                <!--                        <div class="text-muted">-->
+                <!--                            Default Payroll Payable Account-->
+                <!--                        </div>-->
+                <!--                        <div class="text-muted">-->
+                <!--                            <field name="default_x_payroll_account"/>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+            </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="account_view_move_form_inherits">
+        <field name="name">account.view.move.form.inherits</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_post']" position="after">
+                <button name="post_expenses" string="Post" class="oe_highlight" type="object"
+                        groups="account.group_account_invoice"
+                        attrs="{'invisible': ['|', ('state', '!=', 'draft'),('x_is_expense','=',False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_post']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'draft'),('x_is_expense','!=',False)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//form//sheet//notebook//page[@id='invoice_tab']//field[@name='invoice_line_ids']//tree//field[@name='analytic_account_id']"
+                   position="attributes">
+                <attribute name="domain">['|', ('x_users', '=', uid), ('x_users', '=', False)]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="x_is_expense" invisible="1"/>
+                <field name="x_payment_journal"
+                       domain="[('x_is_expense', '=', True), ('x_employee_id', '=', context.get('uid'))]"
+                       attrs="{'invisible': [('x_is_expense','=', False)], 'required':  [('x_is_expense','!=', False)]}"/>
+                <field name="x_customer_id" attrs="{'invisible': [('x_is_expense','=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('x_is_expense','!=', False), ('name', '!=', '/')]}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_journal_form_expense_inherit">
+        <field name="name">account.view.move.form.expense.inherits</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='advanced_settings']//group" position="inside">
+                <group string="Expense">
+                    <field name="x_is_expense"/>
+                    <field name="x_employee_id" widget="many2many_tags"/>
+                </group>
+            </xpath>
+            <!--            <xpath expr="//page[@name='journal_entries']" position="after">-->
+            <!--                <page string="Expense" attrs="{'invisible': [('type', '!=', 'cash')]}">-->
+            <!--                    <group>-->
+            <!--                        <field name="x_is_expense"/>-->
+            <!--                        <field name="x_employee_id"/>-->
+            <!--                    </group>-->
+            <!--                </page>-->
+            <!--            </xpath>-->
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_form_inherit">
+        <field name="name">account.view.account.form.inherits</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <field name="deprecated" position="after">
+                <field name="x_paying_expense" attrs="{'invisible': [('user_type_id', '!=', 2)]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_form_inherit_expense">
+        <field name="name">view_invoice_tree_inherits_expense</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name="invoice_origin" position="after">
+                <field name="x_expense_state"/>
+                <field name="x_payment_journal"/>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_hr_expense_sheet_tree_inherit">
+        <field name="name">view.hr.expense.sheet.tree.inherit</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_tree"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="after">
+                <field name="x_payment_journal"/>
+            </field>
+            <field name="total_amount" position="replace">
+                <field name="x_expenses_totals"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="hr_expense_sheet_view_form_inherits">
+        <field name="name">hr_expense_sheet_view_form_inherits</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_sheet_move_create']" position="after">
+                <!--              <button name="post_register_payment" class="oe_highlight" string="Register Payment" attrs="{'invisible': [('state', '!=', 'approve')]}" type="object"/>-->
+                <button name="reconcile" class="oe_highlight" string="Reconcile"
+                        attrs="{'invisible': ['|', '|', ('x_all_lines_reconciled', '!=', False), ('x_payment_id', '=', False), ('state', '=', 'reconcile')]}"
+                        type="object"/>
+                <button name="validate" class="oe_highlight" string="validate" type="object"
+                        attrs="{'invisible': ['|','|','|',('x_all_lines_reconciled', '=', False), ('x_payment_id', '=', False), ('state', '=', 'reconcile')]}"/>
+                <button name="expense_register_payment" class="oe_highlight" string="Reimburse"
+                        type="object"
+                        attrs="{'invisible': ['|', ('state', '!=', 'approve'), ('x_payment_id', '!=', False)]}"/>
+                <field name="x_all_lines_reconciled" invisible="1"/>
+                <field name="x_statement_state" invisible="1"/>
+                <field name="x_statement_state_cu" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="view_journal_statement" class="oe_stat_button" string='Statement' icon="fa-copy"
+                        type="object" attrs="{'invisible': [('x_bank_statement_id', '=', False)]}"/>
+                <button name="view_payment_send" class="oe_stat_button" string='Payment' icon="fa-money"
+                        type="object" attrs="{'invisible': [('x_payment_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">draft,submit,approve,reconcile</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_get_attachment_view']" position="replace"/>
+            <field name="employee_id" position="after">
+                <field name="create_date" string="Date"/>
+                <field name="x_payment_id" invisible="1"/>
+            </field>
+            <xpath expr="//page[@name='other_info']" position="before">
+                <page name="journals" string="My Journals">
+                    <field name="x_move_line_ids" widget="many2many"
+                           attrs="{'readonly': [('state', 'not in', ['draft', 'cancel'])]}"
+                           domain="[('x_hr_expense_sheet', '=', False),('credit', '!=', 0.0),('account_id.x_paying_expense','=', True), ('parent_state', '=', 'posted'), ('x_paid', '=', False)]"
+                           options="{'no_create': True, 'not_delete': True}">
+                        <tree>
+                            <field name="move_id" optional="show" string="Number"/>
+                            <field name="name" invisible="1"/>
+                            <field name="partner_id" optional="show"/>
+                            <field name="parent_state" optional="show"/>
+                            <field name="x_expense_state" optional="show"/>
+                            <field name="journal_id" optional="hide"/>
+                            <field name="date" optional="show"/>
+
+                            <field name="account_id" options="{'no_open': True}" groups="account.group_account_user"
+                                   optional="hide"/>
+                            <field name="ref" optional="hide"/>
+                            <field name="analytic_account_id" groups="account.group_account_user" optional="hide"/>
+                            <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"
+                                   optional="hide"/>
+                            <field name="debit" sum="Total Debit" invisible="1"/>
+                            <field name="credit" sum="Total Credit" string="Total"/>
+                            <field name="amount_currency" groups="base.group_multi_currency" optional="hide"/>
+                            <field name="x_total_paid" optional="show" widget="monetary"
+                                   options="{'currency_field': 'company_currency_id'}"/>
+                            <field name="x_paid" invisible="1"/>
+                            <button name="register_journal_payment" type="object" icon="fa-money"
+                                    attrs="{'invisible': [('x_paid', '=', True)]}"/>
+                            <field name="currency_id" readonly="1" invisible="1"/>
+                            <field name="company_currency_id" invisible="1"/>
+                            <field name="x_invs_expense_state" invisible="1"/>
+                            <field name="x_hr_expense_sheet" invisible="1"/>
+                        </tree>
+                    </field>
+                    <!--<field name="x_move_line_domain_ids" invisible="1"/>-->
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="expense_total">
+                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                            <label for="x_total_journals"/>
+                        </div>
+                        <field name="x_total_journals" nolabel="1" class="oe_subtotal_footer_separator"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='expenses']" position="before">
+                <page name="expenses_all" string="All Payments">
+                    <field name="x_payment_paid_ids" nolabel="1" widget="many2many">
+                        <tree>
+                            <field name="name"/>
+                            <field name="communication" optional="hide"/>
+                            <field name="partner_id" optional="show"/>
+                            <!--                            <field name="parent_state" optional="show"/>-->
+                            <field name="state" optional="hide"/>
+                            <field name="payment_date" optional="show"/>
+                            <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount" widget="monetary" string="Total Paid"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" readonly="1" invisible="1"/>
+                        </tree>
+                    </field>
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="expense_all_total">
+                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                            <label for="x_expenses_totals"/>
+                        </div>
+                        <field name="x_expenses_totals" nolabel="1" class="oe_subtotal_footer_separator"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='expenses']" position="after">
+                <page name="payment" string="My Expenses">
+                    <field name="x_account_move_ids" nolabel="1"
+                           attrs="{'readonly': [('state', 'not in', ['draft', 'cancel'])]}"
+                           domain="[('x_is_expense', '!=', False), ('x_hr_expense_sheet', '=', False), ('state','=','posted'), ('type', '=', 'in_invoice')]"
+                           widget="many2many" options="{'no_create': True, 'not_delete': True}">
+                        <tree>
+                            <field name="name"/>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="invoice_source_email" invisible="1"/>
+                            <field name="invoice_partner_icon" string=" "/>
+                            <field name="invoice_partner_display_name"
+                                   invisible="context.get('default_type') not in ('in_invoice', 'in_refund','in_receipt')"
+                                   groups="base.group_user" string="Vendor"/>
+                            <field name="invoice_partner_display_name"
+                                   invisible="context.get('default_type') not in ('out_invoice', 'out_refund','out_receipt')"
+                                   groups="base.group_user" string="Customer"/>
+                            <field name="invoice_date" optional="show" string="Date"/>
+                            <field name="invoice_origin" optional="show" string="Source Document"/>
+                            <field name="invoice_payment_ref" optional="hide"
+                                   invisible="context.get('default_type') in ('out_invoice', 'out_refund','out_receipt')"/>
+                            <field name="invoice_user_id" optional="show"
+                                   invisible="context.get('default_type') not in ('out_invoice', 'out_refund','out_receipt')"
+                                   string="Sales Person"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"
+                                   optional="show"/>
+                            <field name="x_customer_id"/>
+                            <field name="state" optional="show"/>
+                            <field name="x_expense_state" attrs="{'invisible': [('x_is_expense','=', False)]}"
+                                   optional="show"/>
+                            <field name="invoice_date_due" optional="show"/>
+                            <!--                            <field name="amount_untaxed_signed" string="Tax Excluded" sum="Total" optional="show"/>-->
+                            <field name="amount_tax_signed" string="Tax" sum="Total" optional="hide"/>
+                            <field name="amount_total_signed" string="Total" sum="Total" optional="show"/>
+                            <field name="amount_total" string="Total Paid" sum="Total" optional="show"/>
+                            <!--                            <field name="amount_residual_signed" string="Amount Due" sum="Amount Due" optional="show"/>-->
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_currency_id" invisible="1"/>
+                            <field name="invoice_payment_state" optional="hide"/>
+                            <field name="type" invisible="context.get('default_type', True)"/>
+                            <field name="x_invs_expense_state" invisible="1"/>
+                            <field name="x_is_expense" invisible="1"/>
+                            <field name="x_hr_expense_sheet" invisible="1"/>
+                            <!--                           <field name="x_attachment_number" string=" "-->
+                            <!--                                  attrs="{'invisible': [('x_attachment_number','=', 0)]}"/>-->
+                            <!--                           <button name="action_get_attachment_view" string="View Attachments" type="object"-->
+                            <!--                                   icon="fa-paperclip" attrs="{'invisible': [('x_attachment_number','=', 0)]}"/>-->
+                        </tree>
+                    </field>
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="expense_total">
+                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                            <label for="x_total_amount"/>
+                        </div>
+                        <field name="x_total_amount" nolabel="1" class="oe_subtotal_footer_separator"/>
+                    </group>
+                </page>
+            </xpath>
+            <!--            <xpath expr="//page[@name='expenses']" position="after">-->
+            <!--                <page name="bills" string="Expenses Bills">-->
+            <!--                    <field name="x_account_move_ids" nolabel="1" widget="many2many"/>-->
+            <!--                    <field name="currency_id" invisible="1"/>-->
+            <!--                    <group class="oe_subtotal_footer oe_right" colspan="2" name="expense_total">-->
+            <!--                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">-->
+            <!--                            <label for="x_total_amount"/>-->
+            <!--                        </div>-->
+            <!--                        <field name="x_total_amount" nolabel="1" class="oe_subtotal_footer_separator"/>-->
+            <!--                    </group>-->
+            <!--                </page>-->
+            <!--            </xpath>-->
+            <xpath expr="//button[@name='%(hr_expense.hr_expense_sheet_register_payment_wizard_action)d']"
+                   position="replace"/>
+            <xpath expr="//field[@name='payment_mode']" position="after">
+                <field name="x_payment_journal" required="1"
+                       attrs="{'readonly': [('state','not in',['draft', 'submit'])]}"
+                       domain="[('x_is_expense', '=', True), ('x_employee_id', '=', context.get('uid'))]"/>
+            </xpath>
+            <xpath expr="//group[@name='employee_details']" position="after">
+                <group>
+                    <field name="x_bank_statement_id" required="1"
+                           attrs="{'readonly': [('state','not in',['draft', 'submit'])]}"
+                           domain="[('x_is_expense', '=', True), ('journal_id', '=', x_payment_journal), ('state', '=', 'open')]"/>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='expenses']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_mode']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_sheet_move_create']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_bank_statement_form_inherit_expense" model="ir.ui.view">
+        <field name="name">account.bank.statement.form.inherit.expenses</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+            <field name="company_id" position="after">
+                <field name="x_is_expense" invisible="1"/>
+            </field>
+            <xpath expr="//tree//field[@name='state']" position="after">
+                <!--                <field name="x_upload_file"  widget="binary" attrs="{'column_invisible': [('parent.x_is_expense', '=', False)]}"/>-->
+                <field name="x_expense_bill_id" invisible="1"/>
+                <!--                <button name="upload_document" type="object" string="Generate Draft Bill" attrs="{'invisible': ['|', ('x_expense_bill_id', '!=', False), ('parent.x_is_expense', '=', False)]}"/>-->
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_salary_rule_form_inherit" model="ir.ui.view">
+        <field name="name">hr.salary.rule.form.inherit</field>
+        <field name="model">hr.salary.rule</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="x_use_employee"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_payment_expense_submit_action_server" model="ir.actions.server">
+        <field name="name">Create Expense Report</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_account_move"/>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.action_submit_expenses()
+        </field>
+    </record>
+
+    <record id="action_move_in_invoice_type_expense" model="ir.actions.act_window">
+        <field name="name">Bills</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="account.view_invoice_tree"/>
+        <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        <field name="domain">[('type', '=', 'in_invoice'),('x_is_expense','=', True)]</field>
+        <field name="context">{'default_type': 'in_invoice', 'default_x_is_expense': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a vendor bill
+            </p>
+            <p>
+                Create invoices, register payments and keep track of the discussions with your vendors.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_move_in_invoice_type_expense_tosubmit" model="ir.actions.act_window">
+        <field name="name">Bills</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="account.view_invoice_tree"/>
+        <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        <field name="domain">[('type', '=', 'in_invoice'),('x_is_expense','=', True), ('x_invs_expense_state', '=',
+            'to_submit')]
+        </field>
+        <field name="context">{'default_type': 'in_invoice', 'default_x_is_expense': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a vendor bill
+            </p>
+            <p>
+                Create invoices, register payments and keep track of the discussions with your vendors.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_move_in_invoice_type_expense_draft" model="ir.actions.act_window">
+        <field name="name">Bills</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="account.view_invoice_tree"/>
+        <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        <field name="domain">[('type', '=', 'in_invoice'),('x_is_expense','=', True),('state', '=',
+            'draft')]
+        </field>
+        <field name="context">{'default_type': 'in_invoice', 'default_x_is_expense': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a vendor bill
+            </p>
+            <p>
+                Create invoices, register payments and keep track of the discussions with your vendors.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_move_in_invoice_type_expense_post" model="ir.actions.act_window">
+        <field name="name">Bills</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="account.view_invoice_tree"/>
+        <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        <field name="domain">[('type', '=', 'in_invoice'),('x_is_expense','=', True),('x_invs_expense_state', '=',
+            'submit')]
+        </field>
+        <field name="context">{'default_type': 'in_invoice', 'default_x_is_expense': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a vendor bill
+            </p>
+            <p>
+                Create invoices, register payments and keep track of the discussions with your vendors.
+            </p>
+        </field>
+    </record>
+
+
+    <record id="action_hr_expense_sheet_all" model="ir.actions.act_window">
+        <field name="name">All Reports</field>
+        <field name="res_model">hr.expense.sheet</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,activity</field>
+        <field name="search_view_id" ref="hr_expense.hr_expense_sheet_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new expense report
+            </p>
+            <p>
+                Once you have created your expense, submit it to your manager who will validate it.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_hr_expense_sheet_draft" model="ir.actions.act_window">
+        <field name="name">Draft Expenses Reports</field>
+        <field name="res_model">hr.expense.sheet</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,activity</field>
+        <field name="search_view_id" ref="hr_expense.hr_expense_sheet_view_search"/>
+        <field name="domain">[('state','=','draft')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new expense report
+            </p>
+            <p>
+                Once you have created your expense, submit it to your manager who will validate it.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_hr_expense_sheet_submit" model="ir.actions.act_window">
+        <field name="name">Submitted Expenses Reports</field>
+        <field name="res_model">hr.expense.sheet</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,activity</field>
+        <field name="search_view_id" ref="hr_expense.hr_expense_sheet_view_search"/>
+        <field name="domain">[('state','=','submit')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new expense report
+            </p>
+            <p>
+                Once you have created your expense, submit it to your manager who will validate it.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_hr_expense_sheet_paid" model="ir.actions.act_window">
+        <field name="name">Reconciled Expenses Reports</field>
+        <field name="res_model">hr.expense.sheet</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,activity</field>
+        <field name="search_view_id" ref="hr_expense.hr_expense_sheet_view_search"/>
+        <field name="domain">[('state','=','done')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new expense report
+            </p>
+            <p>
+                Once you have created your expense, submit it to your manager who will validate it.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_hr_expense_sheet_reconcile" model="ir.actions.act_window">
+        <field name="name">Reconciled Expenses Reports</field>
+        <field name="res_model">hr.expense.sheet</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,activity</field>
+        <field name="search_view_id" ref="hr_expense.hr_expense_sheet_view_search"/>
+        <field name="domain">[('state','=','reconcile')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new expense report
+            </p>
+            <p>
+                Once you have created your expense, submit it to your manager who will validate it.
+            </p>
+        </field>
+    </record>
+
+
+    <record id="action_view_bank_statement_tree_expenses" model="ir.actions.server">
+        <field name="name">My Statements</field>
+        <field name="model_id" ref="account.model_account_bank_statement"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_view_bank_statement()
+        </field>
+    </record>
+
+    <record model="ir.ui.menu" id="hr_expense.menu_hr_expense_report">
+        <field name="name">My Reports</field>
+    </record>
+
+    <menuitem id="menu_hr_my_statement_expense" name="My Statements" sequence="3"
+              parent="hr_expense.menu_hr_expense_root" action="action_view_bank_statement_tree_expenses"/>
+
+
+    <menuitem id="hr_expense.menu_hr_expense_sheet_all_to_approve" name="Draft" sequence="1"
+              parent="hr_expense.menu_hr_expense_report"
+              action="action_hr_expense_sheet_draft"/>
+
+    <menuitem id="hr_expense.menu_hr_expense_sheet_all_to_post" name="Submitted" sequence="2"
+              parent="hr_expense.menu_hr_expense_report"
+              action="action_hr_expense_sheet_submit" groups="account.group_account_user"/>
+
+    <menuitem id="menu_hr_expense_sheet_all_paid" name="Paid" sequence="3" parent="hr_expense.menu_hr_expense_report"
+              action="action_hr_expense_sheet_paid" groups="account.group_account_user"/>
+
+    <menuitem id="hr_expense.menu_hr_expense_sheet_all_to_pay" name="Reconciled" sequence="4"
+              parent="hr_expense.menu_hr_expense_report"
+              action="action_hr_expense_sheet_reconcile" groups="account.group_account_user"/>
+
+    <menuitem id="hr_expense.menu_hr_expense_sheet_my_reports" sequence="5" name="All Reports"
+              parent="hr_expense.menu_hr_expense_report" action="action_hr_expense_sheet_all"/>
+
+
+    <menuitem id="expense_vendor_bill_menu_tosubmit" action="action_move_in_invoice_type_expense_tosubmit"
+              name="To Submit"
+              parent="hr_expense.menu_hr_expense_my_expenses" sequence="2"/>
+
+    <menuitem id="expense_vendor_bill_menu_draft" action="action_move_in_invoice_type_expense_draft" name="Draft"
+              parent="hr_expense.menu_hr_expense_my_expenses" sequence="1"/>
+
+    <menuitem id="expense_vendor_bill_menu_post" action="action_move_in_invoice_type_expense_post" name="Submitted"
+              parent="hr_expense.menu_hr_expense_my_expenses" sequence="3"/>
+
+    <menuitem id="expense_vendor_bill_menu" action="action_move_in_invoice_type_expense" name="All Expenses"
+              parent="hr_expense.menu_hr_expense_my_expenses" sequence="4"/>
+
+    <delete model="ir.ui.menu" id="hr_expense.menu_hr_expense_my_expenses_to_submit"/>
+
+</odoo>

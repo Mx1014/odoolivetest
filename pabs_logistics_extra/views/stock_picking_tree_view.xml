@@ -1,0 +1,56 @@
+<odoo>
+    <data>
+        <record id="stock_picking_tree_view_inherit_pabs_logistics_extra" model="ir.ui.view">
+            <field name="name">stock.picking.tree.view.inherit.pabs.logistics.extra</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <field name="activity_exception_decoration" position="after">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="code" optional="show"/>
+                    <field name="x_total_amount" widget="monetary" optional="show"/>
+                    <field name="x_total_qty_demand" optional="show"/>
+                    <field name="x_total_qty_reserved" optional="show"/>
+                    <field name="x_total_qty_done" optional="hide"/>
+                    <field name="x_logistics_team" optional="show"/>
+                    <field name="move_line_ids_without_package" string="Products" optional="show" widget="many2many_tags"/>
+                    <field name="period" optional="show"/>
+                    <field name="x_dn_status" optional="hide"/>
+                    <field name="x_client_order_ref" optional="hide"/>
+                    <field name="x_narration" optional="hide"/>
+                    <field name="x_team_mobile" optional="hide"/>
+                    <!--                    <field name="x_total_amount_str" optional="show"/>-->
+                </field>
+                <field name="name" position="after">
+                    <button name="urgency_action" icon="fa-truck text-danger" type="object" attrs="{'invisible': ['|', '|',('x_urgent_request', '=', 'urgent'), ('code', '!=', 'outgoing'), ('state','in',['done','cancel'])]}"/>
+                    <button name="urgency_action" icon="fa-truck text-success" type="object" attrs="{'invisible': ['|', '|',('x_urgent_request', '=', False), ('code', '!=', 'outgoing'), ('state','in',['done','cancel'])]}"/>
+                    <field name="x_urgent_request" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="stock.action_picking_tree_all" model="ir.actions.act_window">
+            <field name="name">Transfers</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,kanban,form,calendar</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                            (0, 0, {'view_mode': 'tree', 'view_id': ref('stock.vpicktree')}),
+                                            (0, 0, {'view_mode': 'calendar'}),
+                                            (0, 0, {'view_mode': 'form'}),
+                                            (0, 0, {'view_mode': 'kanban'})]"/>
+            <field name="domain"></field>
+            <field name="context">{'contact_display': 'partner_address', 'default_company_id': allowed_company_ids[0]}
+            </field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new transfer
+                </p>
+                <p>
+                    Transfers allow you to move products from one location to another.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

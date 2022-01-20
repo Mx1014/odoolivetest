@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+<!--    <record model="ir.module.category" id="module_accountant_accounts_custom">-->
+<!--        <field name="name">Account</field>-->
+<!--        <field name="description">Custom Accounting Groups</field>-->
+<!--        &lt;!&ndash;        <field name="sequence">45</field>&ndash;&gt;-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash;Salesman group&ndash;&gt;-->
+
+    <record id="group_warehouse_supervisor" model="res.groups">
+        <field name="name">Supervisor</field>
+        <field name="category_id" ref="base.module_category_operations_inventory"/>
+        <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+<!--        <field name="model_access" eval="[(6, 0, [ref('base.group_user')])]"/>--> <!-- from security file-->
+<!--        <field name="view_access" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+<!--        <field name="menu_access" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+<!--        <field name="comment">custom group for Salesman</field>-->
+    </record>
+
+    <record id="group_warehouse_tax_accounting" model="res.groups">
+        <field name="name">Tax Accounting</field>
+        <field name="category_id" ref="base.module_category_operations_inventory"/>
+        <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+<!--        <field name="model_access" eval="[(6, 0, [ref('base.group_user')])]"/>--> <!-- from security file-->
+<!--        <field name="view_access" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+<!--        <field name="menu_access" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+<!--        <field name="comment">custom group for Salesman</field>-->
+    </record>
+
+</odoo>

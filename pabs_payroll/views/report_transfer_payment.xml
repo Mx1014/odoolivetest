@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+         <report
+            id="action_report_transfer_payment"
+            string="Transfer Request"
+            model="hr.payslip.run"
+            report_type="qweb-pdf"
+            file="pabs_payroll.report_transfer_request"
+            name="pabs_payroll.report_transfer_request"
+            print_report_name="'Transfer Request - %s' % (object.name)"
+    />
+         <report
+            id="action_report_transfer_payment_xls"
+            string="Transfer Request Excel"
+            model="hr.payslip.run"
+            report_type="xlsx"
+            file="pabs_payroll.report_transfer_request_xls"
+            name="pabs_payroll.report_transfer_request_xls"
+            print_report_name="'%s' % (object.name)"
+    />
+
+        <template id="report_transfer_request">
+             <t t-call="web.html_container">
+                 <t t-call="web.external_layout">
+               <t t-foreach="docs" t-as="doc">
+                <p>Date: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/> </p>
+                   <br></br>
+                <p>To: <span t-field="doc.x_bank_journal_id.bank_id.name"/></p>
+                   <br></br>
+                <p>Dear Sir/Madam,</p>
+                   <br></br>
+
+                   <h4 class="text-center"><b><u>SUBJECT: SALARY TRANSFER</u></b></h4>
+                   <br></br>
+                   <p style="text-align=justify;">We would like to kindly request you to transfer the staff salaries for the month of <strong><span t-field="doc.name"/></strong>, an amount of
+                   <strong><span t-esc="sum(doc.slip_ids.mapped(lambda line: line.net_wage))" t-options='{"widget": "monetary", "display_currency": doc.company_id.currency_id}'/></strong>
+                   <strong>(<span t-esc="doc.amount_to_text(sum(doc.slip_ids.mapped(lambda line: line.net_wage)))" />)</strong>
+                   from the account <strong><span t-field="doc.x_bank_journal_id.bank_id.name"/></strong>, Account Number <strong><span t-field="doc.x_bank_journal_id.bank_account_id.acc_number"/></strong>, to the following employees:
+                   </p>
+                <t t-set="serial_no" t-value="1"/>
+                <t t-set="authorized" t-value=""/>
+                <table class="table table-sm">
+                        <thead>
+                            <tr style="background-color:#B1B3B8;">
+                                <th>Sr. No</th>
+                                <th>Account Name</th>
+                                <th>CPR</th>
+                                <th>Bank Name</th>
+                                <th>Account Number</th>
+                                <th class="text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="doc.slip_ids" t-as="line">
+                                <td>
+                                <span t-esc="serial_no"/>
+                                </td>
+
+                                <td>
+                                    <span t-field="line.employee_id.bank_account_id.partner_id.name"/>
+                                </td>
+                                <td>
+                                     <span t-field="line.employee_id.identification_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.employee_id.bank_account_id.bank_id.name"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.employee_id.bank_account_id.acc_number"/>
+                                </td>
+
+                                <td class="text-right">
+                                    <span t-esc="'{:,.3f}'.format(line.net_wage)"/>
+                                </td>
+
+                                <t t-set="serial_no" t-value="serial_no + 1"/>
+                                <t t-if="line.employee_id.x_is_authorized != False">
+                                    <t t-set="authorized" t-value="line.employee_id.name"/>
+                                </t>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                   <h6 class="text-right"><strong>Total: <span t-esc="sum(doc.slip_ids.mapped(lambda line: line.net_wage))" t-options='{"widget": "monetary", "display_currency": doc.company_id.currency_id}'/></strong></h6>
+                   <br></br>
+                   <br></br>
+                   <p>Your Sincerely,</p>
+                   <br></br>
+                   <br></br>
+                   <br></br>
+
+                   <p>Authorized Signatory</p>
+                   <strong><span t-esc="authorized"/></strong>
+
+               </t>
+             </t>
+             </t>
+
+
+        </template>
+
+    </data>
+</odoo>

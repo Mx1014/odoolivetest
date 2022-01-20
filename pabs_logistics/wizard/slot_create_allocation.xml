@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="slot_time_createion_wizard_view_form" model="ir.ui.view">
+        <field name="name">slot.time.wizard.form</field>
+        <field name="model">slot.time.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Slot Time Creation">
+                <sheet>
+                    <group>
+                        <field name="from_date" required='1'/>
+                        <field name="to_date" required='1'/>
+                    </group>
+                    <group colspan="4">
+                        <field name="picking_type_ids" widget="many2many_tags" required='1'/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Create" name="action_create_slot_allocation_time" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_slot_time_createion_wizard" model="ir.actions.act_window">
+        <field name="name">Slot Creation Times</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">slot.time.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.actions.server" id="action_create_slot_time">
+        <field name="name">Slot Time Creation</field>
+        <field name="model_id" ref="pabs_logistics.model_slot_time_wizard"/>
+        <field name="state">code</field>
+        <field name="code">
+action = env.ref('pabs_logistics.action_slot_time_createion_wizard').read()[0]
+        </field>
+    </record>
+
+    <menuitem id="menu_create_slot_time"
+        action="pabs_logistics.action_create_slot_time"
+        parent="sale.prod_config_main"
+        sequence="110"/>
+
+</odoo>

@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="move_line_form_inher" model="ir.ui.view">
+        <field name="name">account.move.line.form.inherits</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!--                <xpath expr='//form' position='attributes'>-->
+            <!--                    <attribute name="create">false</attribute>-->
+            <!--                </xpath>-->
+            <xpath expr="//form//sheet/notebook//page//field[@name='invoice_line_ids']//tree//field[@name='product_id']"
+                   position='attributes'>
+                <attribute name="options">{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}
+                </attribute>
+            </xpath>
+            <xpath expr="//form//sheet/notebook//page//field[@name='invoice_line_ids']//tree//field[@name='analytic_account_id']"
+                   position='attributes'>
+                <attribute name="domain">['|', ('x_users', '=', uid), ('x_users', '=', False)]</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='discount']" position="after">
+                <field name="x_discount_amount" optional="show" readonly="0"/>
+            </xpath>
+	    <xpath expr="//form//sheet//group//group//field[@name='ref']" position="before">
+                <field name="x_shipping_address"/>
+            </xpath>
+            <xpath expr="//tree//field[@name='tax_ids']" position="attributes">
+                <attribute name="readonly">True</attribute>
+            </xpath>
+
+            <field name="invoice_user_id" position="after">
+                <field name="x_user_mobile" string="Salesperson Phone"/>
+                <field name="x_brand" invisible="1"/>
+            </field>
+<!--            <field name="purchase_id" position="after">-->
+
+<!--            </field>-->
+            <!--                <xpath expr="//field[@name='journal_id']" position="replace">-->
+            <!--                     <field name="journal_id" invisible="context.get('default_journal_id') and context.get('type', 'entry') != 'entry'" groups="account.group_account_user" options="{'no_create': True}" domain="[('type', '=?', invoice_filter_type_domain)]" readonly="1" force_save="1"/>-->
+            <!--                </xpath>-->
+            <xpath expr="//field[@name='ref']" position="after">
+                <!--                <field name="x_bill_origin"/>-->
+                <field name="x_previous_period"
+                       attrs="{'invisible': [('type', 'not in', ['out_refund', 'in_refund'])], 'readonly': [('state', '=', 'posted')]}"/>
+                <field name="reversed_entry_id"
+                       attrs="{'invisible': [('type', 'not in', ['out_refund', 'in_refund'])], 'readonly': [('state', '=', 'posted')]}"/>
+                <field name="reversed_entry_no"
+                       attrs="{'invisible': [('type', 'not in', ['out_refund', 'in_refund'])], 'readonly': [('reversed_entry_id', '!=', False)]}"/>
+                <field name="reversed_entry_date"
+                       attrs="{'invisible': [('type', 'not in', ['out_refund', 'in_refund'])], 'readonly': [('reversed_entry_id', '!=', False)]}"/>
+            </xpath>
+            <!--            <xpath expr="//field[@name='ref']" position="after">-->
+            <!--                <field name="x_cn_reason" attrs="{'invisible': [('type', '!=', 'out_refund')], 'required': [('type', '=', 'out_refund')]}"/>-->
+            <!--            </xpath>-->
+            <!--            <xpath expr="//group[hasclass('oe_invoice_outstanding_credits_debits')]" position="attributes">-->
+            <!--                <attribute name="style">width: 500px !important;</attribute>-->
+            <!--            </xpath>-->
+
+        </field>
+    </record>
+
+    <record id="move_line_inherits" model="ir.ui.view">
+        <field name="name">account.move.line.inherits</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="groups_id" eval="[(6,0, [ref('account.group_account_user')])]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//field[@name='tax_ids']" position="attributes">
+                <attribute name="readonly">False</attribute>
+            </xpath>
+
+            <field name="ref" position="after">
+                <field name="x_receivable" attrs="{'invisible': [('type', 'not in', ['in_invoice', 'in_refund'])], 'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="x_payable" attrs="{'invisible': [('type', 'not in', ['out_invoice', 'out_refund'])], 'readonly': [('state', '!=', 'draft')]}"/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="view_account_move_reversal_inherit" model="ir.ui.view">
+        <field name="name">account.move.reversal.form.inherit</field>
+        <field name="model">account.move.reversal</field>
+        <field name="inherit_id" ref="account.view_account_move_reversal"/>
+        <field name="arch" type="xml">
+            <field name="reason" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_account_form_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.account.form.inherit</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet//field[@name='partner_id']" position="after">
+                <field name="x_users" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--     <record id="move_line_form_list_inher" model="ir.ui.view">-->
+    <!--            <field name="name">account.move.line.form.list.inherits</field>-->
+    <!--            <field name="model">account.move</field>-->
+    <!--            <field name="inherit_id" ref="account.view_invoice_tree"/>-->
+    <!--            <field name="arch" type="xml">-->
+    <!--                <xpath expr='//tree' position='attributes'>-->
+    <!--                    <attribute name="create">false</attribute>-->
+    <!--                </xpath>-->
+    <!--            </field>-->
+    <!--        </record>-->
+
+    <!--    <record id="view_account_move_kanban_inher" model="ir.ui.view">-->
+    <!--            <field name="name">account.move.line.form.kanban.inherits</field>-->
+    <!--            <field name="model">account.move</field>-->
+    <!--            <field name="inherit_id" ref="account.view_account_move_kanban"/>-->
+    <!--            <field name="arch" type="xml">-->
+    <!--                <xpath expr='//kanban' position='attributes'>-->
+    <!--                    <attribute name="create">false</attribute>-->
+    <!--                </xpath>-->
+    <!--            </field>-->
+    <!--        </record>-->
+
+
+    <record id="sale_order_line_form_inher" model="ir.ui.view">
+        <field name="name">sale.order.line.form.inherits</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//field[@name='discount']" position="after">
+                <field name="x_discount_amount" optional="show" readonly="0"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_journal_form_inher" model="ir.ui.view">
+        <field name="name">account.journal.form.inherits</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="x_sale_order_type_ids" attrs="{'invisible': [('type', '!=', 'sale')]}"
+                       widget="many2many_checkboxes"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_template" model="ir.ui.view">
+        <field name="name">inherits.templates</field>
+        <field name="model">sale.order.template</field>
+        <field name="inherit_id" ref="sale_management.sale_order_template_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='note']" position="replace">
+                <field class="text-right" name="note" nolabel="1"
+                       placeholder="The Administrator can set default Terms &amp; Conditions in Sales Settings. Terms set here will show up instead if you select this quotation template."/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_move_line_inherits" model="ir.ui.view">
+        <field name="name">account.move.line.inherits</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet//notebook//page[1]//group//group//field[@name='account_id']"
+                   position="attributes">
+                <attribute name="domain">['|', ('x_users', '=', uid), ('x_users', '=', False)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherit_view_account_analytic_line_form" model="ir.ui.view">
+        <field name="name">inherit.account.analytic.line.form</field>
+        <field name="model">account.analytic.line</field>
+         <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet//group//group//field[@name='account_id']"
+                   position="attributes">
+                <attribute name="domain">['|', ('x_users', '=', uid), ('x_users', '=', False)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherit_view_crossovered_budget_line_form" model="ir.ui.view">
+        <field name="name">inherit.crossovered.budget.lines</field>
+        <field name="model">crossovered.budget.lines</field>
+         <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet//group//field[@name='analytic_account_id']"
+                   position="attributes">
+                <attribute name="domain">['|', ('x_users', '=', uid), ('x_users', '=', False)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_move_line_form_inher" model="ir.ui.view">
+        <field name="name">account_move_line_form_inher</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="x_document_type" optional="show"/>
+                <field name="x_origin_date" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_tax_repartition_line_tree_inher" model="ir.ui.view">
+        <field name="name">account_tax_repartition_line_tree_inher</field>
+        <field name="model">account.tax.repartition.line</field>
+        <field name="inherit_id" ref="account.tax_repartition_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="x_tag_custom_ids" widget="many2many_tags" options="{'no_create': True}"
+                       domain="[('applicability', '=', 'taxes'), ('country_id', '=', country_id)]"/>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_default_form_inherit" model="ir.ui.view">
+        <field name="name">view_account_analytic_default_form_inherit</field>
+        <field name="model">account.analytic.default</field>
+        <field name="inherit_id" ref="account_analytic_default.view_account_analytic_default_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_stop']" position="after">
+                <field name="x_sale_team"/>
+		<field name="x_vehicle"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_payment_analytic_form_inherit" model="ir.ui.view">
+        <field name="name">account_payment_analytic_form_inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_method_code']" position="after">
+                <field name="x_analytic_account_id" domain="['|', ('x_users', '=', uid), ('x_users', '=', False)]"/>
+            </xpath>
+	    <xpath expr="//form//sheet//group//group[3]//div" position="after">
+                <field name="x_payment_due_amount" invisible="1"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page name="total_payments" string="Payment Details" invisible="context.get('active_model')">
+                        <div attrs="{'invisible': [('payment_type', '!=', 'outbound')]}">
+                            <label for="x_voucher_no" string="Voucher No"/>
+                            <field name="x_voucher_no"/>
+                            <button name="generate_voucher_no" string="Generate Voucher No." type="object"
+                                    attrs="{'invisible': [('x_voucher_no', '!=', False)]}"/>
+                        </div>
+                        <field name="x_total_payments" nolabel="1"
+                               attrs="{'invisible': [('payment_type', '!=', 'outbound')], 'readonly': [('state', '!=', 'draft')]}"
+                               domain="[('partner_id', '=', partner_id), ('state', '=', 'posted'), ('type', '!=', 'entry'), ('invoice_payment_state', '=', 'not_paid')]">
+
+                            <tree>
+                                <field name="name"/>
+                                <field name="type"/>
+                                <field name="invoice_date" optional="show"
+                                       invisible="context.get('default_type') not in ('out_invoice', 'out_refund','out_receipt')"
+                                       string="Invoice Date"/>
+                                <field name="invoice_origin" optional="show" string="Source Document"/>
+                                <field name="invoice_date_due" optional="show"/>
+                                <field name="amount_untaxed_signed" string="Tax Excluded" sum="Total" optional="show"/>
+                                <field name="amount_tax_signed" string="Tax" sum="Total" optional="hide"/>
+                                <field name="amount_total_signed" string="Total" sum="Total" optional="show"/>
+                                <field name="amount_residual_signed" string="Amount Due" sum="Amount Due"
+                                       optional="show"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="company_currency_id" invisible="1"/>
+                                <field name="state" optional="hide"/>
+                                <field name="invoice_payment_state" optional="hide"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_receivable_statement_view_form_inherit" model="ir.ui.view">
+        <field name="name">account.receivable.statement.form.inherit</field>
+        <field name="model">account.user.statement</field>
+        <field name="inherit_id" ref="pabs_sale.account_user_statement_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']//button[2]" position="after">
+                <field name="is_receivable" invisible="1"/>
+                <button name="action_view_bills" class="oe_stat_button" icon="fa-pencil-square-o" type="object"
+                        context="{'default_type': 'in_invoice', 'default_user_statement_id': id}"
+                        attrs="{'invisible': [('is_receivable', '=', False)]}">
+                    <field name="bills_count" widget="statinfo" string="Bills"/>
+                </button>
+                <button name="action_view_vendor_credit" class="oe_stat_button" icon="fa-pencil-square-o" type="object"
+                        context="{'default_type': 'in_refund', 'default_user_statement_id': id}"
+                        attrs="{'invisible': [('is_receivable', '=', False)]}">
+                    <field name="refund_count" widget="statinfo" string="Refunds"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_move_tree_inherits_pabs_inherits" model="ir.ui.view">
+        <field name="name">account.move.tree.inherits.pabs.inherits</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//field[@name='amount_total_signed']" position="after">
+                <field name="x_due_am" sum="paid"/>
+                <field name="amount_residual" sum="due"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_receivable_terminal" model="ir.actions.act_window">
+        <field name="name">Receivable Sessions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.terminal</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="context">{'is_receivable': True}</field>
+        <field name="domain">[('allowed_team.member_ids', 'in', context.get('uid'))]</field>
+    </record>
+
+    <record id="action_receivable_account_user_statement" model="ir.actions.act_window">
+        <field name="name">All</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.user.statement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_receivable', '!=', False)]</field>
+    </record>
+
+    <menuitem id="account_session" name="Receivable Sessions" parent="account_accountant.menu_accounting"
+              sequence="7" groups="pabs_base.group_accountant_receivable"/>
+
+    <menuitem id="account_cash_journal" name="Cash Journals"
+              action="pabs_sale.open_account_journal_dashboard_kanban_in_sales"
+              parent="account_session" sequence="1"/>
+
+    <menuitem id="account_cash_sessions" name="Sessions" action="action_receivable_terminal" parent="account_session"
+              sequence="2"/>
+
+    <menuitem id="account_all_sessions" name="All Sessions" action="action_receivable_account_user_statement"
+              parent="account_session" sequence="3"/>
+
+
+</odoo>

@@ -1,0 +1,85 @@
+<odoo>
+  <data>
+
+    <record id="stock_return_reason_form" model="ir.ui.view">
+          <field name="name">stock.return.reason.form</field>
+          <field name="model">stock.return.reason</field>
+          <field name="arch" type="xml">
+              <form>
+                  <sheet>
+                      <group>
+                          <field name="name"/>
+                      </group>
+                      <group>
+                          <group>
+                              <field name="responsible_type"/>
+                          </group>
+                          <group>
+                              <field name="picking_type_id" options="{'no_create':True}"/>
+                          </group>
+                      </group>
+                  </sheet>
+                  <div class="oe_chatter">
+                      <field name="message_follower_ids" widget="mail_followers" />
+                      <field name="activity_ids" widget="mail_activity" />
+                      <field name="message_ids" widget="mail_thread" />
+                  </div>
+              </form>
+          </field>
+      </record>
+
+    <record id="stock_return_reason_search" model="ir.ui.view">
+        <field name="name">stock.return.reason.search</field>
+        <field name="model">stock.return.reason</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="responsible_type"/>
+                <field name="picking_type_id"/>
+<!--                <filter string="Customer Reasons" name="customer_reasons" domain="[('responsible_type','=','customer')]"/>-->
+<!--                <filter string="Installation Team Reasons" name="installation_team_reasons" domain="[('responsible_type','=','installation_team')]"/>-->
+<!--                <filter string="Salesperson Reasons" name="salesperson_reasons" domain="[('responsible_type','=','sales_person')]"/>-->
+<!--                <filter string="Warehouse Reasons" name="warehouse_reasons" domain="[('responsible_type','=','warehouse')]"/>-->
+<!--                <filter string="Al Salam Reasons" name="alsalam_reasons" domain="[('responsible_type','=','alsalam')]"/>-->
+<!--                <filter string="Principal Company Reasons" name="principal_company_reasons" domain="[('responsible_type','=','principal_company')]"/>-->
+<!--                <filter string="Site Inspection / Teams Reasons" name="site_inspection_reasons" domain="[('responsible_type','=','site_inspection')]"/>-->
+<!--                <filter string="Other Reasons" name="other_reasons" domain="[('responsible_type','!=','site_inspection')-->
+<!--                                                                           , ('responsible_type','!=','customer')-->
+<!--                                                                           , ('responsible_type','!=','installation_team')-->
+<!--                                                                           , ('responsible_type','!=','sales_person')-->
+<!--                                                                           , ('responsible_type','!=','warehouse')-->
+<!--                                                                           , ('responsible_type','!=','alsalam')-->
+<!--                                                                           , ('responsible_type','!=','principal_company')]"/>-->
+<!--                <group expand="0" string="Group By">-->
+<!--                    <filter string="Responsible" name="responsible" domain="[]" context="{'group_by': 'responsible_type'}"/>-->
+<!--                    <filter string="Operation Type" name="operation_type" domain="[]" context="{'group_by': 'picking_type_id'}"/>-->
+<!--                </group>-->
+            </search>
+        </field>
+    </record>
+
+    <record id="stock_return_reason_tree" model="ir.ui.view">
+        <field name="name">stock.return.reason.tree</field>
+        <field name="model">stock.return.reason</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="responsible_type"/>
+                <field name="picking_type_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_show_stock_return_reason_list" model="ir.actions.act_window">
+        <field name="name">Return Reasons</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.return.reason</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('stock_return_reason_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('stock_return_reason_form')})]"/>
+        <field name="search_view_id" ref="stock_return_reason_search"/>
+        <field name="domain">[]</field>
+    </record>
+
+  </data>
+</odoo>

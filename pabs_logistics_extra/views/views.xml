@@ -1,0 +1,198 @@
+<odoo>
+    <data>
+        <record id="pabs_logistics_extra_view_picking_type_form_inherit" model="ir.ui.view">
+            <field name="name">pabs.logistics.extra.view.picking.type.form.inherit</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <field name="warehouse_id" position="after">
+                    <field name="business_line"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_business_line_form" model="ir.ui.view">
+            <field name="name">view.business.line.form</field>
+            <field name="model">business.line</field>
+            <field name="arch" type="xml">
+                <form string="Business Line">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="no_days" placeholder="Days"/>
+                            <field name="operations"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--        <record id="view_team_unavailable_date_form" model="ir.ui.view">-->
+        <!--            <field name="name">view.team.unavailable.date.form</field>-->
+        <!--            <field name="model">team.unavailable.date</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <form string="Unavailable Dates">-->
+        <!--                    <group>-->
+        <!--                        <field name="team"/>-->
+        <!--                        <field name="date_from"/>-->
+        <!--                        <field name="date_to"/>-->
+        <!--                    </group>-->
+        <!--                </form>-->
+        <!--            </field>-->
+        <!--        </record>-->
+        <record id="view_team_unavailable_date_tree" model="ir.ui.view">
+            <field name="name">view.team.unavailable.date.tree</field>
+            <field name="model">team.unavailable.date</field>
+            <field name="arch" type="xml">
+                <tree string="Unavailable Dates" editable="top">
+                    <field name="team" required="1"/>
+                    <field name="date_from" required="1"/>
+                    <field name="date_to" required="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="stock_team_unavailable_date_action" model="ir.actions.act_window">
+            <field name="name">Global Time Off</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">team.unavailable.date</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('team', '=', active_id)]</field>
+        </record>
+
+        <record id="stock_plan_calendar_view_gantt_form" model="ir.ui.view">
+            <field name="name">stock.plan.calendar.view.gantt.form</field>
+            <field name="model">plan.calendar</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="x_delivery_domain" invisible="1"/>
+                            <field name="business_line"/>
+                            <field name="delivery"/>
+                            <field name="status"/>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime" invisible="1"/>
+                            <field name="note"/>
+                            <field name="period"/>
+                            <field name="x_priority" widget="priority"/>
+                        </group>
+                        <field name="delivery_items" readonly="1" force_save="1"/>
+                        <group>
+                            <button name="%(action_plan_calendar_shift_inventory_view_gantt)d"
+                                    string="Shift Booked Slot"
+                                    type="action"
+                                    class="btn-primary"
+                                    context="{'bl': business_line, 'coming_from':'sale.order'}"
+                                    attrs="{'invisible': [('delivery', '=', False)]}"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="stock_plan_calendar_view_gantt_tree" model="ir.ui.view">
+            <field name="name">stock.plan.calendar.view.gantt.tree</field>
+            <field name="model">plan.calendar</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="x_delivery_domain" invisible="1"/>
+                    <field name="business_line"/>
+                    <field name="delivery"/>
+                    <field name="status"/>
+                    <field name="delivery_state" string="Delivery State"/>
+                    <field name="start_datetime"/>
+                    <field name="note"/>
+                    <field name="period"/>
+                    <field name="x_priority" widget="priority"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="delivery_reschedule_tree" model="ir.ui.view">
+            <field name="name">delivery.reschedule.tree</field>
+            <field name="model">delivery.reschedule</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" invisible="1"/>
+                    <field name="user_id"/>
+                    <field name="create_date"/>
+                    <field name="date_to"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_plan_calendar_gantt" model="ir.ui.view">
+            <field name="name">stock.plan.calendar.gantt</field>
+            <field name="model">plan.calendar</field>
+            <field name="arch" type="xml">
+                <gantt js_class="planning_gantt"
+                       form_view_id="%(stock_plan_calendar_view_gantt_form)d"
+                       date_start="start_datetime"
+                       date_stop="end_datetime"
+                       default_group_by="business_line"
+                       default_scale="week" plan="false" scales="day,week,month"
+                       precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
+                       display_unavailability="1"
+                       decoration-info="status == 'available'" decoration-success="status == 'booked'"
+                       color="color">
+                    <field name="status"/>
+                </gantt>
+            </field>
+        </record>
+
+        <record id="stock_business_line_action" model="ir.actions.act_window">
+            <field name="name">Business Line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">business.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('business_line_type', '=', 'delivery')]</field>
+        </record>
+        <record id="stock_logistics_team_action" model="ir.actions.act_window">
+            <field name="name">Teams</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">logistics.team</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('business_line.business_line_type', '=', 'delivery')]</field>
+        </record>
+        <record id="stock_plan_calendar_gantt_action" model="ir.actions.act_window">
+            <field name="name">Delivery Planning</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">plan.calendar</field>
+            <field name="view_mode">gantt,tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+    (0, 0, {'view_mode': 'gantt', 'view_id': ref('stock_plan_calendar_gantt')}),
+    (0, 0, {'view_mode': 'form', 'view_id': ref('stock_plan_calendar_view_gantt_form')})]"/>
+
+            <field name="search_view_id" ref="plan_calendar_search_view"/>
+            <field name="context">{'search_default_group_by_business_line': 1, 'search_default_group_by_status': 1}
+            </field>
+        </record>
+        <!--            <field name="view_id" ref="stock_plan_calendar_gantt"/>-->
+        <menuitem id="menu_logistics_config" name="Logistics Management" parent="stock.menu_stock_config_settings"
+                  sequence="1"/>
+
+        <menuitem action="stock_plan_calendar_gantt_action" id="stock_plan_calendar_menu" parent="stock.menu_stock_root"
+                  sequence="0" name="Slot Calendar"/>
+        <menuitem action="stock_business_line_action" id="stock_business_line_menu" parent="menu_logistics_config"
+                  sequence="0" name="Business Lines"/>
+        <menuitem action="stock_logistics_team_action" id="stock_logistics_team_menu" parent="menu_logistics_config"
+                  sequence="1" name="Logistics Teams"/>
+
+
+    </data>
+
+</odoo>
+        <!--     <menuitem id="menu_stock_warehouse_mgmt" name="Operations" parent="menu_stock_root" sequence="2"/>-->
+        <!--        <menuitem id="stock_logistics_menu" parent="stock.menu_stock_root"-->
+        <!--                  sequence="0" name="Logistics"/>-->
+        <!--    <menuitem id="menu_warehouse_config" name="Warehouse Management" parent="menu_stock_config_settings" groups="stock.group_stock_manager" sequence="1"/>-->

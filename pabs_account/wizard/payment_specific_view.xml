@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="link_specific_payment_view_form" model="ir.ui.view">
+        <field name="name">link.specific.payment.view.form</field>
+        <field name="model">link.specific.payment</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name" readonly="1" force_save="1"/>
+                    <field name="amount" />
+                </group>
+                <footer>
+                    <button name="confirm_js_assign_outstanding_line" class="btn-primary" string="Confirm" type="object"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" close="1"/>
+
+                </footer>
+
+            </form>
+        </field>
+    </record>
+</odoo>

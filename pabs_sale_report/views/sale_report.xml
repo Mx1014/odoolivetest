@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="Tax_invoice"
+            model="account.move"
+            string="Tax Invoice"
+            report_type="qweb-pdf"
+            name="pabs_sale_report.tax_invoice_templates"
+            file="pabs_sale_report.tax_invoice_templates"
+            paperformat="pabs_sale_report.paperformat_tax_invoice_report"
+    />
+    <report
+            id="invoice_by_email"
+            model="account.move"
+            string="Invoice By Email"
+            report_type="qweb-pdf"
+            name="pabs_sale_report.tax_invoice_email_report"
+            file="pabs_sale_report.tax_invoice_email_report"
+            paperformat="pabs_sale_report.paperformat_invoice_by_email"
+    />
+</odoo>

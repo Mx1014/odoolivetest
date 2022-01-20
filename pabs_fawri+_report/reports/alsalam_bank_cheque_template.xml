@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="alsalam_bank_cheque_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div style="width:200mm; margin:auto">
+                        <div style="letter-spacing:6mm; padding-top:2mm; margin-left:130mm">
+                            <span t-field="o.date_to_numbers"/>
+                        </div>
+                        <div style="margin-left:27mm; margin-top:9.5mm">
+                            <span t-field="o.partner_bank_account_id.acc_holder_name"/>
+                        </div>
+                        <div style="float:left; margin-left:20mm; width:80mm; margin-top:4.5mm; line-height:10mm">
+                            <p t-field="o.x_amount_in_words"/>
+                        </div>
+                        <div style="float:left; margin-left:44mm; margin-top:18mm">
+                            <span t-field="o.amount"/>
+                        </div>
+                    </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

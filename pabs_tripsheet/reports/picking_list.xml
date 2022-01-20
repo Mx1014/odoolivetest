@@ -1,0 +1,341 @@
+<odoo>
+    <data>
+        <template id="picking_list_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="move_line_ids" t-value="o.picking_ids.mapped('move_line_ids')"/>
+                    <t t-set="has_package" t-value="move_line_ids.filtered('result_package_id')"
+                       groups="stock.group_tracking_lot"/>
+                    <t t-set="has_serial_number" t-value="move_line_ids.filtered('lot_id')"
+                       groups="stock.group_production_lot"/>
+                    <t t-set="has_barcode" t-value="move_line_ids.mapped('product_id').filtered('barcode')"/>
+                    <t t-set="locations" t-value="move_line_ids.mapped('location_id')"/>
+                    <t t-call="web.internal_layout">
+
+                        <div>
+                            <div>
+                                <center>
+                                    <h1>Picking List</h1>
+                                </center>
+                            </div>
+                            <div style="float:left">
+                                <table>
+                                    <tr>
+                                        <td style="width:150px">
+                                            <strong>Business Line:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.x_business_line"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Team Subcontractor:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.x_vendor"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Team Supervisor:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.x_team.internal_team_owner"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div style="float:right">
+                                <table>
+                                    <tr>
+                                        <td style="width:80px">
+                                            <strong>Team:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.x_team"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Date:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.x_delivery_date"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Reference:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.name"/>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!--                        <table class="table table-condensed">-->
+                        <!--                            <thead>-->
+                        <!--                                <tr>-->
+                        <!--                                    <th>Reference</th>-->
+                        <!--                                    <th>Contact</th>-->
+                        <!--                                    <th>City</th>-->
+                        <!--                                    <th>Block</th>-->
+                        <!--                                    <th>Qty</th>-->
+                        <!--                                    <th>Contact#</th>-->
+                        <!--                                    <th>Barcode</th>-->
+                        <!--                                </tr>-->
+                        <!--                            </thead>-->
+                        <!--                            <tbody>-->
+                        <!--                                <tr t-foreach="o.picking_ids" t-as="pick">-->
+                        <!--                                    <td>-->
+                        <!--                                        <span t-field="pick.name"/>-->
+                        <!--                                    </td>-->
+                        <!--                                    <td>-->
+                        <!--                                        <span t-field="pick.partner_id"/>-->
+                        <!--                                    </td>-->
+                        <!--                                    <td>-->
+                        <!--                                        <span t-field="pick.x_city"/>-->
+                        <!--                                    </td>-->
+                        <!--                                    <td>-->
+                        <!--                                        <span t-field="pick.x_block"/>-->
+                        <!--                                    </td>-->
+                        <!--                                    <td class="text-center">-->
+                        <!--                                        <span t-field="pick.x_total_qty_demand"/>-->
+                        <!--                                    </td>-->
+                        <!--                                    <td>-->
+                        <!--                                        <span t-field="pick.partner_id.mobile"/>-->
+                        <!--                                    </td>-->
+                        <!--                                    <td>-->
+                        <!--                                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('Code128', pick.name, 400, 100, 0)"-->
+                        <!--                                             style="width:200px;height:50px" alt="Barcode"/>-->
+                        <!--                                    </td>-->
+                        <!--                                </tr>-->
+                        <!--                            </tbody>-->
+                        <!--                        </table>-->
+                        <!--                        <p style="page-break-after: always;"/>-->
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <center><h2 t-if="o.picking_ids.filtered(lambda line: line.code == 'outgoing')">Deliveries</h2></center>
+                        <t t-foreach="o.picking_ids.filtered(lambda line: line.code == 'outgoing')" t-as="rec">
+                            <div style="padding-top:3mm">
+                                <div style="float:right">
+                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('Code128', rec.name, 400, 100, 0)"
+                                         style="width:200px;height:50px" alt="Barcode"/>
+                                </div>
+                                <strong>Ref:</strong>
+                                <span t-field="rec.name"/>
+                                <strong style="padding-left:3mm">Name:</strong>
+                                <span t-field="rec.partner_id"/>
+                                <strong style="padding-left:3mm">City:</strong>
+                                <span t-field="rec.partner_id.city_id"/>
+                                <strong style="padding-left:3mm">Contact:</strong>
+                                <span t-field="rec.x_mobile"/>
+                                <strong style="padding-left:3mm">Block:</strong>
+                                <span t-field="rec.x_block"/>
+                                <t t-if="rec.sale_order_type != 'credit_sale'">
+                                    <strong style="padding-left:3mm">Amount Due:</strong>
+                                    <span t-field="rec.x_total_amount"/>
+                                </t>
+                                <t t-if="rec.x_repair_total">
+                                    <strong style="padding-left:3mm">Repair Due:</strong>
+                                    <span t-field="rec.x_repair_total"/>
+                                </t>
+                                <t t-if="rec.origin">
+                                    <strong style="padding-left:3mm">Source#:</strong>
+                                    <span t-field="rec.origin"/>
+                                </t>
+                                <t t-if="rec.sale_order_type">
+                                    <strong style="padding-left:3mm">SO Type#:</strong>
+                                    <span t-field="rec.sale_order_type"/>
+                                </t>
+                                <t t-if="rec.x_helpdesk_ticket_id">
+                                    <strong style="padding-left:3mm">Ticket No:</strong>
+                                    <span t-field="rec.x_helpdesk_ticket_id"/>
+                                </t>
+                                <t t-if="rec.x_narration">
+                                    <strong style="padding-left:3mm">Narration:</strong>
+                                    <span t-field="rec.x_narration"/>
+                                </t>
+                            </div>
+                            <br></br>
+
+                            <table style="width: 100%; border-bottom: 1px solid black; border-top: 1px solid black"
+                                   class="table-sm o_main_table">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid black">
+                                        <th>
+                                            <strong>Product</strong>
+                                        </th>
+                                        <th class="text-center">
+                                            <strong>Qty Ordered</strong>
+                                        </th>
+                                        <th class="text-center">
+                                            <strong>Qty Available</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Unit</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Source Location</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <t t-foreach="rec.move_ids_without_package.sorted(key=lambda x: x.product_id)"
+                                   t-as="line">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:50%">
+                                                <span t-field="line.product_id"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="'{:,.1f}'.format(line.product_uom_qty)"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="'{:,.1f}'.format(line.reserved_availability)"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.product_uom"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.location_id"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </t>
+                                <tr>
+                                    <td style="border-top: 1px solid black">
+                                        <strong>Total Qty</strong>
+                                    </td>
+                                    <td style="border-top: 1px solid black" class="text-center">
+                                        <span t-esc="'%.1f'%sum(rec.move_ids_without_package.mapped('product_uom_qty'))"/>
+                                    </td>
+                                    <td style="border-top: 1px solid black" class="text-center">
+                                        <span t-esc="'%.1f'%sum(rec.move_ids_without_package.mapped('reserved_availability'))"/>
+                                    </td>
+                                    <td style="border-top: 1px solid black"></td>
+                                    <td style="border-top: 1px solid black"></td>
+                                </tr>
+                            </table>
+                            <!--                            <p style="page-break-after: always;"/>-->
+                        </t>
+
+
+
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <center><h2 t-if="o.picking_ids.filtered(lambda line: line.code == 'incoming')">Receipts</h2></center>
+                        <t t-foreach="o.picking_ids.filtered(lambda line: line.code == 'incoming')" t-as="rec">
+                            <div style="padding-top:3mm">
+                                <div style="float:right">
+                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;quiet=%s' % ('Code128', rec.name, 400, 100, 0)"
+                                         style="width:200px;height:50px" alt="Barcode"/>
+                                </div>
+                                <strong>Ref:</strong>
+                                <span t-field="rec.name"/>
+                                <strong style="padding-left:3mm">Name:</strong>
+                                <span t-field="rec.partner_id"/>
+                                <strong style="padding-left:3mm">City:</strong>
+                                <span t-field="rec.partner_id.city_id"/>
+                                <strong style="padding-left:3mm">Contact:</strong>
+                                <span t-field="rec.x_mobile"/>
+                                <strong style="padding-left:3mm">Block:</strong>
+                                <span t-field="rec.x_block"/>
+                                <t t-if="rec.sale_order_type != 'credit_sale'">
+                                    <strong style="padding-left:3mm">Amount Due:</strong>
+                                    <span t-field="rec.x_total_amount"/>
+                                </t>
+                                <t t-if="rec.x_repair_total">
+                                    <strong style="padding-left:3mm">Repair Due:</strong>
+                                    <span t-field="rec.x_repair_total"/>
+                                </t>
+                                <t t-if="rec.origin">
+                                    <strong style="padding-left:3mm">Source#:</strong>
+                                    <span t-field="rec.origin"/>
+                                </t>
+                                <t t-if="rec.sale_order_type">
+                                    <strong style="padding-left:3mm">SO Type#:</strong>
+                                    <span t-field="rec.sale_order_type"/>
+                                </t>
+                                <t t-if="rec.x_helpdesk_ticket_id">
+                                    <strong style="padding-left:3mm">Ticket No:</strong>
+                                    <span t-field="rec.x_helpdesk_ticket_id"/>
+                                </t>
+                                <t t-if="rec.x_narration">
+                                    <strong style="padding-left:3mm">Narration:</strong>
+                                    <span t-field="rec.x_narration"/>
+                                </t>
+                            </div>
+                            <br></br>
+
+                            <table style="width: 100%; border-bottom: 1px solid black; border-top: 1px solid black"
+                                   class="table-sm o_main_table">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid black">
+                                        <th>
+                                            <strong>Product</strong>
+                                        </th>
+                                        <th class="text-center">
+                                            <strong>Qty Ordered</strong>
+                                        </th>
+                                        <th class="text-center">
+                                            <strong>Qty Available</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Unit</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Source Location</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <t t-foreach="rec.move_ids_without_package.sorted(key=lambda x: x.product_id)"
+                                   t-as="line">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:50%">
+                                                <span t-field="line.product_id"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="'{:,.1f}'.format(line.product_uom_qty)"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="'{:,.1f}'.format(line.reserved_availability)"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.product_uom"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.location_id"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </t>
+                                <tr>
+                                    <td style="border-top: 1px solid black">
+                                        <strong>Total Qty</strong>
+                                    </td>
+                                    <td style="border-top: 1px solid black" class="text-center">
+                                        <span t-esc="'%.1f'%sum(rec.move_ids_without_package.mapped('product_uom_qty'))"/>
+                                    </td>
+                                    <td style="border-top: 1px solid black" class="text-center">
+                                        <span t-esc="'%.1f'%sum(rec.move_ids_without_package.mapped('reserved_availability'))"/>
+                                    </td>
+                                    <td style="border-top: 1px solid black"></td>
+                                    <td style="border-top: 1px solid black"></td>
+                                </tr>
+                            </table>
+                            <!--                            <p style="page-break-after: always;"/>-->
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_move_form_inherit_pabs_sale" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.pabs.sale</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+<!--            <button id="account_invoice_payment_btn" position="attributes">-->
+<!--                <attribute name="name">action_register_payment_custom</attribute>-->
+<!--            </button>-->
+             <button id="account_invoice_payment_btn" position="after">
+                 <button name="action_register_payment_custom" id="account_invoice_payment_custom_btn" type="object" class="oe_highlight" attrs="{'invisible': ['|', '|', ('state', '!=', 'posted'), ('invoice_payment_state', '!=', 'not_paid'), ('type', 'not in', ('out_invoice', 'out_refund', 'out_receipt', 'in_receipt'))]}" string="Register Payment" groups="account.group_account_invoice"/>
+             </button>
+            <button id="account_invoice_payment_btn" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '|', ('state', '!=', 'posted'), ('invoice_payment_state', '!=', 'not_paid'), ('type', 'not in', ('in_invoice', 'in_refund'))]}</attribute>
+            </button>
+            <xpath expr="//field[@name='company_id']" position="before">
+                <field name="sale_order_type" attrs="{'readonly': [('id','!=', False)], 'invisible': [('type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+            </xpath>
+            <xpath expr="//div[@class='d-flex']" position="replace">
+                <div class="d-flex" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'in_refund', 'out_receipt'))]}">
+                    <field name="invoice_payment_term_id"
+                           placeholder="SO Terms"
+                           domain="[('payment_term_type', 'in', ['so', 'both'])]"
+                           attrs="{'invisible': [('type', 'not in', ('out_invoice', 'in_refund', 'out_receipt'))]}"/>
+                    <span class="o_form_label mx-3 oe_edit_only"
+                          attrs="{'invisible': [ '|', '|', '|', ('state', '!=', 'draft'), ('invoice_payment_term_id', '!=', False), ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"> or </span>
+                    <field name="invoice_date_due" force_save="1"
+                           placeholder="Date"
+                           attrs="{'invisible': ['|', ('invoice_payment_term_id', '!=', False), ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+                </div>
+                <div class="d-flex" attrs="{'invisible': [('type', 'not in', ('out_refund', 'in_invoice', 'in_receipt'))]}">
+                    <field name="invoice_payment_term_id"
+                           placeholder="PO Terms"
+                           domain="[('payment_term_type', 'in', ['po', 'both'])]"
+                           attrs="{'invisible': [('type', 'not in', ('out_refund', 'in_invoice', 'in_receipt'))]}"/>
+                    <span class="o_form_label mx-3 oe_edit_only"
+                          attrs="{'invisible': [ '|', '|', '|', ('state', '!=', 'draft'), ('invoice_payment_term_id', '!=', False), ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"> or </span>
+                    <field name="invoice_date_due" force_save="1"
+                           placeholder="Date"
+                           attrs="{'invisible': ['|', ('invoice_payment_term_id', '!=', False), ('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="after">
+<!--                <field name="user_statement_id" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund'))]}"/>-->
+                <field name="user_statement_id" invisible="1" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account.action_account_invoice_from_list" model="ir.actions.server">
+            <field name="name">Register Vendors Payments</field>
+            <field name="model_id" ref="account.model_account_payment"/>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_register_payment()
+            </field>
+        </record>
+
+    <record id="action_account_customer_invoice_from_list" model="ir.actions.server">
+            <field name="name">Register Customers Payments</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_view_types">list</field>
+            <field name="sequence">3</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_register_batch_payment_custom()
+            </field>
+        </record>
+
+</odoo>

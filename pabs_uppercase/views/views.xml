@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+        <template id="assets_backend" name="uppercase_everything" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+
+                <link rel="stylesheet" href="/pabs_uppercase/static/src/css/uppercase_everything.css"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

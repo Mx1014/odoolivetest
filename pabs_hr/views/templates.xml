@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record model="ir.ui.view" id="hr_res_users_view_form_profile_inherited">
+        <field name="name">hr.res.users.view.form.profile.inherited</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="hr.res_users_view_form_profile"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="edit">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_config_settings_view_form_inherit_provision_adjustment" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.provision.adjustment</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="95"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@data-key='hr_payroll']//div" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane"/>
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Annual Provision Account</span>
+                        <div class="text-muted">
+                            Annual Provision Account
+                        </div>
+                        <div>
+                            <label for="default_annual_leave_provision_account"/>
+                            <field name="default_annual_leave_provision_account"/>
+                            <label for="default_annual_leave_expense_account"/>
+                            <field name="default_annual_leave_expense_account"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane"/>
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Indemnity Provision Account</span>
+                        <div class="text-muted">
+                            Indemnity Provision Account
+                        </div>
+                        <div>
+                            <label for="default_indemnity_leave_provision_account"/>
+                            <field name="default_indemnity_leave_provision_account"/>
+                            <label for="default_indemnity_leave_expense_account"/>
+                            <field name="default_indemnity_leave_expense_account"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane"/>
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Journal</span>
+                        <div class="text-muted">
+                            Journal
+                        </div>
+                        <div>
+                            <label for="default_journal"/>
+                            <field name="default_journal"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

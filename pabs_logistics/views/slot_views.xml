@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="slot_allocation_time_view_form" model="ir.ui.view">
+        <field name="name">slot.allocation.time.form</field>
+        <field name="model">slot.allocation.time</field>
+        <field name="arch" type="xml">
+            <form string="Slot Allocation Time">
+                <sheet>
+                    <div class="oe_title" id="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date" />
+                            <field name="time_zone" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="picking_type_id" />    
+                            <field name="capacity_qty" />
+                            <field name="reamining_qty" />
+                        </group>
+                    </group>
+                    <field name="sale_order_line_ids"  nolabel="1" widget="one2many" mode="tree"  readonly="1" />
+                    <separator/>
+                    <field name="stock_move_ids"  nolabel="1" widget="one2many" mode="tree"  readonly="1" />
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="slot_allocation_time_view_tree" model="ir.ui.view">
+        <field name="name">slot.allocation.time.tree</field>
+        <field name="model">slot.allocation.time</field>
+        <field name="arch" type="xml">
+            <tree string="Slot Allocation Time">
+                <field name="name"/>
+                <field name="date" />
+                <field name="time_zone" />
+                <field name="capacity_qty" />
+                <field name="reamining_qty" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_slot_allocation_time" model="ir.actions.act_window">
+        <field name="name">Slot Allocation Times</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">slot.allocation.time</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_slot_allocation_time"
+        action="pabs_logistics.action_slot_allocation_time"
+        parent="sale.prod_config_main"
+        sequence="100"/>
+
+</odoo>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+      <template id="vat_report_compatible" inherit_id="account.report_invoice_document">
+
+         <xpath expr="//div[@class='clearfix']" position="after">
+             <span class="col-xs-6">
+                 <strong style="font-size: 16px">Tax Summary</strong>
+                 <t t-if="o.company_id.currency_id != o.currency_id">
+                     <t t-set="rate" t-value="o.env['res.currency']._get_conversion_rate(o.currency_id, o.company_id.currency_id, o.company_id, o.invoice_date)"/>
+                     <span  style="margen-bottom:10px;"> / Exchange Rate: <span t-esc="rate"/></span>
+                 </t>
+             </span>
+            <div class="col-xs-6">
+             <table class="table table-sm o_main_table"> <!-- style="margen-bottom:10px;width:80;display: inline-block;float: left;"-->
+                        <thead>
+                            <tr style="border-bottom: 1px solid #ddd">
+                                <th style="border-bottom: 1px solid #ddd" class="text-left"><span>Name</span></th>
+                                <th style="border-bottom: 1px solid #ddd" class="text-center"><span>Taxable Amount(BH)</span></th>
+                                <th style="border-bottom: 1px solid #ddd" class="text-center"><span>Tax Amount(BH)</span></th>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <t t-foreach="o.grouping()" t-as="l">
+                                <tr>
+                                    <td style="border-bottom: 1px solid #ddd" class="text-left"><span t-esc="l_value['desc']"/></td>
+                                    <td style="border-bottom: 1px solid #ddd" class="text-center"><span t-esc="'{:,.3f}'.format(l_value['base'])"/></td>
+                                    <td style="border-bottom: 1px solid #ddd" class="text-center"><span t-esc="'{:,.3f}'.format(l_value['amount'])"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+             </div>
+         </xpath>
+      </template>
+
+
+        <template id="vat_report_sale_quote" inherit_id="sale.report_saleorder_document">
+             <xpath expr="//t[@t-set='address']" position="after">
+               <h3>
+                <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                    <span t-if="doc.state not in ['draft','sent']">Agreement # </span>
+                    <span t-if="doc.state in ['draft','sent']">Quotation # </span>
+                </t>
+                <t t-if="env.context.get('proforma', False) or is_pro_forma">
+                    <span>Pro-Forma Invoice # </span>
+                </t>
+                <span t-field="doc.name"/>
+            </h3>
+           </xpath>
+           <xpath expr="//h2" position="replace">
+               <h2 class="mt16">
+                <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                    <span t-if="doc.state not in ['draft','sent']">Agreement # </span>
+                    <span t-if="doc.state in ['draft','sent']">Quotation # </span>
+                </t>
+                <t t-if="env.context.get('proforma', False) or is_pro_forma">
+                    <span>Pro-Forma Invoice # </span>
+                </t>
+                <span t-field="doc.name"/>
+            </h2>
+           </xpath>
+           <xpath expr="//h2" position="after">
+               <h3><span t-field="doc.sale_order_template_id.name"/></h3>
+           </xpath>
+
+          <xpath expr="//th[@name='th_priceunit']" position="after">
+                   <td><strong><span>Price</span></strong></td>
+          </xpath>
+          <xpath expr="//td[@name='td_priceunit']" position="after">
+                   <td><span t-field="line.x_before_disc_price"/></td>
+          </xpath>
+          <xpath expr="//th[@name='th_discount']" position="after">
+                   <td><strong><span>Net Price</span></strong></td>
+          </xpath>
+          <xpath expr="//td[@t-if='display_discount']" position="after">
+                   <td><span t-field="line.price_subtotal"/></td>
+          </xpath>
+           <xpath expr="//th[@name='th_taxes']" position="after">
+                   <td><strong><span>Tax Amount</span></strong></td>
+          </xpath>
+          <xpath expr="//td[@name='td_taxes']" position="after">
+                   <td><span t-field="line.price_tax"/></td>
+          </xpath>
+           <xpath expr="//th[@name='th_subtotal']" position="replace">
+                   <td class="text-right"><strong><span>Total</span></strong></td>
+          </xpath>
+           <xpath expr="//td[@name='td_subtotal']" position="replace">
+                   <td class="text-right"><span t-field="line.price_total"/></td>
+          </xpath>
+            <xpath expr="//td[@t-if='display_discount']" position="replace">
+                 <td t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
+                     <span t-field="line.x_discount_amount"/>
+                 </td>
+          </xpath>
+          <xpath expr="//th[@name='th_discount']" position="replace">
+               <th name="th_discount" t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
+                            <span>Disc.</span>
+                </th>
+          </xpath>
+
+      </template>
+
+
+    </data>
+</odoo>

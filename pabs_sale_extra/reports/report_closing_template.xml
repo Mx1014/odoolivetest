@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_closing_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+                    <div class="page" style="font-size: 13px;">
+                        <style>
+                            table, td, th {
+                            border: 1px solid black;
+                            }
+                            .right{
+                            float:right;
+                            padding-right: 0.3em;
+                            }
+                            table {
+                            width: 100%;
+                            margin-top: 20px;
+                            }
+                            td {
+                            text-indent: 0.3em;
+                            }
+                            .space {
+                            text-indent: 0.3em;
+                            }
+                            .right-space {
+                            padding-right: 0.3em;
+                            }
+                            .no-border {
+                            border:none;
+                            }
+                            .th-width {
+                            width: 15%;
+                            }
+                            .qty-with {
+                            width: 10%;
+                            }
+                            .des-with {
+                            width: 40%;
+                            }
+                        </style>
+                        <h4 class="text-center" style="text-align: center;">User Statement Report</h4>
+                        <t t-set="receipt" t-value="0"/>
+                        <t t-foreach="o.user_statement_cash_line_ids" t-as="l">
+                            <t t-if="l.amount &gt; 0.0">
+                                 <t t-set="receipt" t-value="receipt + 1"/>
+                            </t>
+                        </t>
+                        <t t-set="returns" t-value="0"/>
+                        <t t-foreach="o.user_statement_cash_line_ids" t-as="l">
+                            <t t-if="l.amount &lt; 0.0 and l.transaction_type != 'transfer'">
+                                 <t t-set="returns" t-value="returns + 1"/>
+                            </t>
+                        </t>
+                        <table>
+                            <tr>
+                                <td>
+                                    <strong class="text-left">Branch:</strong>
+                                    <span class="right" t-field="o.terminal_id.allowed_team.name"/>
+                                </td>
+                                <td>
+                                    <strong class="text-left">User Statement:</strong>
+                                    <span class="right" t-field="o.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong class="text-left">Terminal:</strong>
+                                    <span class="right" t-field="o.terminal_id.name"/>
+                                </td>
+                                <td>
+                                    <strong class="text-left">Cash Statement:</strong>
+                                    <span class="right" t-field="o.bank_statement_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong></strong>
+                                </td>
+                                <td class="text-center" style="text-align: center;">
+                                    <strong>Date and Time</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong class="text-left">Responsible Cashier:</strong>
+                                    <span class="right" t-field="o.user_id.name"/>
+                                </td>
+                                <td>
+                                    <strong class="text-left">Opening:</strong>
+                                    <span class="right" t-field="o.start_at"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong class="text-left">Master Cashier:</strong>
+                                    <span class="right" t-field="o.master_cashier.name"/>
+                                </td>
+                                <td>
+                                    <strong class="text-left">Closing:</strong>
+                                    <span class="right" t-field="o.stop_at"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="space">Receipt Summary</th>
+                                    <th class="text-center des-with">Type</th>
+                                    <th class="text-center qty-with">Qty</th>
+                                    <th class="text-center th-width">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="3"></td>
+                                    <td>Cash</td>
+                                    <td class="text-center"><t t-esc="receipt"/> </td>
+                                    <td class="text-right right-space">
+                                        <span t-field="o.cash_total"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cheques</td>
+                                    <td class="text-center"><t t-esc="len(o.user_statement_cheque_line_ids)"/></td>
+                                    <td class="text-right right-space">
+                                        <span t-field="o.cheque_total"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Credit Card &amp; Others</td>
+                                    <td class="text-center"><t t-esc="len(o.user_statement_card_line_ids)"/> </td>
+                                    <td class="text-right right-space">
+                                        <span t-field="o.card_total"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr class="no-border">
+                                    <td class="no-border"></td>
+                                    <td class="no-border"></td>
+                                    <td class="no-border text-center"><strong>Total</strong></td>
+                                    <td class="text-right" style="padding-right: 0.3em;">
+                                        <strong>
+                                            <t t-esc="o.cash_total + o.cheque_total + o.card_total"
+                                               t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="space">Cash Summary</th>
+                                    <th class="text-center des-with">Type</th>
+                                    <th class="text-center qty-with">Qty</th>
+                                    <th class="text-center th-width">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="5"></td>
+                                    <td>Opening Balance</td>
+                                    <td></td>
+                                    <td class="text-right right-space">
+                                        <span t-field="o.balance_start"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Receipts</td>
+                                    <td class="text-center"><t t-esc="receipt"/></td>
+                                    <td class="text-right right-space">
+                                        <span t-field="o.cash_total"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Returns</td>
+                                    <td class="text-center"><t t-esc="returns"/> </td>
+                                    <td class="text-right right-space">
+                                        <span t-field="o.return_total"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Vouchers</td>
+                                    <td class="text-center"><span t-field="o.voucher_count"/> </td>
+                                    <td class="text-right right-space">
+                                        <span t-field="o.voucher_total"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Shortage/Excess</td>
+                                    <td></td>
+                                    <td class="text-right right-space"><span t-field="o.end_difference"/> </td>
+                                </tr>
+                                <tr class="no-border">
+                                    <td class="no-border"></td>
+                                    <td class="no-border"></td>
+                                    <td class="no-border text-center"><strong>Total</strong></td>
+                                    <td class="text-right" style="padding-right: 0.3em;">
+                                        <strong>
+                                            <t t-esc="o.balance_start + o.cash_total + o.return_total + o.voucher_total"
+                                               t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="space">Cash Count</th>
+                                    <th class="text-center des-with">Denomination</th>
+                                    <th class="text-center qty-with">Qty</th>
+                                    <th class="text-center th-width">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="closing_count" t-value="0"/>
+                                <t t-foreach="o.close_cash_ids.filtered(lambda no: no.number != 0)" t-as="l">
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-center">
+                                            <span t-field="l.coin_value"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="l.number"/>
+                                        </td>
+                                        <td class="text-right right-space">
+                                            <span t-field="l.subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <t t-set="closing_count" t-value="closing_count + l.subtotal"/>
+                                </t>
+                                <tr class="no-border">
+                                    <td class="no-border"></td>
+                                    <td class="no-border"></td>
+                                    <td class="no-border text-center"><strong>Total</strong></td>
+                                    <td class="text-right" style="padding-right: 0.3em;">
+                                        <strong>
+                                            <t t-esc="closing_count"
+                                               t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table>
+                            <thead>
+                                <t t-set="cheque_count" t-value="0"/>
+                                <tr>
+                                    <th class="space">Cheques Details</th>
+                                    <th class="space">Partner</th>
+                                    <th style="width: 20%;" class="text-center">Number</th>
+                                    <th style="width: 20%;" class="text-center">Bank</th>
+                                    <th class="text-center qty-with">Date</th>
+                                    <th class="text-center th-width">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.user_statement_cheque_line_ids" t-as="l">
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <span t-field="l.partner_id.name"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="l.cheque_number"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.bank_id.name"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="l.cheque_date"/>
+                                        </td>
+                                        <td class="text-right right-space">
+                                            <span t-field="l.amount"/>
+                                        </td>
+                                    </tr>
+                                    <t t-set="cheque_count" t-value="cheque_count + l.amount"/>
+                                </t>
+                                <tr class="no-border">
+                                    <td class="no-border"></td>
+                                    <td class="no-border"></td>
+                                    <td class="no-border"></td>
+                                    <td class="no-border"></td>
+                                    <td class="no-border text-center"><strong>Total</strong></td>
+                                    <td class="text-right" style="padding-right: 0.3em;">
+                                        <strong>
+                                            <t t-esc="cheque_count"
+                                               t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+<!--                        <table>-->
+<!--                            <thead>-->
+<!--                                <t t-set="card_count" t-value="0"/>-->
+<!--                                <tr>-->
+<!--                                    <th class="space">Credit Card Details</th>-->
+<!--                                    <th class="text-center des-with">Payment Method</th>-->
+<!--                                    <th class="text-center qty-with">Qty</th>-->
+<!--                                    <th class="text-center th-width">Total</th>-->
+<!--                                </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                                <t t-foreach="o.user_statement_card_line_ids" t-as="l">-->
+<!--                                    <tr>-->
+<!--                                        <td></td>-->
+<!--                                        <td class="text-center">-->
+<!--                                            <span t-field="l.journal_id.name"/>-->
+<!--                                        </td>-->
+<!--                                        <td></td>-->
+<!--                                        <td class="text-right right-space">-->
+<!--                                            <span t-field="l.amount"/>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+<!--                                    <t t-set="card_count" t-value="card_count + l.amount"/>-->
+<!--                                </t>-->
+<!--                                <tr class="no-border">-->
+<!--                                    <td class="no-border"></td>-->
+<!--                                    <td class="no-border"></td>-->
+<!--                                    <td class="no-border"></td>-->
+<!--                                    <td class="text-right" style="padding-right: 0.3em;">-->
+<!--                                        <strong>-->
+<!--                                            <t t-esc="card_count"-->
+<!--                                               t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
+<!--                                        </strong>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+                        <table>
+                            <thead>
+                                <t t-set="card_count" t-value="0"/>
+                                <tr>
+                                    <th class="space">Credit Card &amp; Others Details</th>
+                                    <th class="text-center des-with">Payment Method</th>
+                                    <th class="text-center qty-with">Qty</th>
+                                    <th class="text-center th-width">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.group_paymeny()" t-as="l">
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <t t-esc="l_value['payment_method']"/>
+                                        </td>
+                                        <td class="text-center"><t t-esc="l_value['qty']"/></td>
+                                        <td class="text-right right-space">
+                                            <t t-esc="l_value['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <t t-set="card_count" t-value="card_count + l_value['amount']"/>
+                                </t>
+                                <tr class="no-border">
+                                    <td class="no-border"></td>
+                                    <td class="no-border"></td>
+                                    <td class="no-border text-center"><strong>Total</strong></td>
+                                    <td class="text-right" style="padding-right: 0.3em;">
+                                        <strong>
+                                            <t t-esc="card_count"
+                                               t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <table>
+                            <tr>
+                                <td rowspan="2" style="padding: 20px;vertical-align:middle;text-align:center;">
+                                    <strong>Signature</strong>
+                                </td>
+                                <td style="padding: 20px;" class="text-center">
+                                    <strong>
+                                        <span class="text-right" t-field="o.user_id.name"/>
+                                    </strong>
+                                </td>
+                                <td style="padding: 20px;" width="40%;">
+                                    <strong></strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!--                                <td><strong></strong></td>-->
+                                <td style="padding: 20px;" class="text-center">
+                                    <strong>
+                                        <span t-field="o.master_cashier.name"/>
+                                    </strong>
+                                </td>
+                                <td style="padding: 20px;" width="40%;">
+                                    <strong></strong>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+         <t t-call="pabs_sale_extra.report_cashier_invoices_template"/>
+    </template>
+</odoo>

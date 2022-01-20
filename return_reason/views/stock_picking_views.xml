@@ -1,0 +1,28 @@
+<odoo>
+  <data>
+    <record id="view_picking_form_return_reason" model="ir.ui.view">
+        <field name="name">stock.picking.form.return_reason</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='note']" position="before">
+                <field name="return_reason_id" invisible="1"/>
+                <page string="Return Reason" name="return_reason" attrs="{'invisible': [('return_reason_id', '=', False)]}">
+                    <group>
+                        <group string="Reason" name="reason">
+                            <field name="return_reason_id"/>
+                        </group>
+                        <group string="Responsible" name="responsible">
+                            <field name="return_responsible_type"/>
+                            <field name="reason_partner_id" attrs="{'invisible': [('return_responsible_type', '!=', 'customer')]}"/>
+                            <field name="reason_installation_team" attrs="{'invisible': [('return_responsible_type', '!=', 'installation_team')]}"/>
+                            <field name="reason_salesperson" attrs="{'invisible': [('return_responsible_type', '!=', 'sales_person')]}"/>
+                            <field name="reason_location_id" attrs="{'invisible': [('return_responsible_type', '!=', 'warehouse')]}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

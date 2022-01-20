@@ -1,0 +1,60 @@
+<odoo>
+    <data>
+        <record id="payment_register_payment" model="ir.ui.view">
+            <field name="name">payment.register.payment</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <field name="communication" position="after">
+                    <field name="x_sale_id" readonly="1" force_save="1"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_account_payment_register_custom_form_custom" model="ir.ui.view">
+            <field name="name">account.payment.register.custom.form.custom</field>
+            <field name="model">account.payment.register.custom</field>
+            <field name="inherit_id" ref="pabs_sale.view_account_payment_register_custom_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div" position="before">
+                    <group string="Credit Notes" attrs="{'invisible': [('active_model', '=', 'account.move')]}">
+                        <field name="account_credit_note_ids" nolabel="1">
+                            <tree string="Credit Notes" editable="bottom" create="0" delete="0">
+                                <field name="x_selected_id"/>
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <field name="invoice_date"/>
+                                <field name="reversed_entry_id"/>
+                                <field name="amount_residual"/>
+                                <field name="x_amounts_applied"/>
+                                <field name="x_amounts_apply" invisible="1"/>
+<!--                                <field name="x_amount_apply" invisible="1"/>-->
+                                <field name="currency_id" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="state" invisible="1"/>
+<!--                                <button name="use_credit_note" string="use" class="oe_highlight" type="object" />-->
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+<!--                <xpath expr="//button[@name='create_payments']" position="replace">-->
+<!--                    <button string="Create Payment" name="create_payments" type="object" class="oe_highlight"/>-->
+<!--                </xpath>-->
+            </field>
+        </record>
+
+<!--        <record model="ir.ui.view" id="view_account_form_inherit_invoicing">-->
+<!--        <field name="name">view_invoice_tree_inherits_invoicing</field>-->
+<!--        <field name="model">account.move</field>-->
+<!--        <field name="inherit_id" ref="account.view_invoice_tree"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="amount_residual_signed" position="after">-->
+<!--                <field name="x_applied_amount" attrs="{'invisible': [('active_model', '!=', 'sale.order')]}"/>-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+    </data>
+</odoo>

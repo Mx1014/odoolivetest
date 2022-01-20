@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hr_contract_inherit_pabs_hr" model="ir.ui.view">
+        <field name="name">pabs.hr.contract</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <field name="advantages" position="before">
+                <label for="gosi_salary"/>
+                <div class="o_row" name="gosi_salary">
+                    <field name="gosi_salary"/>
+                    <span>/ month</span>
+                </div>
+                <label for="increments"/>
+                <div class="o_row" name="increments">
+                    <field name="increments"/>
+                    <span>/ month</span>
+                </div>
+                <label for="home_rent_allowance"/>
+                <div class="o_row" name="home_rent_allowance">
+                    <field name="home_rent_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <label for="food_allowance"/>
+                <div class="o_row" name="food_allowance">
+                    <field name="food_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <label for="labour_allowance"/>
+                <div class="o_row" name="labour_allowance">
+                    <field name="labour_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <label for="other_allowance"/>
+                <div class="o_row" name="other_allowance">
+                    <field name="other_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <label for="performance_allowance"/>
+                <div class="o_row" name="performance_allowance">
+                    <field name="performance_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <label for="shift_allowance"/>
+                <div class="o_row" name="shift_allowance">
+                    <field name="shift_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <label for="social_allowance"/>
+                <div class="o_row" name="social_allowance">
+                    <field name="social_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <label for="special_allowance"/>
+                <div class="o_row" name="special_allowance">
+                    <field name="special_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <label for="transportation_allowance"/>
+                <div class="o_row" name="transportation_allowance">
+                    <field name="transportation_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <label for="phone_allowance"/>
+                <div class="o_row" name="phone_allowance">
+                    <field name="phone_allowance"/>
+                    <span>/ month</span>
+                </div>
+                <field name="lmra_selection"/>
+                <field name="sio_applicable"/>
+                <label for="lmra_charge" attrs="{'invisible': [('lmra_selection', '!=', 'not_applicable')]}"/>
+                <div class="o_row" name="lmra_charge"
+                     attrs="{'invisible': [('lmra_selection', '!=', 'not_applicable')]}">
+                    <field name="lmra_charge"/>
+                    <span>/ month</span>
+                </div>
+                <label for="sio_employee_deduction"/>
+                <div class="o_row" name="sio_employee_deduction">
+                    <field name="sio_employee_deduction"/>
+                    <span>%</span>
+                    <span></span>
+                    <span></span>
+                    <span>Amount:</span>
+                    <field name="sio_employee_deduction_amount"/>
+                </div>
+                <label for="sio_employer_contribution"/>
+                <div class="o_row" name="sio_employer_contribution">
+                    <field name="sio_employer_contribution"/>
+                    <span>%</span>
+                    <span></span>
+                    <span></span>
+                    <span>Amount:</span>
+                    <field name="sio_employer_contribution_amount"/>
+                </div>
+                <label for="x_netpayable"/>
+                <div class="o_row" name="x_netpayable">
+                    <field name="x_netpayable"/>
+                </div>
+            </field>
+            <field name="department_id" position="after">
+                <!--                <field name="is_expats" readonly="1"/>-->
+            </field>
+            <field name="job_id" position="after">
+                <field name="x_gross_salary"/>
+                <field name="x_fixed_salary"/>
+                <field name="x_date_today" invisible="1"/>
+            </field>
+            <field name="department_id" position="after">
+                <field name="contract_type"/>
+                <field name="contract_category"/>
+                <field name="notice_period"/>
+            </field>
+            <!--            <xpath expr="//form//header" position="inside">-->
+            <!--                <button name="increment_wage" string="Check Employees Increments" type="object"-->
+            <!--                        class="btn-primary"/>-->
+            <!--            </xpath>-->
+            <!--            <field name="job_id" position="after">-->
+            <!--                <field name="count_day"/>-->
+            <!--            </field>-->
+            <xpath expr="//form//sheet//group//group//field[@name='employee_id']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="hr_contract_view_new_tree" model="ir.ui.view">
+        <field name="name">hr.contract</field>
+        <field name="model">hr.contract</field>
+        <field name="arch" type="xml">
+            <tree string="Increments">
+                <field name="employee_id"/>
+                <field name="job_id"/>
+                <field name="increments"/>
+                <!--                <field name="state"/>-->
+            </tree>
+        </field>
+    </record>
+    <record id="view_hr_contract_inherit_pabs_hrs" model="ir.ui.view">
+        <field name="name">pabs.hr.contracts</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_payroll_account.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='analytic_account_id']" position="attributes">
+                <attribute name="domain">['|', ('x_users', '=', uid), ('x_users', '=', False)]</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_hr_employee_search_inherit_pabs_hr_contract" model="ir.ui.view">
+        <field name="name">view.hr.employee.search.inherit.pabs.hr.contract</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search//field[@name='name']" position="before">
+                <field name="x_registration_number"/>
+            </xpath>
+        </field>
+    </record>
+
+    <data>
+        <record id="action_increment_wage" model="ir.actions.act_window">
+            <field name="name">Increments</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.contract</field>
+            <field name="domain">[('state', '=', 'open')]</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="increments"
+                  action="action_increment_wage"
+                  parent="hr.menu_hr_employee_payroll"
+                  sequence="210"
+        />
+    </data>
+
+    <record id="contract_category_form" model="ir.ui.view">
+        <field name="name">contract.category.form</field>
+        <field name="model">contract.category</field>
+        <field name="arch" type="xml">
+            <form string="Payment Type">
+                <sheet>
+                    <div class="oe_title" name="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="contract_category_tree" model="ir.ui.view">
+        <field name="name">contract.category.tree</field>
+        <field name="model">contract.category</field>
+        <field name="arch" type="xml">
+            <tree string="Payment Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_contract_category" model="ir.actions.act_window">
+        <field name="name">Contract Category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">contract.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="contract_category"
+              action="action_contract_category"
+              parent="hr.menu_human_resources_configuration"
+              sequence="212"
+    />
+</odoo>

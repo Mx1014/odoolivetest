@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+        <record id="group_IT_Dep" model="res.groups">
+            <field name="name">IT Department control</field>
+        </record>
+    </data>
+</odoo>

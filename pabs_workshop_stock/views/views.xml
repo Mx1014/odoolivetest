@@ -1,0 +1,110 @@
+<odoo>
+    <data>
+
+        <record id="view_workshop_stock_location_form_inherit" model="ir.ui.view">
+            <field name="name">view.workshop.stock.location.form.inherit</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <page position="after">
+                    <page string="Service Center">
+                        <group>
+                            <group>
+                                <field name="x_service_type" widget="selection_badge"/>
+                                <field name="x_team" attrs="{'invisible': [('x_service_type', '!=', 'out')]}" options="{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}"/>
+                                <field name="x_technician" attrs="{'invisible': [('x_service_type', '!=', 'in')]}"
+                                       domain="[('department_id', '=', 74)]"
+                                       options="{'no_create': True, 'no_quick_create': True}"/>
+                                <field name="x_route" attrs="{'invisible': [('x_service_type', '!=', 'out')]}" options="{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}"/>
+                            </group>
+                        </group>
+
+                    </page>
+                </page>
+            </field>
+        </record>
+
+        <record id="view_logistics_team_form_workshop_stock" model="ir.ui.view">
+            <field name="name">view.logistics.team.form.inherit.workshop_stock</field>
+            <field name="model">logistics.team</field>
+            <field name="inherit_id" ref="pabs_logistics_extra.view_logistics_team_form"/>
+            <field name="arch" type="xml">
+                <field name="business_line" position="after">
+                    <field name="x_location"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_product_product_kanban_material_onhand" model="ir.ui.view">
+            <field name="name">view.product.template.kanban.material.onhand</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="industry_fsm.view_product_product_kanban_material"/>
+            <field name="arch" type="xml">
+                <ul position="inside">
+                    <h5 attrs="{'invisible': [('type', '!=', 'product')]}">
+                        <li>
+                            <strong>On Hand:
+                                <field name="x_onhand_workshop_qty"/>
+                                <field name="x_onhand_workshop_qty_filter" invisible="1"/>
+                                <field name="type" invisible="1"/>
+                            </strong>
+                        </li>
+                    </h5>
+                </ul>
+            </field>
+        </record>
+
+<!--        <record model="ir.ui.view" id="pabs_sale_extra.product_template_normal_form_workshop">-->
+<!--            <field name="name">product.template.normal.view.workshop</field>-->
+<!--            <field name="model">product.product</field>-->
+<!--            <field name="inherit_id" ref="product.product_normal_form_view"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <page name="" position="">-->
+<!--                    -->
+<!--                </page>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="product_template_form_service_center" model="ir.ui.view">
+        <field name="name">product.template.product.form.service.center</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <page name="inventory" position="after">
+                    <page name="service_center" string="Service Center">
+                        <group>
+                            <group>
+                                 <field name="x_location_id"/>
+                            </group>
+                        </group>
+
+                    </page>
+                </page>
+        </field>
+    </record>
+
+
+
+
+
+         <record id="mrp.mrp_product_product_search_view" model="ir.ui.view">
+            <field name="name">mrp.product.product.search</field>
+            <field name="model">product.product</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='consumable']" position="after">
+                    <separator/>
+                    <filter string="Manufactured Products" name="manufactured_products" domain="[('bom_ids', '!=', False)]"/>
+                    <filter string="BoM Components" name="components" domain="[('bom_line_ids', '!=', False)]"/>
+                    <filter string="Available Quantity" name="onhand_qty" domain="[('x_onhand_workshop_qty_filter', '!=', 0.0)]"/>
+
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

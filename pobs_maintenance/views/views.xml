@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="maintenance_hr_equipment_request_view_form_inherit" model="ir.ui.view">
+        <field name="name">maintenance.hr.equipment.request.view.form.inherit</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet//group//group" position="inside">
+                <field name="premise"/>
+                <field name="sub_location"/>
+                <field name="reference"/>
+                <field name="replaceable"/>
+                <field name="quantity" attrs="{'invisible' : [('replaceable', '!=', True)]}"/>
+            </xpath>
+            <xpath expr="//form//sheet//group//group//field[@name='category_id']" position="attributes">
+                <attribute name="required">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='cost']" position="before">
+                <field name="unit_cost" attrs="{'invisible' : [('replaceable', '!=', True)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='location']" position="after">
+                <field name="is_ip" invisible="1" groups="pobs_maintenance.group_IT_Dep"/>
+                <field name="is_login" invisible="1" groups="pobs_maintenance.group_IT_Dep"/>
+                <field name="ip_address" attrs="{'invisible' : [('is_ip', '=', False)]}"
+                       groups="pobs_maintenance.group_IT_Dep"/>
+                <field name="username" attrs="{'invisible' : [('is_login', '=', False)]}"
+                       groups="pobs_maintenance.group_IT_Dep"/>
+                <field name="password" attrs="{'invisible' : [('is_login', '=', False)]}"
+                       groups="pobs_maintenance.group_IT_Dep"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="maintenance_hr_request_view_form_inherit" model="ir.ui.view">
+        <field name="name">maintenance.hr.request.view.form.inherit</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet//group//group" position="inside">
+                <field name="premise_related"/>
+                <field name="sub_location_related"/>
+                <field name="quantity_check" invisible="1"/>
+                <field name="quantity" attrs="{'invisible' : [('quantity_check', '=', 0)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="issue" widget="selection" domain="[('id', '=', issue_list)]"/>
+                <field name="issue_list" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="solution"/>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem name="Locations" id="menu_location" parent="maintenance.menu_maintenance_title"/>
+
+
+    <record model="ir.actions.act_window" id="pobs_maintenance.action_window1">
+        <field name="name">Permises</field>
+        <field name="res_model">permises.permises</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pobs_maintenance.action_window2">
+        <field name="name">Sub-location</field>
+        <field name="res_model">sub.location</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pobs_maintenance.action_issue">
+        <field name="name">Maintenance Issues</field>
+        <field name="res_model">maintenance.issue</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Premises" id="pobs_maintenance.menu_list_1" parent="menu_location"
+              action="pobs_maintenance.action_window1" sequence='1'/>
+
+    <menuitem name="Sub-location" id="pobs_maintenance.menu_list_2" parent="menu_location"
+              action="pobs_maintenance.action_window2" sequence='2'/>
+
+    <menuitem
+            id="menu_maintenance_issue"
+            name="Maintenance Issues"
+            parent="maintenance.menu_maintenance_configuration"
+            action="pobs_maintenance.action_issue"
+            sequence="5"/>
+
+
+    <record model="ir.ui.view" id="premises_form_view">
+        <field name="name">premise</field>
+        <field name="model">permises.permises</field>
+        <field name="arch" type="xml">
+            <form string="sale Form">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="request_list" icon="fa-wrench">
+                            <field name="request_list3_counter" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="equipments_list" icon="fa-archive"
+                                context="{'default_premise': active_id}">
+                            <field name="equipments_list4_counter" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="sub_location_list" icon="fa-map-marker"
+                                context="{'default_premise': active_id}">
+                            <field name="sub_location_list_counter" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="premise_id"/>
+                            <field name="area"/>
+                        </group>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="sublocation_form_view">
+        <field name="name">Sub-Location</field>
+        <field name="model">sub.location</field>
+        <field name="arch" type="xml">
+            <form string="Sub Location">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="request_list2" icon="fa-wrench">
+                            <field name="request_list2_counter" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="equipments_list2" icon="fa-archive"
+                                context="{'default_sub_location': active_id, 'default_premise': active_id}">
+                            <field name="equipments_list2_counter" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="name"/>
+                        <!--                        <field name="name2" invisible="1"/>-->
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="sublocation_name"/>
+                            <field name="room"/>
+                        </group>
+                        <group>
+                            <field name="x_floor"/>
+                            <field name="premise"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="floor_form_view">
+        <field name="name">floor-list</field>
+        <field name="model">floor.list</field>
+        <field name="arch" type="xml">
+            <form string="Floor">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="plan_calendar_shift_inventory_view_form" model="ir.ui.view">
+        <field name="name">plan.calendar.shift.inventory.view.form</field>
+        <field name="model">plan.calendar</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="delivery" invisible="1"/>
+                    <p>Are You Sure You Want To Change To This Slot?</p>
+
+                    <footer><button class="oe_highlight" name="inventory_any_write" string="Confirm" type="object" context="{'coming_from':'plan.calendar', 'plan_id': id}"/></footer>
+
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="plan_calendar_shift_inventory_view_gantt" model="ir.ui.view">
+        <field name="name">plan.calendar.shift.inventory.view.gantt</field>
+        <field name="model">plan.calendar</field>
+        <field name="arch" type="xml">
+            <gantt js_class="planning_gantt"
+                   form_view_id="%(plan_calendar_shift_inventory_view_form)d"
+                   date_start="start_datetime"
+                   date_stop="end_datetime"
+                   default_group_by="business_line"
+                   default_scale="week" plan="false" scales="day,week,month"
+                   precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
+                   decoration-info="status == 'available'" decoration-success="status == 'booked'"
+                   display_unavailability="1"
+                   color="color">
+                <field name="status"/>
+                <field name="delivery" attrs="{'invisible': [('status', '=', 'available'), '&amp;', ('delivery', '=', False)]}"/>
+            </gantt>
+        </field>
+    </record>
+
+    <record id="action_plan_calendar_shift_inventory_view_gantt" model="ir.actions.act_window">
+        <field name="name">Plan Calendar</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">plan.calendar</field>
+        <field name="view_mode">gantt</field>
+        <field name="target">new</field>
+        <field name="domain">[('business_line', '=', bl)],</field>
+        <field name="view_id" ref="plan_calendar_shift_inventory_view_gantt"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="slot_allocation_vehicle_view_form" model="ir.ui.view">
+        <field name="name">slot.allocation.vehicle.form</field>
+        <field name="model">slot.allocation.vehicle</field>
+        <field name="arch" type="xml">
+            <form string="Slot Allocation Vehicle" create="0" edit="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="sale_order_id" />
+                        </group>
+                        <group>
+                            <field name="slot_allocation_time_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="picking_id" />
+                            <field name="deliver_qty" />
+                        </group>
+                        <group>
+                            <field name="picking_type_id" />
+                            <field name="fleet_vehicle_id" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="slot_allocation_vehicle_view_tree" model="ir.ui.view">
+        <field name="name">slot.allocation.vehicle.tree</field>
+        <field name="model">slot.allocation.vehicle</field>
+        <field name="arch" type="xml">
+            <tree string="Slot Allocation Vehicle" create="0" edit="0">
+                <field name="sale_order_id" />
+                <field name="slot_allocation_time_id"/>
+                <field name="picking_id" />
+                <field name="picking_type_id" />
+                <field name="fleet_vehicle_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_slot_allocation_vehicle" model="ir.actions.act_window">
+        <field name="name">Slot Allocation Vehicles</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">slot.allocation.vehicle</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="pabs_logistics.action_slot_allocation_vehicle" id="menu_slot_allocation_vehicle" parent="stock.menu_warehouse_report" sequence="200" />
+
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="pabs_field_service_task_batch_server_action" model="ir.actions.server">
+        <field name="name">Visits Sheets</field>
+        <field name="model_id" ref="pabs_field_service.model_project_task_batch"/>
+        <field name="binding_model_id" ref="pabs_field_service.model_project_task_batch"/>
+        <field name="state">code</field>
+        <field name="code">
+                action = model.action_view_business_line_project_task_batch()
+        </field>
+    </record>
+
+    <record id="field_service_business_line_action" model="ir.actions.act_window">
+            <field name="name">Business Line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">business.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('business_line_type', '=', 'service')]</field>
+        </record>
+        <record id="field_service_logistics_team_action" model="ir.actions.act_window">
+            <field name="name">Service Teams</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">logistics.team</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('business_line.business_line_type', '=', 'service')]</field>
+        </record>
+<!--        <record id="stock_plan_calendar_gantt_action" model="ir.actions.act_window">-->
+<!--            <field name="name">Service Planning</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">field.plan.calendar</field>-->
+<!--            <field name="view_mode">gantt</field>-->
+<!--            <field name="view_id" ref="stock_plan_calendar_gantt"/>-->
+<!--            <field name="search_view_id" ref="plan_calendar_search_view"/>-->
+<!--            <field name="context">{'search_default_group_by_business_line': 1, 'search_default_group_by_status': 1}</field>-->
+<!--        </record>-->
+
+        <menuitem action="field_service_business_line_action" id="field_service_business_line_menu" parent="industry_fsm.fsm_menu_settings"
+                  sequence="50" name="Business Lines"/>
+        <menuitem action="field_service_business_line_action" id="field_service_business_line_menu" parent="industry_fsm.fsm_menu_settings"
+                  sequence="50" name="Business Lines"/>
+        <menuitem action="field_service_logistics_team_action" id="field_service_logistics_team_menu" parent="industry_fsm.fsm_menu_settings"
+                  sequence="60" name="Service Teams"/>
+
+
+
+
+
+
+<!--    <menuitem id="logistics_menu_root"-->
+<!--              name="Logistics"-->
+<!--              web_icon="pabs_logistics_extra,static/description/icon2.jpg"-->
+<!--              action="stock_plan_calendar_gantt_action"/>-->
+    <menuitem action="pabs_field_service.pabs_field_service_task_batch_server_action"
+              id="pabs_field_service_project_task_batch_menu"
+              parent="pabs_logistics_extra.logistics_sheets_menu"
+              sequence="4"/>
+
+    <menuitem id="menu_field_plan_calendar"
+              name="Field Service Planning"
+              action="pabs_field_service.action_field_plan_calendar_gantt_view"
+              parent="pabs_logistics_extra.logistics_planning_menu"
+              sequence="1"/>
+
+<!--    <menuitem id="menu_logistics_team"-->
+<!--              action="pabs_logistics_extra.stock_logistics_team_action"-->
+<!--              parent="pabs_logistics_extra.logistics_menu_root"-->
+<!--              sequence="1" name="Logistics Teams"/>-->
+
+
+</odoo>

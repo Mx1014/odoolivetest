@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="maintenance_hr_equipment_request_kanban_view_form_inherit" model="ir.ui.view">
+        <field name="name">maintenance.hr.equipment.request.kanban.view.form.inherit</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='o_kanban_record_body']" position="before">
+                <br/>
+                <field name="reference"/>
+            </xpath>
+            <xpath expr="//div[@class='o_kanban_record_body']" position="inside">
+                <br/>
+                <div class="o_kanban_primary_right">
+                    <button type="object" name="create_maintenance_request" class="btn btn-primary ">
+                        <span>New Request</span>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="maintenance_hr_equipment_request_kanban_view_form_inherit_search" model="ir.ui.view">
+        <field name="name">maintenance.hr.equipment.request.kanban.view.form.inherit.search</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="reference"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="maintenance.hr_equipment_action" model="ir.actions.act_window">
+        <field name="name">Equipments</field>
+        <field name="res_model">maintenance.equipment</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="maintenance.hr_equipment_view_kanban"/>
+        <field name="context">{'group_by': 'completeName'}</field>
+        <field name="domain">['|', ('maintenance_team_id.member_ids.id' , '=' , uid),
+            ('department_id.member_ids.user_id.id', '=', uid)]
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new equipment
+            </p>
+            <p>
+                Track equipments and link it to an employee or department.
+                You will be able to manage allocations, issues and maintenance of your equipment.
+            </p>
+        </field>
+    </record>
+</odoo>

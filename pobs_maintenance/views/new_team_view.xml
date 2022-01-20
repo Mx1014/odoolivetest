@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="maintenance_team_view_form_inherit" model="ir.ui.view">
+        <field name="name">maintenance.team.view.form.inherit</field>
+        <field name="model">maintenance.team</field>
+        <field name="inherit_id" ref="maintenance.maintenance_team_view_form"/>
+        <field name="arch" type="xml">
+            <!--<xpath expr="//form//sheet//group//group//field[@name='member_ids']" position="after">
+                <field name="is_it"/>
+            </xpath>-->
+            <xpath expr="//form//sheet//group//group//field[@name='company_id']" position="after">
+                <field name="sequence"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="maintenance_hr_equipment_category_view_form" model="ir.ui.view">
+        <field name="name">maintenance.hr.equipment.category.view.form</field>
+        <field name="model">maintenance.equipment.category</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet//group" position="after">
+                <group>
+                    <field name="sequence"/>
+                    <field name="sequence_code"/>
+                </group>
+                <group>
+                    <field name="is_ip" groups="pobs_maintenance.group_IT_Dep"/>
+                    <field name="is_login" groups="pobs_maintenance.group_IT_Dep"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='technician_user_id']" position="before">
+                <field name="parent_id"/>
+            </xpath>
+            <xpath expr="//field[@name='note']" position="after">
+                <notebook>
+                    <page string="Issues" name="issue">
+                        <field name="issue" widget="many2many_tags" string="Issues"/>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="maintenance_hr_equipment_category_view_tree" model="ir.ui.view">
+        <field name="name">maintenance.hr.equipment.category.view.tree</field>
+        <field name="model">maintenance.equipment.category</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_category_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//field[@name='technician_user_id']" position="before">
+                <field name="completeName" string="Name"/>
+            </xpath>
+            <xpath expr="//tree//field[@name='name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="maintenance_hr_equipment_list" model="ir.ui.view">
+        <field name="name">maintenance.hr.equipment.list</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="completeName"/>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="maintenance_hr_equipment_request_kanban_view_form_inherit_search" model="ir.ui.view">
+        <field name="name">maintenance.hr.equipment.request.kanban.view.form.inherit.search</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search//filter[@name='category']" position="after">
+                <filter string="" name="complete" context="{'group_by': 'completeName'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

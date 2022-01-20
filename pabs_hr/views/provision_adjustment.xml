@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="provision_adjustment_view_form" model="ir.ui.view">
+        <field name="name">provision.adjustment.form</field>
+        <field name="model">provision.adjustment</field>
+        <field name="arch" type="xml">
+            <form string="Provision Adjustment">
+                <header>
+                    <button name="action_compute_sheet" string="Compute Sheet" type="object"
+                            attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('compute_sheet', '=', True)]}"/>
+                    <button name="action_validate" string="Validate" type="object"
+                            attrs="{'invisible': [('state', '!=', 'approved')]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_journal" type="object" class="oe_stat_button" icon="fa-circle">
+                            <field name="x_journal_count" string="Journal" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title" name="title">
+                        <label for="name" string="Description"/>
+                        <h1>
+                            <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="x_type" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"/>
+                            <field name="move_id" invisible="1"/>
+                            <field name="x_date"
+                                   attrs="{'readonly': [('state', '!=', 'draft')], 'required': [('x_type', '=', 'indemnity')]}"/>
+                            <field name="compute_sheet" invisible="1"/>
+                            <field name="annual_leave_provision_account" invisible="1"/>
+                            <field name="annual_leave_expense_account" invisible="1"/>
+                            <field name="indemnity_leave_provision_account" invisible="1"/>
+                            <field name="indemnity_leave_expense_account" invisible="1"/>
+                            <field name="indemnity_leave_expense_account" invisible="1"/>
+                            <field name="journal" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="x_provision_adjustment_lines" no_label="1" edit="1" delete="1" readonly="1">
+                        <tree>
+                            <field name="x_reference" invisible="1"/>
+                            <field name="x_employee_id"/>
+                            <!--                            <field name="x_annual_leave_taken" invisible="1"/>-->
+                            <field name="x_annual_leave_remaining" invisible="1"/>
+                            <field name="x_join_date" invisible="1"/>
+                            <field name="x_working_days" invisible="1"/>
+                            <field name="x_period1_days" invisible="1"/>
+                            <field name="x_period2_days" invisible="1"/>
+                            <field name="x_period1_amount" invisible="1"/>
+                            <field name="x_period2_amount" invisible="1"/>
+                            <field name="x_current_provision"/>
+                            <field name="x_calculated_provision"/>
+                            <field name="x_adjustment"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="provision_adjustment_lines_view_form" model="ir.ui.view">
+        <field name="name">provision.adjustment.lines.form</field>
+        <field name="model">provision.adjustment.lines</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="x_reference"/>
+                <field name="x_employee_id"/>
+                <field name="x_current_provision"/>
+                <field name="x_calculated_provision"/>
+                <field name="x_adjustment"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="provision_adjustment_view_tree" model="ir.ui.view">
+        <field name="name">provision.adjustment.tree</field>
+        <field name="model">provision.adjustment</field>
+        <field name="arch" type="xml">
+            <tree string="Provision Adjustment">
+                <field name="name"/>
+                <field name="x_type"/>
+                <field name="x_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_provision_adjustment" model="ir.actions.act_window">
+        <field name="name">Provision Adjustment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">provision.adjustment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_provision_adjustment_lines" model="ir.actions.act_window">
+        <field name="name">Provision Adjustment Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">provision.adjustment.lines</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="employee_provision_adjustment"
+              action="action_provision_adjustment"
+              parent="pabs_hr.hr_menu_provisions"
+              sequence="103"
+    />
+    <menuitem id="employee_provision_adjustment_lines"
+              action="action_provision_adjustment_lines"
+              parent="pabs_hr.hr_menu_provisions"
+              sequence="104"
+              groups="base.group_no_one"
+    />
+</odoo>

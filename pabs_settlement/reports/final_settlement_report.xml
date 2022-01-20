@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="final_settlement">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            table, th, td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            }
+                        </style>
+                        <!--                        <t t-esc="o.date_end"/>-->
+                        <center>
+                            <h1>Final Settlement</h1>
+                        </center>
+                        <table style="width:100%;">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="2">EMPLOYEE DETAILS</th>
+                                <th class="text-center">DATE</th>
+                                <th class="text-center">
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>Employee Name</th>
+                                <td>
+                                    <t t-esc="o.employee_name.name"/>
+                                </td>
+                                <th>Supervisor Name</th>
+                                <td>
+                                    <t t-esc="o.employee_name.parent_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Employee CPR</th>
+                                <td>
+                                    <t t-esc="o.employee_name.identification_id"/>
+                                </td>
+                                <th>Joining Date</th>
+                                <td>
+                                    <t t-esc="o.employee_name.date_of_join"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Department</th>
+                                <td>
+                                    <t t-esc="o.employee_name.department_id.name"/>
+                                </td>
+                                <th>Supervisor</th>
+                                <td>
+                                    <t t-esc="o.date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Position</th>
+                                <td>
+                                    <t t-esc="o.employee_name.job_id.name"/>
+                                </td>
+                                <th>Contact No</th>
+                                <td>
+                                    <t t-esc="o.employee_name.mobile"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Employee Code</th>
+                                <td>
+                                    <t t-esc="o.employee_name.registration_number"/>
+                                </td>
+                                <th>Basic Salary</th>
+                                <td>
+                                    <t t-esc="o.basic_salary"/>
+                                </td>
+                            </tr>
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="4">REMUNARATIONS</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center" colspan="2">Amount Owed</th>
+                                <th class="text-center">Days</th>
+                                <th class="text-center">BD</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <p style="text-align: center;">DECLARATION</p>
+                        <div style="border-style: solid; border-width: 1px;">
+                            <p>I, the undersigned,
+                                <t t-esc="o.employee_name.name"/>
+                                hereby confirm that upon receipt oe the amount of (Cheque No.________________,Bank
+                                Name.________________________)/(Cash Voucher No.________________)from Al-Salam Gas,
+                                being the final settlement of all my employment benefits and entitlements under any
+                                employment contract, letter or offer.
+                            </p>
+                            <br></br>
+                            <p>
+                                I declare having received in full and in final settlement, all my rights and the
+                                salaries due to me for my entire period of Service with the said employer, whether in
+                                respect of normal or overtime work, allowances, leaves, airfares, notice or ant other
+                                ordinary or exceptional dues, less any arising liabilities to the firm.
+                            </p>
+                            <br></br>
+                            <p>
+                                I hereby also declare that i renounce all rights and claims against Al-Salam Gas, and
+                                its Partners and members of their firm, in connection with such rights and i do hereby
+                                release them all, finally and fully, from any further obligation or liabilities of any
+                                kind whatsoever.
+                            </p>
+                            <br></br>
+                            <p>
+                                I also declare that i did not take copies or soft copies of Al-Salam Gas or its clients
+                                working papers or any tool developed or owned by Al-Salam Gas.
+                            </p>
+                            <br></br>
+                            <p>
+                                I also confirm that i shall observe the strict code of confidentiality and security of
+                                information as set out in the office employment manual after i leave the employment of
+                                the firm.
+                            </p>
+                            <br></br>
+                            <p>
+                                I have cleared and signed off all items on the exit checklist and it has been signed off
+                                by the HR Department and CFO.
+                            </p>
+
+                        </div>
+                        <br></br>
+                        <div style="float:left">
+                            <div>
+                                __________________________________________________________
+                            </div>
+                            <span t-esc="o.employee_name.name"/>
+                        </div>
+                        <div>
+                            <div style="float:right">
+                                <div>
+                                    __________________________________________________________
+                                </div>
+                                <span>Date</span>
+                            </div>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <div>
+                            <div>
+                                <p>
+                                    I confirm that the above person has no loans or credit card outstanding, and he has
+                                    cleared all matters on the exit checklist, and confirm that above calculations are
+                                    in
+                                    line with employee records.
+                                </p>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div>
+                            <div style="float:left">
+                                <div>
+                                    __________________________________________________________
+                                </div>
+                                <span>Prepared By</span>
+                                <br></br>
+                                <span t-esc="o.create_uid.name"/>
+                                <br></br>
+                                <span t-esc="o.employee_name.job_id.name"/>
+                            </div>
+                            <div>
+                                <div style="float:right">
+                                    <div>
+                                        __________________________________________________________
+                                    </div>
+                                    <span>Date</span>
+                                </div>
+                            </div>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <div style="float:left">
+                            <div>
+                                __________________________________________________________
+                            </div>
+                            <span>Approved For Release By</span>
+                            <br></br>
+                            <span>Ali Al-Bunni</span>
+                            <br></br>
+                            <span>CFO</span>
+                        </div>
+                        <div>
+                            <div style="float:right">
+                                <div>
+                                    __________________________________________________________
+                                </div>
+                                <span>Date</span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

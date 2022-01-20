@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--        <record id="view_contact_test" model="ir.ui.view">-->
+        <!--            <field name="name">base.view_partner_form_inherit_test</field>-->
+        <!--            <field name="model">res.partner</field>-->
+        <!--            <field name="inherit_id" ref="base.view_partner_form"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <field name="company_type" position="after">-->
+        <!--                    <group>-->
+        <!--                        <field name="x_sub_engineer" attrs="{'invisible': [('supplier_rank','=', 0)]}"/>-->
+        <!--                        &lt;!&ndash;                        <field name="property_account_position_id" required="1" string="Tax Treatment"/>&ndash;&gt;-->
+        <!--                    </group>-->
+        <!--                </field>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <record id="view_task_form2_delivery_status" model="ir.ui.view">
+            <field name="name">project.task.form.delivery_status</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_open_parent_task']" position="after">
+                    <field name="sale_order_id" invisible="1"/>
+                    <button type="object" class="oe_stat_button" name="action_view_delivery" icon="fa-truck" attrs="{'invisible' : [('sale_order_id', '=', False)]}">
+                        <field name="x_so_delivery_state" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_task_search_form_delivery_status" model="ir.ui.view">
+            <field name="name">project.task.search.form.delivery_status</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_search_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="x_so_delivery_state"/>
+                </xpath>
+                <xpath expr="//filter[@name='activities_overdue']" position="before">
+                    <filter string="Un-Delivered" name="u_delivered" domain="[('x_so_delivery_state', '!=', 'partially'), ('x_so_delivery_state', '!=', 'done')]"/>
+                    <filter string="Partially Delivered" name="p_delivered" domain="[('x_so_delivery_state', '=', 'partially')]"/>
+                    <filter string="Delivered" name="delivered" domain="[('x_so_delivery_state', '=', 'done')]"/>
+                    <separator/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_task_form2_inherit" model="ir.ui.view">
+            <field name="name">view.task.form2.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_assign_to_me']" position="after">
+                    <button name="action_create_po" string="Purchase Order" type="object" class="oe_highlight"
+                            attrs="{'invisible' : ['|', ('x_purchase_order', '!=', False), ('x_subcontract', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_subtask']" position="after">
+                    <button name="action_view_po" string="Purchase Order" type="object" class="oe_stat_button"
+                            icon="fa-tasks" attrs="{'invisible' : [('x_purchase_order', '=', False)]}"/>
+                </xpath>
+
+                <field name="tag_ids" position="after">
+                    <field name="x_subcontract" domain="[('x_is_subcontractor','!=', False)]"/>
+                    <!--                    <field name="x_schedule_date"-->
+                    <!--                           attrs="{'invisible': [('x_subcontract','=', False)], 'required': [('x_subcontract','!=', False)]}"/>-->
+                    <field name="x_purchase_order" invisible="1"/>
+                    <!--                    <field name="x_planned_hours" invisible="1"/>-->
+                    <field name="x_complete_date"
+                           attrs="{'invisible': [('x_stage_closed','=', False)], 'required': [('x_stage_closed','=', True)]}"/> <!--is_closed-->
+                    <field name="x_stage_closed" invisible="1"/>
+                </field>
+                <field name="date_deadline" position="attributes">
+                    <attribute name="attrs">{'required': [('x_subcontract','!=', False)]}</attribute>
+                </field>
+                <field name="date_assign" position="before">
+                    <field name="x_product_uom_qty"/>
+                    <field name="x_qty_delivered"/>
+                    <field name="x_qty_invoiced"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_task_gantt_view" model="ir.ui.view">
+            <field name="name">view.task.gantt.view</field>
+            <field name="model">project.task</field>
+            <field name="arch" type="xml">
+                <gantt date_start="planned_date_begin" date_stop="planned_date_end" default_scale="week"
+                       scales="day,week,month" color="project_color" string="Planning"
+                       thumbnails="{'user_id': 'image_128'}" js_class="task_gantt" display_unavailability="1"
+                       precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:full'}">
+                    <templates>
+                        <div t-name="gantt-popover" class="container-fluid">
+                            <div class="row no-gutters">
+                                <div class="col">
+                                    <ul class="pl-1 mb-0">
+                                        <li t-if="partner_id">
+                                            <strong>Customer:</strong>
+                                            <t t-esc="partner_id[1]"/>
+                                        </li>
+                                        <li>
+                                            <strong>Start Date:</strong>
+                                            <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD HH:mm:ss')"/>
+                                        </li>
+                                        <li>
+                                            <strong>Stop Date:</strong>
+                                            <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD HH:mm:ss')"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </templates>
+                    <field name="partner_id"/>
+                    <!--                    <field name="planning_overlap"/>-->
+                    <!--                    <field name="is_fsm"/>-->
+                    <field name="project_color"/>
+                </gantt>
+            </field>
+        </record>
+
+        <record id="view_task_tree2_inherit" model="ir.ui.view">
+            <field name="name">view.task.tree2.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_tree2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_deadline']" position="after">
+                    <field name="x_complete_date" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_view_inherit_purchase" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.purchase_tab</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_po_sale" type="object" class="oe_stat_button" icon="fa-tasks"
+                            attrs="{'invisible': [('x_purchase_count', '=', 0)]}">
+
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Purchase</span>
+                            <span class="o_stat_text">Orders</span>
+                        </div>
+                        <field name="x_purchase_count" widget="statinfo" nolabel="1" invisible="1"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!--        <record id="hr_timesheet_line_search_inherits" model="ir.ui.view">-->
+        <!--            <field name="name">hr.timesheet.line.search.inherits</field>-->
+        <!--            <field name="model">account.analytic.line</field>-->
+        <!--            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='employee_id']" position="before">-->
+        <!--                    <field name="so_line"/>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <!--         <record id="hr_timesheet_tree_inherit" model="ir.ui.view">-->
+        <!--            <field name="name">hr.timesheet.line.tree.inherits</field>-->
+        <!--            <field name="model">account.analytic.line</field>-->
+        <!--            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='name']" position="after">-->
+        <!--                    <field name="partner_id"/>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <!--        <record id="hr_timesheet_form_inherit" model="ir.ui.view">-->
+        <!--            <field name="name">hr.timesheet.line.form.inherits</field>-->
+        <!--            <field name="model">account.analytic.line</field>-->
+        <!--            <field name="inherit_id" ref="timesheet_grid.timesheet_view_form"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='project_id']" position="before">-->
+        <!--                    <field name="partner_id"/>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <!--        <record id="project_profitability_report_view_list" model="ir.ui.view">-->
+        <!--            <field name="name">project.profitability.report.list</field>-->
+        <!--            <field name="model">project.profitability.report</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <tree string="Profitability Analysis">-->
+        <!--                    <field name="project_id"/>-->
+        <!--                    <field name="product_id"/>-->
+        <!--                    <field name="sale_line_id"/>-->
+        <!--                    <field name="sale_order_id"/>-->
+        <!--                    <field name="amount_untaxed_to_invoice"/>-->
+        <!--                    <field name="amount_untaxed_invoiced"/>-->
+        <!--                    <field name="timesheet_cost"/>-->
+        <!--                </tree>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <!--        <record id="sale_order_line_cost_view_list" model="ir.ui.view">-->
+        <!--            <field name="name">sale.order.line.cost.view.list</field>-->
+        <!--            <field name="model">sale.order.cost</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <tree string="Cost And Revenue">-->
+        <!--                    <field name="name"/>-->
+        <!--                    <field name="x_task_id"/>-->
+        <!--                    <field name="x_project_id"/>-->
+        <!--                    <field name="x_product_id"/>-->
+        <!--                    <field name="x_sale_order_line"/>-->
+        <!--                    <field name="x_amount_untaxed_to_invoice"/>-->
+        <!--                    <field name="x_amount_untaxed_invoiced"/>-->
+        <!--                    <field name="x_timesheet_cost"/>-->
+        <!--                </tree>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <!--        <record id="sale_order_line_cost_view_pivot" model="ir.ui.view">-->
+        <!--            <field name="name">sale.order.line.cost.view.pivot</field>-->
+        <!--            <field name="model">sale.order.cost</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <pivot string="Cost And Revenue" display_quantity="true" disable_linking="True">-->
+        <!--                    <field name="x_project_id" type="row"/>-->
+        <!--                    <field name="x_sale_order_line" type="row"/>-->
+        <!--                    <field name="x_amount_untaxed_to_invoice" type="measure"/>-->
+        <!--                    <field name="x_amount_untaxed_invoiced" type="measure"/>-->
+        <!--                    <field name="x_timesheet_cost" type="measure"/>-->
+        <!--                </pivot>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <record id="purchase_order_list_inherits" model="ir.ui.view">
+            <field name="name">purchase_order_list_inherits</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_ref']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_view_list_inherits" model="ir.ui.view">
+            <field name="name">purchase_order_list_view_inherits</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_ref']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_view_form_inherit_task" model="ir.ui.view">
+            <field name="name">purchase_order_view_form_inherit_task</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='dest_address_id']" position="attributes">
+                    <attribute name="attrs">{'required': [('default_location_dest_id_usage', '=', 'customer')]}
+                    </attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!--         <record id="analytic_line_pivot_inherits" model="ir.ui.view">-->
+        <!--            <field name="name">analytic.line.pivot.inherits</field>-->
+        <!--            <field name="model">account.analytic.line</field>-->
+        <!--            <field name="inherit_id" ref="analytic.view_account_analytic_line_pivot"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='employee_id']" position="before">-->
+        <!--                   -->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <record id="purchase_order_line_inherit_search" model="ir.ui.view">
+            <field name="name">purchase.order.line.inherit.search</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_search"/>
+            <field name="arch" type="xml">
+                <field name="order_id" position="before">
+                    <field name="x_delivery_order"/>
+                    <field name="x_delivery_date"/>
+                    <field name="x_delivery_batch"/>
+                    <field name="x_batch_team"/>
+                </field>
+                <filter name="groupby_supplier" position="before">
+                    <filter string="Batch" name="batch" domain="[]" context="{'group_by' : 'x_delivery_batch'}" />
+                    <filter string="Team" name="team" domain="[]" context="{'group_by' : 'x_batch_team'}" />
+                </filter>
+
+            </field>
+        </record>
+
+        <record id="purchase_order_line_inherit_tree" model="ir.ui.view">
+            <field name="name">purchase.order.line.inherit.tree</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_tree"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace"/>
+                <field name="date_planned" position="replace"/>
+                <field name="product_uom" position="replace"/>
+                <field name="product_id" position="replace"/>
+                <field name="product_qty" position="replace"/>
+                <field name="name" position="after">
+                    <field name="x_delivery_order"/>
+                    <field name="x_delivery_batch"/>
+                    <field name="x_delivery_date"/>
+                    <field name="x_batch_team"/>
+                    <field name="taxes_id" widget="many2many_tags"/>
+                    <field name="product_qty" sum="qty"/>
+
+<!--                    <field name="qty_invoiced" />-->
+<!--                    <field name="qty_received" />-->
+                </field>
+                <field name="price_subtotal" position="attributes">
+                    <attribute name="sum">total</attribute>
+                </field>
+
+
+            </field>
+        </record>
+
+        <record id="purchase_order_form_inherits" model="ir.ui.view">
+            <field name="name">purchase_order_form_inherits</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']//button[@name='action_view_invoice']" position="after">
+                    <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks"
+                            attrs="{'invisible': [('x_task_count','=', 0)]}">
+                        <field name="x_task_count" widget="statinfo" string="Tasks"/>
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="x_done_task" invisible="1"/>
+                    <!--                    <field name="`x_source`_projects"/>-->
+
+                </xpath>
+                <xpath expr="//field[@name='order_line']//field[@name='name']" position="after">
+                    <field name="x_customer_id" attrs="{'column_invisible': [('parent.x_task_count', '=', 0)]}"
+                           optional="show"/>
+                    <field name="x_so_line" attrs="{'column_invisible': [('parent.x_task_count', '=', 0)]}"
+                           optional="show"/>
+                    <field name="x_complete_date" attrs="{'column_invisible': [('parent.x_task_count', '=', 0)]}"
+                           optional="show"/>
+                    <field name="x_task_id" optional="hide"/>
+                    <field name="x_dn_amount_due" optional="hide"/>
+                    <field name="x_task_stage" invisible="1"/>
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice']" position="replace">
+                    <button name="action_view_invoice" string="Create Bill" type="object" class="oe_highlight"
+                            context="{'create_bill':True}"
+                            attrs="{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'in', ('no', 'invoiced')), ('x_done_task','=', False)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice'][2]" position="replace">
+                    <button name="action_view_invoice" string="Create Bill" type="object" context="{'create_bill':True}"
+                            attrs="{'invisible': ['|', '|', '|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', []), ('x_done_task','=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_move_line_inherit" model="ir.ui.view">
+            <field name="name">account_move_line_inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line_ids']//field[@name='account_id']" position="after">
+		    <field name="x_customer_id"
+                           attrs="{'column_invisible': [('parent.type', 'in', ['out_invoice', 'out_refund'])],
+                           'invisible': [('x_customer_id', '=', False)]}"
+                           optional="show"/>
+                    <field name="x_so_line" force_save="1"
+                           attrs="{'column_invisible': [('parent.type', 'in', ['out_invoice', 'out_refund'])],
+                           'invisible': [('x_so_line', '=', False)]}"
+                           optional="show"/>
+                    <field name="x_dn_amount_due"
+                           attrs="{'column_invisible': [('parent.type', 'in', ['out_invoice', 'out_refund'])]}"
+                           optional="show"/>
+                    <!--                    <field name="x_bill_complete_date"-->
+                    <!--                           attrs="{'column_invisible': [('parent.type', 'in', ['out_invoice', 'out_refund'])]}"/>-->
+                    <!--                    <field name="x_invoice_complete_date"-->
+                    <!--                           attrs="{'column_invisible': [('parent.type', 'in', ['in_invoice', 'in_refund'])]}"/>-->
+                </xpath>
+                <xpath expr="//field[@name='line_ids']//field[@name='account_id']" position="after">
+                    <field name="x_customer_id" invisible="1"/>
+                    <field name="x_so_line" force_save="1" invisible="1"/>
+                    <!--                    <field name="x_bill_complete_date" invisible="1"/>-->
+                    <!--                    <field name="x_invoice_complete_date" invisible="1"/>-->
+                </xpath>
+                <field name="currency_id" position="after">
+                    <field name="x_dn_delivered" widget="many2many_tags"
+                           placeholder="Select PO, DN or Tripsheet" domain="[('partner_id', '=', partner_id), ('x_delivery_order', '!=', False), ('order_id.state', 'not in', ['cancel', 'draft'])]"/>
+                </field>
+            </field>
+        </record>
+
+        <!--        <record id="account_move_list_inherit" model="ir.ui.view">-->
+        <!--            <field name="name">account_move_list_inherit</field>-->
+        <!--            <field name="model">account.move</field>-->
+        <!--            <field name="inherit_id" ref="account.view_invoice_tree"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='amount_residual_signed']" position="before">-->
+        <!--                    <field name="x_total_paid" sum="paid" optional="show"/>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <!--        <record id="account_payment_list_inherit" model="ir.ui.view">-->
+        <!--            <field name="name">account_payment_list_inherit</field>-->
+        <!--            <field name="model">account.payment</field>-->
+        <!--            <field name="inherit_id" ref="account.view_account_payment_tree"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='name']" position="before">-->
+        <!--                    <field name="communication"/>-->
+        <!--                </xpath>-->
+        <!--                &lt;!&ndash;                <xpath expr="//field[@name='amount']" position="after">&ndash;&gt;-->
+        <!--                &lt;!&ndash;                    <field name="x_quote_total"/>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                </xpath>&ndash;&gt;-->
+        <!--                <xpath expr="//field[@name='amount']" position="replace">-->
+        <!--                    <field name="amount" string="Paid" optional="show"/>-->
+        <!--                    <field name="x_amount_in_sale" optional="hide"/>-->
+        <!--                </xpath>-->
+        <!--                <xpath expr="//field[@name='state']" position="replace">-->
+        <!--                    <field name="state" optional="show"/>-->
+        <!--                </xpath>-->
+        <!--                <xpath expr="//field[@name='partner_id']" position="replace">-->
+        <!--                    <field name="partner_id" string="Customer" optional="show"/>-->
+        <!--                </xpath>-->
+        <!--                <xpath expr="//field[@name='payment_method_id']" position="replace">-->
+        <!--                    <field name="payment_method_id" optional="show"/>-->
+        <!--                </xpath>-->
+        <!--                &lt;!&ndash;                 <xpath expr="//field[@name='amount']" position="after">&ndash;&gt;-->
+        <!--                &lt;!&ndash;                    <field name="x_balance_total" sum="Balance"/>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                </xpath>&ndash;&gt;-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <!--        <record id="view_order_form_inherit_analytic" model="ir.ui.view">-->
+        <!--            <field name="name">sale_view_order_form_inherit_analytic</field>-->
+        <!--            <field name="model">sale.order</field>-->
+        <!--            <field name="inherit_id" ref="sale.view_order_form"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//button[@name='action_quotation_send']" position="after">-->
+        <!--                    <button name="%(pabs_contact.action_view_sale_advance_payment_spilt)d"-->
+        <!--                            string="Spilt Advance Payment" type="action" groups="base.group_no_one"/>-->
+        <!--                </xpath>-->
+        <!--                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][2]" position="replace">-->
+        <!--                    <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Down Payment"-->
+        <!--                            type="action" context="{'default_advance_payment_method': 'fixed'}"-->
+        <!--                            attrs="{'invisible': ['|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}"/>-->
+        <!--                </xpath>-->
+        <!--                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="attributes">-->
+        <!--                    <attribute name="string">Create Completion Certificate</attribute>-->
+        <!--                </xpath>-->
+
+
+        <!--                <xpath expr="//button[@name='action_view_invoice']" position="after">-->
+        <!--                    <button name="action_view_task_completed" string="Completed Task" type="object"-->
+        <!--                            class="oe_stat_button" icon="fa-tasks"/>-->
+        <!--                    <button name="action_view_sale_task_planning" string="Planning" type="object"-->
+        <!--                            class="oe_stat_button" icon="fa-tasks"/>-->
+        <!--                    <button name="action_view_analytic" string="Cost and Revenue" type="object" class="oe_stat_button"-->
+        <!--                            icon="fa-pencil-square-o"/>-->
+        <!--                    &lt;!&ndash;                    <button name="action_view_profitability_report" string="Cost and Revenue 2" type="object" class="oe_stat_button"&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            icon="fa-pencil-square-o"/>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                    <button name="action_view_sale_cost_report" string="Cost and Revenue sale" type="object" class="oe_stat_button"&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            icon="fa-pencil-square-o"/>&ndash;&gt;-->
+        <!--                </xpath>-->
+        <!--                <xpath expr="//sheet//div" position="after">-->
+        <!--                    <widget name="web_ribbon" text="Paid"-->
+        <!--                            attrs="{'invisible': ['|',('x_payment_due','!=', 0),('state', '!=', 'sale')]}"/>-->
+        <!--                </xpath>-->
+        <!--                <xpath expr="//tree//field[@name='product_uom_qty']" position="before">-->
+        <!--                    <field name="x_completion_date"/>-->
+        <!--                </xpath>-->
+        <!--&lt;!&ndash;                <xpath expr="//tree//field[@name='price_subtotal']" position="after">&ndash;&gt;-->
+        <!--&lt;!&ndash;                    <field name="x_down_payment_amount"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;                </xpath>&ndash;&gt;-->
+        <!--                <xpath expr="//tree//field[@name='tax_id']" position="attributes">-->
+        <!--                    <attribute name="attrs"></attribute>-->
+        <!--                </xpath>-->
+
+        <!--                <xpath expr="//notebook" position="inside">-->
+        <!--                    &lt;!&ndash;                    <page string="Agreement Statement">&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                      <field name="invoice_ids"/>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                    </page>&ndash;&gt;-->
+
+        <!--                    <page string="Agreement Statement" attrs="{'invisible': [('state', '!=', 'sale')]}">-->
+        <!--                        <field name="x_invoice_payment"/>-->
+        <!--                        <group col="6">-->
+        <!--                            <group class="oe_subtotal_footer oe_right" colspan="6" name="balance_total">-->
+        <!--                                <field name="amount_total"/>-->
+        <!--                                <field name="x_payment_paid"/>-->
+        <!--                                <field name="x_payment_due" class="oe_subtotal_footer_separator"/>-->
+        <!--                            </group>-->
+        <!--                            <div class="oe_clear"/>-->
+        <!--                        </group>-->
+        <!--                    </page>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+
+        <!--        <record id="planning_slot_view_form_inherit" model="ir.ui.view">-->
+        <!--            <field name="name">planning.slot.view.form.inherit</field>-->
+        <!--            <field name="model">planning.slot</field>-->
+        <!--            <field name="inherit_id" ref="planning.planning_view_form"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='role_id']" position="after">-->
+        <!--                    <field name="x_customer_id"/>-->
+        <!--                </xpath>-->
+        <!--                 <xpath expr="//field[@name='allocated_percentage']" position="after">-->
+        <!--                     <label for="x_date_begin" string="Time Line"/>-->
+        <!--                     <div>-->
+        <!--                         <field name="x_date_begin"/>-->
+        <!--                         <label for="x_date_end" string="-"/>-->
+        <!--                         <field name="x_date_end"/>-->
+        <!--                     </div>-->
+        <!--                    <field name="x_dead_line"/>-->
+        <!--&lt;!&ndash;                    <field name="x_planned_hours" invisible="1"/>&ndash;&gt;-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+
+        <record id="purchase_order_view_search_inherit" model="ir.ui.view">
+            <field name="name">purchase_order_view_search_inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="partner_ref" string="reference"/>
+                    <field name="origin" string="source"/>
+                </xpath>
+
+
+            </field>
+        </record>
+
+        <record id="purchase_order_view_filter_inherit" model="ir.ui.view">
+            <field name="name">purchase_order_view_filter_inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="partner_ref" string="reference"/>
+                    <field name="origin" string="source"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="purchase_order_custom_to_bill" model="ir.actions.act_window">
+            <field name="name">Orders To Bill</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph</field>
+            <field name="domain">[('invoice_status','=','to invoice')]</field>
+            <field name="context">{'group_by': 'partner_id'}</field>
+            <field name="view_id" ref="purchase.purchase_order_view_tree"/>
+        </record>
+
+        <record id="purchase_order_custom_nothing_to_bill" model="ir.actions.act_window">
+            <field name="name">Nothing To Bill</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph</field>
+            <field name="domain">[('invoice_status','=','no')]</field>
+            <field name="context">{'group_by': 'partner_id'}</field>
+            <field name="view_id" ref="purchase.purchase_order_view_tree"/>
+        </record>
+
+
+        <menuitem id="menu_purchase_order_billing" name="Billing" sequence="2" parent="purchase.menu_purchase_root"
+                  groups="base.group_user"/>
+
+        <menuitem id="menu_purchase_order_billing_to_bill" name="To Bill" sequence="1"
+                  parent="menu_purchase_order_billing"
+                  action="purchase_order_custom_to_bill" groups="base.group_user"/>
+
+        <menuitem id="menu_purchase_order_nothing_to_bill" name="Nothing To Bill" sequence="2"
+                  parent="menu_purchase_order_billing"
+                  action="purchase_order_custom_nothing_to_bill" groups="base.group_user"/>
+
+
+    </data>
+</odoo>

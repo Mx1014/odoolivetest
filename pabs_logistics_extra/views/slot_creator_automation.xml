@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<odoo>
+    <data noupdate="1">
+        <record id="logistics_slot_creator_automation" model="ir.cron">
+            <field name="name">Create Logistics Slots</field>
+            <field name="model_id" ref="model_plan_calendar"/>
+            <field name="state">code</field>
+            <field name="code">model.monthly_auto_slot_created()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+        </record>
+    </data>
+</odoo>

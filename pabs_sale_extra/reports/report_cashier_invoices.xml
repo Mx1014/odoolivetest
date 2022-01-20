@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+    id="report_cashier_invoices"
+    model="account.user.statement"
+    string="Cashier Invoices"
+    report_type="qweb-pdf"
+    name="pabs_sale_extra.report_cashier_invoices_template"
+    file="pabs_sale_extra.report_cashier_invoices_template"
+    paperformat="pabs_sale_extra.paperformat_closing_report"
+    />
+</odoo>

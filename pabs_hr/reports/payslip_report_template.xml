@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payslip_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div>
+                            <img t-att-src="'/pabs_hr/static/src/img/AlSalam_Logo.png'"
+                                 style="max-height:115px; float:right"/>
+                            <img t-att-src="'/pabs_hr/static/src/img/AlSalam_Logo-_Contact_Details.png'"
+                                 style="max-height:115px; float:left"/>
+                        </div>
+                        <div>
+                            <h5 style="float:left">
+                                <span t-field="o.name"/>
+                            </h5>
+                            <div class="text-center">
+                                <strong>From</strong>
+                                <span t-field="o.date_from"/>
+                                <span></span>
+                                <strong>To</strong>
+                                <span t-field="o.date_to"/>
+                            </div>
+                        </div>
+                        <table name="employee-infos" style="width:100%" class="table table-sm table-bordered">
+                            <tr>
+                                <tr style="background-color:#B1B3B8;">
+                                    <td class="text-center" colspan="6">
+                                        <strong>Personal Details</strong>
+                                    </td>
+                                </tr>
+                                <td>
+                                    <strong>Name</strong>
+                                </td>
+                                <td style="width:15%" colspan="3">
+                                    <span t-field="o.employee_id"/>
+                                </td>
+                                <td>
+                                    <strong>Code ID</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.registration_number"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>C.P.R</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.identification_id"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Employee Status</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.employee_status"/>
+                                </td>
+                                <td style="width:10%">
+                                    <strong>Bank Name</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.bank_account_id.bank_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Designation</strong>
+                                </td>
+                                <td style="width:20%" colspan="3">
+                                    <span t-field="o.employee_id.job_id"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Payment Method</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.payment_method"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Department</strong>
+                                </td>
+                                <td style="width:20%">
+                                    <span t-field="o.employee_id.department_id"/>
+                                </td>
+
+
+                                <td style="width:12%">
+                                    <strong>Annual Leave</strong>
+                                </td>
+                                <td>
+                                     <span t-esc="'{:,.2f}'.format(o.x_annual_leave)"/>
+<!--                                    <span t-field="o.x_annual_leave"/>-->
+                                </td>
+                                <td style="width:5%">
+                                    <strong>IBAN NO</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.bank_account_id.x_iban"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Join Date</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.date_of_join"/>
+                                </td>
+                                <td style="width:5%">
+                                    <strong>Worked Days</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_work_month_days"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Bank Account</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_id.bank_account_id"/>
+                                </td>
+
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm">
+                            <tr style="background-color:#B1B3B8;">
+                                <th>Particular</th>
+                                <th>Number of Days</th>
+                            </tr>
+                            <tr t-foreach="o.worked_days_line_ids" t-as="worked_days">
+                                <td>
+                                    <span t-field="worked_days.name"/>
+                                </td>
+                                <td>
+                                    <span t-field="worked_days.number_of_days"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <t t-set="serial_no" t-value="1"/>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr name="desc" style="background-color:#B1B3B8;">
+                                    <td class="text-center" colspan="5">
+                                        <strong>Salary Computation</strong>
+                                    </td>
+                                </tr>
+                                <tr style="background-color:#B1B3B8;">
+                                    <th>Sr. No</th>
+                                    <th>Name</th>
+                                    <th>Hour</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                                    <td t-if="line.code in ['NET','GROSS']">
+                                        <strong>
+                                            <span style="background-color:#E8E5E4" t-esc="serial_no"/>
+                                        </strong>
+                                    </td>
+                                    <td t-if="line.code not in ['NET','GROSS']">
+                                        <span t-esc="serial_no"/>
+                                    </td>
+                                    <td t-if="line.code in ['NET','GROSS']">
+                                        <strong>
+                                            <span style="background-color:#E8E5E4" t-field="line.name"/>
+                                        </strong>
+                                    </td>
+                                    <td t-if="line.code not in ['NET','GROSS']">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.hour"/>
+                                    </td>
+                                    <td t-if="line.code in ['NET','GROSS']">
+                                        <strong>
+                                            <span style="background-color:#E8E5E4" t-esc="line.total"
+                                                  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </strong>
+                                    </td>
+                                    <td t-if="line.code not in ['NET','GROSS']">
+                                        <span t-esc="line.total"
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+
+                                    <t t-set="serial_no" t-value="serial_no + 1"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--                        <table name="employee-salary" style="width:100%" class="table table-sm table-bordered">-->
+                        <!--                            <tr>-->
+                        <!--                                <tr style="background-color:#B1B3B8;">-->
+                        <!--                                    <td class="text-center" colspan="6">-->
+                        <!--                                        <strong>Salary Before Deduction</strong>-->
+                        <!--                                    </td>-->
+                        <!--                                </tr>-->
+                        <!--                                <td t-if="o.contract_id.wage">-->
+                        <!--                                    <strong>Basic Salary</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td t-if="o.contract_id.wage">-->
+                        <!--                                    <span t-field="o.contract_id.wage"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.increments">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Increments</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.increments"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.total_allowances">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Total Allowances</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.total_allowances"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.home_rent_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Home Rent Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.home_rent_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.food_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Food Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.food_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.labour_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Labour Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.labour_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.other_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Other Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.other_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.performance_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Performance Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.performance_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.shift_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Shift Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.shift_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.social_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Social Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.social_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.special_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Special Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.special_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.transportation_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Transportation Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.transportation_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.contract_id.phone_allowance">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Phone Allowance</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.contract_id.phone_allowance"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.overtime_amount">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Overtime 1.25</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.overtime_amount"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.holiday_overtime_amount">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Overtime 1.5</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.holiday_overtime_amount"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr t-if="o.weekly_off_overtime_amount">-->
+                        <!--                                <td>-->
+                        <!--                                    <strong>Overtime 2.0</strong>-->
+                        <!--                                </td>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-field="o.weekly_off_overtime_amount"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                        </table>-->
+<!--                        <table name="employee-salary" style="width:100%" class="table table-sm table-bordered">-->
+<!--                            <tr>-->
+<!--                                <tr style="background-color:#B1B3B8;">-->
+<!--                                    <td class="text-center" colspan="6">-->
+<!--                                        <strong>Salary Before Deduction</strong>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <td t-if="o.contract_id.wage">-->
+<!--                                    <strong>Basic Salary</strong>-->
+<!--                                </td>-->
+<!--                                <td t-if="o.contract_id.wage">-->
+<!--                                    <span t-field="o.contract_id.wage"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.increments">-->
+<!--                                <td>-->
+<!--                                    <strong>Increments</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.increments"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.total_allowances">-->
+<!--                                <td>-->
+<!--                                    <strong>Total Allowances</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.total_allowances"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.home_rent_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Home Rent Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.home_rent_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.food_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Food Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.food_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.labour_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Labour Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.labour_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.other_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Other Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.other_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.performance_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Performance Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.performance_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.shift_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Shift Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.shift_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.social_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Social Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.social_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.special_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Special Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.special_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.transportation_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Transportation Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.transportation_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.contract_id.phone_allowance">-->
+<!--                                <td>-->
+<!--                                    <strong>Phone Allowance</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.contract_id.phone_allowance"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.overtime_amount">-->
+<!--                                <td>-->
+<!--                                    <strong>Overtime 1.25</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.overtime_amount"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.holiday_overtime_amount">-->
+<!--                                <td>-->
+<!--                                    <strong>Overtime 1.5</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.holiday_overtime_amount"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr t-if="o.weekly_off_overtime_amount">-->
+<!--                                <td>-->
+<!--                                    <strong>Overtime 2.0</strong>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span t-field="o.weekly_off_overtime_amount"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </table>-->
+                        <label style="font-weight: bold" t-if="o.remark">Remark:</label>
+                        <span t-field="o.remark"/>
+                        <p class="text-right">
+                            <strong>Employee signature</strong>
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

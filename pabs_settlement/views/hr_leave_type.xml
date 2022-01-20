@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pabs_settlement_holiday_status_form_inherit" model="ir.ui.view">
+        <field name="name">pabs.settlement.holiday.status.form.inherit</field>
+        <field name="model">hr.leave.type</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='calendar']" position="after">
+                <group name="domain_filter" string="Domains">
+                    <field name="x_filter_leave_type"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

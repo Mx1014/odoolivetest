@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="increment_wage_automation" model="ir.cron">
+            <field name="name">Increment Wage Automation</field>
+            <field name="model_id" ref="pabs_hr.model_hr_contract"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="state">code</field>
+            <field name="code">model.increment_wage()</field>
+        </record>
+    </data>
+</odoo>

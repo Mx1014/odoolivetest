@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <!--vat headers sales-->
+
+    <record id="tax_report_sales" model="account.tax.report.line">
+        <field name="name">VAT on Sales</field>
+        <field name="code">VS</field>
+        <field name="formula">SRST</field>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_line_srs" model="account.tax.report.line">
+        <field name="name">1. Standard rated sales</field>
+        <field name="code">SRS</field>
+        <field name="parent_id" ref="tax_report_sales"/>
+        <field name="formula">SRSB+SRSA</field>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_sales" model="account.tax.report.line">
+        <field name="name">Standard rated sales (Base)</field>
+        <field name="tag_name">Standard rated sales (Base)</field>
+        <field name="code">SRSB</field>
+        <field name="parent_id" ref="tax_report_line_srs"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_sales" model="account.tax.report.line">
+        <field name="name">Standard rated sales (Adj)</field>
+        <field name="tag_name">Standard rated sales (Adj)</field>
+        <field name="code">SRSA</field>
+        <field name="parent_id" ref="tax_report_line_srs"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_tax_sales" model="account.tax.report.line">
+        <field name="name">Standard rated sales (Tax)</field>
+        <field name="tag_name">Standard rated sales (Tax)</field>
+        <field name="code">SRST</field>
+        <field name="parent_id" ref="tax_report_line_srs"/>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_line_gcc_sale" model="account.tax.report.line">
+        <field name="name">2. Sales to registered taxpayers in other GCC states</field>
+        <field name="parent_id" ref="tax_report_sales"/>
+        <field name="code">GCC</field>
+        <field name="formula">GCCB+GCCA</field>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_line_gcc_base" model="account.tax.report.line">
+        <field name="name">Sales to registered taxpayers in other GCC states (Base)</field>
+        <field name="tag_name">Sales to registered taxpayers in other GCC states (Base)</field>
+        <field name="code">GCCB</field>
+        <field name="parent_id" ref="tax_report_line_gcc_sale"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_gcc_adj" model="account.tax.report.line">
+        <field name="name">Sales to registered taxpayers in other GCC states (Adj)</field>
+        <field name="tag_name">Sales to registered taxpayers in other GCC states (Adj)</field>
+        <field name="code">GCCA</field>
+        <field name="parent_id" ref="tax_report_line_gcc_sale"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_line_domestic_reverse_sale" model="account.tax.report.line">
+        <field name="name">3. Sales subject to domestic reverse charge mechanism</field>
+        <field name="parent_id" ref="tax_report_sales"/>
+        <field name="code">DCS</field>
+        <field name="formula">DCSB+DCSA</field>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_domestic_reverse_base" model="account.tax.report.line">
+        <field name="name">Sales subject to domestic reverse charge mechanism (Base)</field>
+        <field name="tag_name">Sales subject to domestic reverse charge mechanism (Base)</field>
+        <field name="code">DCSB</field>
+        <field name="parent_id" ref="tax_report_line_domestic_reverse_sale"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_domestic_reverse_adj" model="account.tax.report.line">
+        <field name="name">Sales subject to domestic reverse charge mechanism (Adj)</field>
+        <field name="tag_name">Sales subject to domestic reverse charge mechanism (Adj)</field>
+        <field name="code">DCSA</field>
+        <field name="parent_id" ref="tax_report_line_domestic_reverse_sale"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_line_zrs" model="account.tax.report.line">
+        <field name="name">4. Zero rated domestic sales</field>
+        <field name="code">ZRS</field>
+        <field name="parent_id" ref="tax_report_sales"/>
+        <field name="formula">ZRSB+ZRSA</field>
+        <field name="sequence" eval="4"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_zrs_sales" model="account.tax.report.line">
+        <field name="name">Zero rated domestic sales (Base)</field>
+        <field name="tag_name">Zero rated domestic sales (Base)</field>
+        <field name="code">ZRSB</field>
+        <field name="parent_id" ref="tax_report_line_zrs"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_zrs_sales" model="account.tax.report.line">
+        <field name="name">Zero rated domestic sales (Adj)</field>
+        <field name="tag_name">Zero rated domestic sales (Adj)</field>
+        <field name="code">ZRSA</field>
+        <field name="parent_id" ref="tax_report_line_zrs"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_line_ext" model="account.tax.report.line">
+        <field name="name">5. Exports</field>
+        <field name="code">EXT</field>
+        <field name="parent_id" ref="tax_report_sales"/>
+        <field name="formula">EXTB+EXTA</field>
+        <field name="sequence" eval="5"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_ext_sales" model="account.tax.report.line">
+        <field name="name">Exports (Base)</field>
+        <field name="tag_name">Exports (Base)</field>
+        <field name="code">EXTB</field>
+        <field name="parent_id" ref="tax_report_line_ext"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_ext_sales" model="account.tax.report.line">
+        <field name="name">Exports (Adj)</field>
+        <field name="tag_name">Exports (Adj)</field>
+        <field name="code">EXTA</field>
+        <field name="parent_id" ref="tax_report_line_ext"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_exs" model="account.tax.report.line">
+        <field name="name">6. Exempt Sales</field>
+        <field name="code">EXS</field>
+        <field name="parent_id" ref="tax_report_sales"/>
+        <field name="formula">EXSB+EXSA</field>
+        <field name="sequence" eval="6"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_exs_sales" model="account.tax.report.line">
+        <field name="name">Exempt Sales (Base)</field>
+        <field name="tag_name">Exempt Sales (Base)</field>
+        <field name="code">EXSB</field>
+        <field name="parent_id" ref="tax_report_line_exs"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_exs_sales" model="account.tax.report.line">
+        <field name="name">Exempt Sales (Adj)</field>
+        <field name="tag_name">Exempt Sales (Adj)</field>
+        <field name="code">EXSA</field>
+        <field name="parent_id" ref="tax_report_line_exs"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_total_sale" model="account.tax.report.line">
+        <field name="name">7. Total Sales</field>
+        <field name="code">TS</field>
+        <field name="parent_id" ref="tax_report_sales"/>
+        <field name="sequence" eval="7"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_total_sales" model="account.tax.report.line">
+        <field name="name">Total Sales (Base)</field>
+        <field name="code">TSB</field>
+        <field name="parent_id" ref="tax_report_line_total_sale"/>
+        <field name="formula">SRSB+GCCB+DCSB+ZRSB+EXTB+EXSB</field>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_total_sales" model="account.tax.report.line">
+        <field name="name">Total Sales (Adj)</field>
+        <field name="code">TSA</field>
+        <field name="parent_id" ref="tax_report_line_total_sale"/>
+        <field name="formula">SRSA+GCCA+DCSA+ZRSA+EXTA+EXSA</field>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_tax_total_sales" model="account.tax.report.line">
+        <field name="name">Total Sales (Tax)</field>
+        <field name="code">TST</field>
+        <field name="parent_id" ref="tax_report_line_total_sale"/>
+        <field name="formula">SRST</field>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <!--vat headers purchase-->
+    <record id="tax_report_purchases" model="account.tax.report.line">
+        <field name="name">VAT on Purchases</field>
+        <field name="code">VP</field>
+        <field name="formula">SRPT+IMGT+IMST+DCPT</field>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_srp" model="account.tax.report.line">
+        <field name="name">8. Standard rated domestic purchases</field>
+        <field name="code">SRP</field>
+        <field name="parent_id" ref="tax_report_purchases"/>
+        <field name="formula">SRPB+SRPA</field>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_srp_purchase" model="account.tax.report.line">
+        <field name="name">Standard rated domestic purchases (Base)</field>
+        <field name="tag_name">Standard rated domestic purchases (Base)</field>
+        <field name="code">SRPB</field>
+        <field name="parent_id" ref="tax_report_line_srp"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_srp_purchase" model="account.tax.report.line">
+        <field name="name">Standard rated domestic purchases (Adj)</field>
+        <field name="tag_name">Standard rated domestic purchases (Adj)</field>
+        <field name="code">SRPA</field>
+        <field name="parent_id" ref="tax_report_line_srp"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_tax_srp_purchase" model="account.tax.report.line">
+        <field name="name">Standard rated domestic purchases (Tax)</field>
+        <field name="tag_name">Standard rated domestic purchases (Tax)</field>
+        <field name="code">SRPT</field>
+        <field name="parent_id" ref="tax_report_line_srp"/>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_imports" model="account.tax.report.line">
+        <field name="name">9. Imports subject to VAT either paid at customs or deferred</field>
+        <field name="code">IMG</field>
+        <field name="parent_id" ref="tax_report_purchases"/>
+        <field name="formula">IMGB+IMGA</field>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_img_purchase" model="account.tax.report.line">
+        <field name="name">Imports subject to VAT either paid at customs or deferred (Base)</field>
+        <field name="tag_name">Imports subject to VAT either paid at customs or deferred (Base)</field>
+        <field name="code">IMGB</field>
+        <field name="parent_id" ref="tax_report_line_imports"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_img_purchase" model="account.tax.report.line">
+        <field name="name">Imports subject to VAT either paid at customs or deferred (Adj)</field>
+        <field name="tag_name">Imports subject to VAT either paid at customs or deferred (Adj)</field>
+        <field name="code">IMGA</field>
+        <field name="parent_id" ref="tax_report_line_imports"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_tax_img_purchase" model="account.tax.report.line">
+        <field name="name">Imports subject to VAT either paid at customs or deferred (Tax)</field>
+        <field name="tag_name">Imports subject to VAT either paid at customs or deferred (Tax)</field>
+        <field name="code">IMGT</field>
+        <field name="parent_id" ref="tax_report_line_imports"/>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_line_imports_reverse" model="account.tax.report.line">
+        <field name="name">10. Imports subject to VAT accounted for through reverse charge mechanism</field>
+        <field name="code">IMS</field>
+        <field name="parent_id" ref="tax_report_purchases"/>
+        <field name="formula">IMSB+IMSA</field>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_ims_purchase" model="account.tax.report.line">
+        <field name="name">Imports subject to VAT accounted for through reverse charge mechanism (Base)</field>
+        <field name="tag_name">Imports subject to VAT accounted for through reverse charge mechanism (Base)</field>
+        <field name="code">IMSB</field>
+        <field name="parent_id" ref="tax_report_line_imports_reverse"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_ims_purchase" model="account.tax.report.line">
+        <field name="name">Imports subject to VAT accounted for through reverse charge mechanism (Adj)</field>
+        <field name="tag_name">Imports subject to VAT accounted for through reverse charge mechanism (Adj)</field>
+        <field name="code">IMSA</field>
+        <field name="parent_id" ref="tax_report_line_imports_reverse"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_tax_ims_purchase" model="account.tax.report.line">
+        <field name="name">Imports subject to VAT accounted for through reverse charge mechanism (Tax)</field>
+        <field name="tag_name">Imports subject to VAT accounted for through reverse charge mechanism (Tax)</field>
+        <field name="code">IMST</field>
+        <field name="parent_id" ref="tax_report_line_imports_reverse"/>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_domestic_reverse" model="account.tax.report.line">
+        <field name="name">11. Purchases subject to domestic reverse charge mechanism</field>
+        <field name="code">DCP</field>
+        <field name="parent_id" ref="tax_report_purchases"/>
+        <field name="formula">DCPB+DCPA</field>
+        <field name="sequence" eval="4"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_dcp_purchase" model="account.tax.report.line">
+        <field name="name">Purchases subject to domestic reverse charge mechanism (Base)</field>
+        <field name="tag_name">Purchases subject to domestic reverse charge mechanism (Base)</field>
+        <field name="code">DCPB</field>
+        <field name="parent_id" ref="tax_report_line_domestic_reverse"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_dcp_purchase" model="account.tax.report.line">
+        <field name="name">Purchases subject to domestic reverse charge mechanism (Adj)</field>
+        <field name="tag_name">Purchases subject to domestic reverse charge mechanism (Adj)</field>
+        <field name="code">DCPA</field>
+        <field name="parent_id" ref="tax_report_line_domestic_reverse"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_tax_dcp_purchase" model="account.tax.report.line">
+        <field name="name">Purchases subject to domestic reverse charge mechanism (Tax)</field>
+        <field name="tag_name">Purchases subject to domestic reverse charge mechanism (Tax)</field>
+        <field name="code">DCPT</field>
+        <field name="parent_id" ref="tax_report_line_domestic_reverse"/>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_line_domestic_reverse" model="account.tax.report.line">
+        <field name="name">11. Purchases subject to domestic reverse charge mechanism</field>
+        <field name="code">DCP</field>
+        <field name="parent_id" ref="tax_report_purchases"/>
+        <field name="formula">DCPB+DCPA</field>
+        <field name="sequence" eval="5"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_dcp_purchase" model="account.tax.report.line">
+        <field name="name">Purchases subject to domestic reverse charge mechanism (Base)</field>
+        <field name="tag_name">Purchases subject to domestic reverse charge mechanism (Base)</field>
+        <field name="code">DCPB</field>
+        <field name="parent_id" ref="tax_report_line_domestic_reverse"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_dcp_purchase" model="account.tax.report.line">
+        <field name="name">Purchases subject to domestic reverse charge mechanism (Adj)</field>
+        <field name="tag_name">Purchases subject to domestic reverse charge mechanism (Adj)</field>
+        <field name="code">DCPA</field>
+        <field name="parent_id" ref="tax_report_line_domestic_reverse"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_tax_dcp_purchase" model="account.tax.report.line">
+        <field name="name">Purchases subject to domestic reverse charge mechanism (Tax)</field>
+        <field name="tag_name">Purchases subject to domestic reverse charge mechanism (Tax)</field>
+        <field name="code">DCPT</field>
+        <field name="parent_id" ref="tax_report_line_domestic_reverse"/>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_line_pnr" model="account.tax.report.line">
+        <field name="name">12. Purchases from non-registered suppliers, zero-rated/exempt purchases</field>
+        <field name="code">PNR</field>
+        <field name="parent_id" ref="tax_report_purchases"/>
+        <field name="formula">PNRB+PNRA</field>
+        <field name="sequence" eval="6"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_pnr_purchase" model="account.tax.report.line">
+        <field name="name">Purchases from non-registered suppliers, zero-rated/exempt purchases (Base)</field>
+        <field name="tag_name">Purchases from non-registered suppliers, zero-rated/exempt purchases (Base)</field>
+        <field name="code">PNRB</field>
+        <field name="parent_id" ref="tax_report_line_pnr"/>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_pnr_purchase" model="account.tax.report.line">
+        <field name="name">Purchases from non-registered suppliers, zero-rated/exempt purchases (Adj)</field>
+        <field name="tag_name">Purchases from non-registered suppliers, zero-rated/exempt purchases (Adj)</field>
+        <field name="code">PNRA</field>
+        <field name="parent_id" ref="tax_report_line_pnr"/>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_total_purchase" model="account.tax.report.line">
+        <field name="name">13. Total Purchases</field>
+        <field name="code">TP</field>
+        <field name="parent_id" ref="tax_report_purchases"/>
+        <field name="sequence" eval="7"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_base_total_purchase" model="account.tax.report.line">
+        <field name="name">Total Purchases (Base)</field>
+        <field name="code">TPB</field>
+        <field name="parent_id" ref="tax_report_line_total_purchase"/>
+        <field name="formula">SRPB+IMGB+IMSB+DCPB+PNRB</field>
+        <field name="sequence" eval="1"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_adj_total_purchase" model="account.tax.report.line">
+        <field name="name">Total Purchases (Adj)</field>
+        <field name="code">TPA</field>
+        <field name="parent_id" ref="tax_report_line_total_purchase"/>
+        <field name="formula">SRPA+IMGA+IMSA+DCPA+PNRA</field>
+        <field name="sequence" eval="2"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_line_tax_total_purchase" model="account.tax.report.line">
+        <field name="name">Total Purchases (Tax)</field>
+        <field name="code">TPT</field>
+        <field name="parent_id" ref="tax_report_line_total_purchase"/>
+        <field name="formula">SRPT+IMGT+IMST+DCPT</field>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <!--vat headers due-->
+    <record id="tax_report_current_due" model="account.tax.report.line">
+        <field name="name">14. Total VAT due for current period</field>
+        <field name="code">TVD</field>
+        <field name="formula">SRST-(SRPT+IMGT+IMST+DCPT)</field>
+        <field name="sequence" eval="3"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <record id="tax_report_current_correction" model="account.tax.report.line">
+        <field name="name">15. Corrections from previous period (between ±5000BHD)</field>
+        <field name="tag_name">Corrections from previous period</field>
+        <field name="code">PPC</field>
+        <field name="sequence" eval="4"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+    <record id="tax_report_carried_forward" model="account.tax.report.line">
+        <field name="name">16. VAT credit carried forward from previous period(s)</field>
+        <field name="tag_name">VAT credit carried forward</field>
+        <field name="code">CCF</field>
+        <field name="sequence" eval="5"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+    <!--vat headers net-->
+    <record id="tax_report_vat_net" model="account.tax.report.line">
+        <field name="name">17. Net VAT due (or reclaimed)</field>
+        <field name="code">NVD</field>
+        <field name="formula">SRST-(SRPT+IMGT+IMST+DCPT)+(PPC+CCF)</field>
+        <field name="sequence" eval="6"/>
+        <field name="country_id" ref="base.bh"/>
+    </record>
+
+
+</odoo>

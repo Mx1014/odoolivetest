@@ -1,0 +1,26 @@
+<odoo>
+    <act_window name="Collection Transfer" id="act_stock_collect_picking"
+        res_model="stock.collect.picking"
+        view_mode="form" target="new"/>
+
+    <record id="view_stock_collect_picking_form_pabs_repair" model="ir.ui.view">
+        <field name="name">view.stock.collect.picking.form.pabs.repair</field>
+        <field name="model">stock.collect.picking</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="x_ticket_id" required="1" invisible="1"/>
+                    <field name="x_partner_id" required="1" readonly="1" force_save="0" invisible="0"/>
+                    <field name="x_product_id" required="1" readonly="1" force_save="0" invisible="0"/>
+                    <field name="x_helpdesk_team_id" readonly="1" force_save="1"/>
+                    <field name="x_helpdesk_team_operation_ids" invisible="1"/>
+                    <field name="x_operation_id" required="1" invisible="0" domain="[('id', 'in', x_helpdesk_team_operation_ids)]"/>
+                </group>
+                <footer>
+                    <button name="create_collection_picking" string="Collect" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

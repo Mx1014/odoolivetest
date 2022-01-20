@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+
+<odoo>
+    <data noupdate='1'>
+        <record forcecreate= "True" id= "product_label_zpl_report" model= "report.template">
+            <field name="name">Product Label (ZPL)</field>
+            <field name="model_id" ref="product.model_product_product" />
+            <field name="barcode_height">80</field>
+            <field name="barcode_width">2</field>
+            <field name="barcode_abscissa">130</field>
+            <field name="barcode_ordinate">110</field>
+            <field name="product_height">14</field>
+            <field name="product_width">13</field>
+            <field name="product_abscissa">45</field>
+            <field name="product_ordinate">110</field>
+            <field name="template_text">^XA
+^PW420
+^BY{template_id.barcode_width},2,{template_id.barcode_height}^FT{template_id.barcode_ordinate},{template_id.barcode_abscissa}^BE,Y,Y,N
+^FD{self.barcode}^FS
+^FT{template_id.product_ordinate},{template_id.product_abscissa}^A0N,{template_id.product_width},{template_id.product_height}^FH\^FD{self.name}^FS
+^PQ1,0,1,Y
+^XZ</field>
+        </record>
+    </data>
+</odoo>

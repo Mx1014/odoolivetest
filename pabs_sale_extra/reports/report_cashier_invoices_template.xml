@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_cashier_invoices_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page" style="font-size: 15px;">
+                        <!--                        <style>-->
+                        <!--                            table, td, th {-->
+                        <!--                            border: 1px solid black;-->
+                        <!--                            }-->
+                        <!--                            .right{-->
+                        <!--                            float:right;-->
+                        <!--                            padding-right: 0.3em;-->
+                        <!--                            }-->
+                        <!--                            table {-->
+                        <!--                            width: 100%;-->
+                        <!--                            margin-top: 20px;-->
+                        <!--                            }-->
+                        <!--                            td {-->
+                        <!--                            text-indent: 0.3em;-->
+                        <!--                            }-->
+                        <!--                            .space {-->
+                        <!--                            text-indent: 0.3em;-->
+                        <!--                            }-->
+                        <!--                            .right-space {-->
+                        <!--                            padding-right: 0.3em;-->
+                        <!--                            }-->
+                        <!--                            .no-border {-->
+                        <!--                            border:none;-->
+                        <!--                            }-->
+                        <!--                            .th-width {-->
+                        <!--                            width: 15%;-->
+                        <!--                            }-->
+                        <!--                            .qty-with {-->
+                        <!--                            width: 10%;-->
+                        <!--                            }-->
+                        <!--                            .des-with {-->
+                        <!--                            width: 40%;-->
+                        <!--                            }-->
+                        <!--                        </style>-->
+                        <h4 class="text-center" style="text-align: center;">INVOICES</h4>
+                        <table style="width: 100%;border:none;margin-top: 10px;">
+                            <tr>
+                                <td class="text-center">
+                                    <strong>Cashier: </strong> <span t-field="o.user_id"/>
+                                </td>
+                                <td class="text-center">
+                                    <strong>Session: </strong><span t-field="o.name"/>
+                                </td>
+                                <td class="text-center">
+                                    <strong>Date: </strong><span t-field="o.date"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <t t-set="count" t-value="1"/>
+                        <t t-set="total" t-value="0"/>
+                        <table class="table" style="margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>No#</th>
+                                    <th>Invoice #</th>
+                                    <th class="text-center">Type</th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Partner</th>
+                                    <th class="text-center">Source</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.invoice_ids" t-as="l">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="count"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.name"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="l.type"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="l.invoice_date"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="l.partner_id.name"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="l.invoice_origin"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="l.amount_total_signed"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <t t-set="count" t-value="count + 1"/>
+                                        <t t-set="total" t-value="total + l.amount_total_signed"/>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-center">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-right" style="padding-right: 0.3em;">
+                                        <strong>
+                                            <t t-esc="total"
+                                               t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

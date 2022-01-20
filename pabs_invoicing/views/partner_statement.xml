@@ -1,0 +1,71 @@
+<odoo>
+
+    <record id="customer_statements_form_view_inherit" model="ir.ui.view">
+            <field name="name">customer.statements.followup.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account_followup.customer_statements_form_view"/>
+            <field name="arch" type="xml">
+                <sheet position="inside">
+                    <div style="width: 99%;">
+                        <field name="x_pending_so_ids" attrs="{'invisible': [('x_pending_so_ids', '=', [])]}" >
+                            <tree style="content: '\f07d';font-family: 'FontAwesome';color: lightgray;background-color: #F8F8F8;">
+                                <button name="action_view_sale_order" type="object" icon="fa-pencil"/>
+                                <field name="name" string="Sales Order #" class="o_account_report_column_header"/>
+                                <field name="date_order" class="o_account_report_column_header"/>
+                                <field name="state" invisible="1" />
+                                <field name="x_deliver_to" />
+                                <field name="delivery_state" />
+                                <field name="currency_id" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="sale_order_type" string="SO Type" class="o_account_report_column_header"/>
+                                <field name="x_amount_not_invoiced" string="Amount" class="o_account_report_column_header"/>
+                            </tree>
+                        </field>
+                            <group name="note_groups" col="6">
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <field name="x_order_due" widget="monetary" options="{'currency_field': 'currency_id'}" style="font-weight: bold;color: black;"/>
+                                    <field name="x_total_balance" widget="monetary" options="{'currency_field': 'currency_id'}" style="font-weight: bold;color:black;"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                    </div>
+                </sheet>
+            </field>
+
+        </record>
+
+
+
+    <record id="res_partner_view_form_due" model="ir.ui.view">
+            <field name="name">res.partner.view.form.due</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account_followup.res_partner_view_form"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//button[@name='open_action_followup']" position="replace">
+                        <button type="object" class="oe_stat_button" name="open_action_followup" icon="fa-list" attrs="{'invisible': [('x_total_balance', '=', 0)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value"><field name="x_total_balance" widget="monetary" options="{'currency_field': 'currency_id'}"/></span>
+                            <span class="o_stat_text">Due</span>
+                        </div>
+                    </button>
+                    </xpath>
+            </field>
+    </record>
+
+<!--     <record id="view_contact_form_due" model="ir.ui.view">-->
+<!--            <field name="name">view.contact.form.due</field>-->
+<!--            <field name="model">res.partner</field>-->
+<!--            <field name="inherit_id" ref="base.view_partner_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="company_type" position="after">-->
+<!--                    <field name="x_total_balance" invisible="0"/>-->
+<!--                </field>-->
+<!--            </field>-->
+<!--     </record>-->
+
+
+
+
+</odoo>

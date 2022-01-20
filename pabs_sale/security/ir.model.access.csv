@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_terminal,access_sale_terminal,model_sale_terminal,base.group_user,1,1,1,0
+access_account_user_statement,access_account_user_statement,model_account_user_statement,base.group_user,1,1,1,1
+access_bank_card_readers,access_bank_card_readers,model_bank_card_readers,base.group_user,1,1,1,1
+access_bank_card_reader_line,access_bank_card_reader_line,model_bank_card_reader_line,base.group_user,1,1,1,1
+access_statement_payment_methods,access_statement_payment_methods,model_statement_payment_methods,base.group_user,1,1,1,1

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pay_loan_lines_form" model="ir.ui.view">
+        <field name="name">pay.loan.lines.form</field>
+        <field name="model">pay.loan.lines</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="x_loan_line_ids" widget="many2many_tags" readonly="0"/>
+                        <field name="x_loan_id" readonly="1" force_save="1" invisible="1"/>
+                    </group>
+                </group>
+                <group>
+                    <group>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="journal_id" readonly="0"/>
+                        <field name="x_amount" readonly="0"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="create_journal_entry" class="btn-primary" string="Payment"
+                            type="object"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" close="1"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

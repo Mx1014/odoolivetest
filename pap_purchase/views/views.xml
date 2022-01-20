@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_purchase_pic" model="ir.ui.view">
+            <field name="name">stock.view_warehouse_form_inherit_test</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse"/>
+            <field name="arch" type="xml">
+                <!--purchase_type-->
+                <field name="pick_type_id" position="attributes">
+                    <attribute name="required">1</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_picking_type_form_inherit_pap_purchase" model="ir.ui.view">
+            <field name="name">view.picking.type.form.inherit.pap.purchase</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <!--purchase_type-->
+                <field name="show_reserved" position="after">
+                    <field name="is_stock_receive_operation" attrs="{'invisible': [('code', '!=', 'incoming')]}"/>
+                </field>
+            </field>
+        </record>
+        <record id="purchase_order_view_form_inherit_inherit_pap_purchase" model="ir.ui.view">
+            <field name="name">purchase.order.view.form.inherit.inherit.pap.purchase</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+            <field name="arch" type="xml">
+                <!--purchase_type-->
+                <field name="picking_type_id" position="attributes">
+                    <attribute name="domain">[('is_stock_receive_operation', '=', True)]</attribute>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_purchase_pay" model="ir.ui.view">
+            <field name="name">purchase.purchase_order_form_inherit_test</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="before">
+                    <!--purchase_type-->
+                    <field name="purchase_type" required="1"/>
+                    <field name="x_sale_order" readonly="1" force_save="1" invisible="1"/>
+                    <!--narration-->
+                    <!--                    <field name="narration"/>-->
+                    <!--cancel button-->
+                </field>
+                <xpath expr="//header//button[@name='button_cancel']" position="attributes">
+                    <attribute name="groups">purchase.group_purchase_manager</attribute>
+                </xpath>
+
+                <xpath expr="//tree//field[@name='taxes_id']" position="after">
+                    <field name="discount" readonly="0"/>
+                    <field name="x_discount_amount" readonly="0"/>
+                </xpath>
+                <!--payment_term-->
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="context">{'res_partner_search_mode': 'supplier', 'show_vat': True,
+                        'default_supplier_rank': 1}
+                    </attribute>
+                </xpath>
+                <xpath expr="//tree//field[@name='account_analytic_id']" position="attributes">
+                    <attribute name="domain">['|', ('x_users', '=', uid), ('x_users', '=', False)]</attribute>
+                </xpath>
+                <field name="picking_type_id" position="attributes">
+                    <attribute name="required">1</attribute>
+                </field>
+                <xpath expr="//tree//field[@name='product_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_create_edit': True, 'no_quick_create': True}
+                    </attribute>
+                </xpath>
+
+
+            </field>
+        </record>
+
+        <record id="view_purchase_type" model="ir.ui.view">
+            <field name="name">purchase.purchase_order_form_inherit_test_type</field>
+            <field name="model">purchase.order</field>
+            <field name="groups_id" eval="[(6,0,[ref('base.group_system')])]"/>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="purchase_type" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_purchase_type_for_user_overseas" model="ir.ui.view">
+            <field name="name">purchase.view_purchase_type_for_user_overseas</field>
+            <field name="model">purchase.order</field>
+            <field name="groups_id"
+                   eval="[(6,0,[ref('purchase.group_purchase_user')]),(6,0,[ref('pap_purchase.group_oversees')])]"/>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="purchase_type" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_purchase_inco" model="ir.ui.view">
+            <field name="name">purchase_stock.purchase_order_view_form_inherit_test</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+            <field name="arch" type="xml">
+                <!--incoterm-->
+                <field name="incoterm_id" position="attributes">
+                    <attribute name="attrs">{'required': [('purchase_type', '=', 'Oversees')] ,'invisible':
+                        [('purchase_type', '=', 'Local')]}
+                    </attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="purchase_order_tree_inherit_pap_purchase" model="ir.ui.view">
+            <field name="name">purchase.order.tree.inherit.pap.purchase</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree//field[@name='partner_id']" position="before">
+                    <field name="x_partner_code" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_payment_voucher_reports" model="ir.ui.view">
+            <field name="name">payment.voucher.reports</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <field name="usage" position="after">
+                    <field name="partner_id"/>
+                </field>
+            </field>
+        </record>
+
+        <!--        <record id="forcasted_report_view" model="ir.actions.act_window">-->
+        <!--            <field name="name">Forcasted Report</field>-->
+        <!--            <field name="type">ir.actions.act_window</field>-->
+        <!--            <field name="res_model">report.stock.quantity</field>-->
+        <!--            <field name="view_mode">grid</field>-->
+        <!--        </record>-->
+
+        <record id="inventory_report_view" model="ir.actions.act_window">
+            <field name="name">Inventory Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.quant</field>
+            <field name="view_mode">list</field>
+        </record>
+
+        <menuitem id="inventory_report_menu"
+                  action="inventory_report_view"
+                  parent="purchase.purchase_report"
+        />
+        <menuitem id="forcasted_report_menu"
+                  action="stock.report_stock_quantity_action"
+                  parent="purchase.purchase_report"
+        />
+
+
+        <!--       <record id="product_item_tree_view" model="ir.ui.view">-->
+        <!--          <field name="name">product.item.tree</field>-->
+        <!--          <field name="model">purchase.order.line</field>-->
+        <!--           <field name="ref"-->
+        <!--          <field name="priority">10</field>-->
+        <!--          <field name="arch" type="xml">-->
+        <!--            <tree string="Purchase Order Lines">-->
+        <!--                <field name="name" position="after">-->
+        <!--                    <field name="discount"/>-->
+        <!--                </field>-->
+
+        <!--            </tree>-->
+        <!--          </field>-->
+        <!--        </record>-->
+    </data>
+</odoo>

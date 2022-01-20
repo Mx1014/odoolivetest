@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+    id="vat_report_dot_matrix_button"
+    model="account.move"
+    string="Invoices (Dot Matrix)"
+    report_type="qweb-pdf"
+    name="pabs_account.vat_report_dot_matrix_template"
+    file="pabs_account.vat_report_dot_matrix_template"
+    />
+</odoo>

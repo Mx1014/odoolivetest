@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="view_business_line_form_inherit_pabs_field_service" model="ir.ui.view">
+            <field name="name">view.business.line.form.inherit.pabs.field.service</field>
+            <field name="model">business.line</field>
+            <field name="inherit_id" ref="pabs_logistics_extra.view_business_line_form"/>
+            <field name="arch" type="xml">
+                <field name="operations" position="before">
+                    <field name="business_line_type" widget="radio"/>
+                    <field name="projects" attrs="{'invisible': [('business_line_type', '!=', 'service')]}"/>
+                </field>
+                <field name="operations" position="attributes">
+                    <attribute name="attrs">{'invisible': [('business_line_type', '!=', 'delivery')]}</attribute>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="One2ManySelectableCredit">
+		<div>
+			<!-- Demo Button that will add 'delete' button above one2many selection but if you use widget="one2many_selectable" -->
+            <t t-if="!widget.get('effective_readonly')">
+					<center style="margin-top: 1%;">
+				<button style="margin-bottom: 1%;display:none;width: 30%;background-color: #F65252;"
+                        class="button_credit_note btn btn-primary"
+                        href="javascript:void(0)">
+					Pay by Credit Notes
+				</button>
+				</center>
+
+			</t>
+            <t t-if="widget.get('effective_readonly')">
+				<span class="oe_form_char_content"></span>
+			</t>
+		</div>
+    </t>
+    
+</templates>

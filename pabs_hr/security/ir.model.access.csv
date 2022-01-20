@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_overtime,access_hr_overtime,model_hr_overtime,base.group_user,1,1,1,1
+access_hr_overtime_lines,access_hr_overtime_lines,model_hr_overtime_lines,base.group_user,1,1,1,1
+access_contract_category,access_contract_category,model_contract_category,base.group_user,1,1,1,1
+access_hr_rejoin_line,access_hr_rejoin_line,model_hr_rejoin_line,base.group_user,1,1,1,1
+access_notice_period,access_notice_period,model_notice_period,base.group_user,1,1,1,1
+access_anual_provision,access_anual_provision,model_anual_provision,base.group_user,1,1,1,1
+access_indemnity_provision,access_indemnity_provision,model_indemnity_provision,base.group_user,1,1,1,1
+access_contract_type,access_contract_type,model_contract_type,base.group_user,1,1,1,1
+access_provision_adjustment,access_provision_adjustment,model_provision_adjustment,base.group_user,1,1,1,1
+access_provision_adjustment_lines,access_provision_adjustment_lines,model_provision_adjustment_lines,base.group_user,1,1,1,1

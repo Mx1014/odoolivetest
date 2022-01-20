@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+
+<odoo>
+    <data>
+
+        <record id="wk_printers_form_view" model="ir.ui.view">
+            <field name="name">Printers</field>
+            <field name="model">wk_printer.printer</field>
+            <field name="arch" type="xml">
+                <form string="Printer">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name" placeholder="Printer Name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="printer_type"/>
+                            </group>
+                            <group></group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wk_printers_list_view" model="ir.ui.view">
+            <field name="name">Printers</field>
+            <field name="model">wk_printer.printer</field>
+            <field name="arch" type="xml">
+                <tree string="Printers">
+                    <field name="name"/>
+                    <field name="printer_type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="wk_printers_action" model="ir.actions.act_window">
+            <field name="name">Printers</field>
+            <field name="res_model">wk_printer.printer</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="reports_menuitem_printers"
+            name="Printers"
+            parent="base.reporting_menuitem"
+            action="wk_odoo_directly_print_reports.wk_printers_action"
+            sequence="4"
+            groups="base.group_no_one"
+            />
+
+    </data>
+</odoo>

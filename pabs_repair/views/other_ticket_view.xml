@@ -1,0 +1,28 @@
+<odoo>
+
+    <record id="helpdesk_ticket_list_duplicate_ticket" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.list.duplicate.ticket</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Customer Tickets">
+                    <field name="new_ticket_list">
+                        <tree limit="10">
+                            <field name="id" invisible="0"/>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="product_id" invisible="0"/>
+                            <field name="agents_product" invisible="1"/>
+                            <field name="user_id" invisible="0"/>
+                            <field name="ticket_type_id" invisible="0"/>
+                            <field name="priority" invisible="0"/>
+                            <field name="tag_ids" invisible="1"/>
+                            <field name="stage_id" invisible="0"/>
+                            <field name="company_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

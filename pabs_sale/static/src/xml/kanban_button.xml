@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="KanbanView.buttons">
+        <t t-jquery="button" t-operation="after">
+<!--            <t t-if="widget.modelName == 'sale.terminal'">-->
+                <button class="oe_button oe_highlight" type="button" name="%(pabs_sale.open_account_journal_dashboard_kanban_in_sales)d">Set Opening</button>
+<!--            </t>-->
+        </t>
+    </t>
+
+
+</templates>
+

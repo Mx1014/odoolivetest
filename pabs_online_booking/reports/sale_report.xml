@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+
+        <template id="sale_quotation_email_report_signature" inherit_id="pabs_sale_quotation.sale_quotation_email_report">
+            <xpath expr="//div[@style='float: left; width:50%; text-align:center;margin-top: 50px']" position="replace">
+                <div style="float: left; width:50%; text-align:center;margin-top: 50px">
+                            <div style="float: left;">
+                                <span t-if="o.signature">
+                                    Customer Signature
+                                    <img t-att-src="image_data_uri(o.signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                                </span>
+                                <span t-if="not o.signature">
+                                    <h5>Customer Signature ______________________</h5>
+
+                                </span>
+                            </div>
+                        </div>
+            </xpath>
+        </template>
+
+        <template id="sale_quotation_report_template_signature" inherit_id="pabs_sale_quotation.sale_quotation_report_template">
+            <xpath expr="//div[@style='float: left; width:50%; text-align:center;margin-top: 50px']" position="replace">
+                <div style="float: left; width:50%; text-align:center;margin-top: 50px">
+                            <div style="float: left;">
+                                <span t-if="o.signature">
+                                    Customer Signature
+                                    <img t-att-src="image_data_uri(o.signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                                </span>
+                                <span t-if="not o.signature">
+                                    <h5>Customer Signature ______________________</h5>
+
+                                </span>
+                            </div>
+                        </div>
+            </xpath>
+        </template>
+    </data>
+
+</odoo>

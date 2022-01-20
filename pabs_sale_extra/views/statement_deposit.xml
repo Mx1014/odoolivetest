@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="statement_cash_deposit_form">
+            <field name="name">statement.cash.deposit.form</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <form string="Voucher">
+                    <group>
+                        <field name="journal_id" class="oe_inline" readonly="1"/>
+                        <field name="destination_journal_id" class="oe_inline"
+                               domain="[('journal_group_ids.id', '=', 3)]" required="1"/>
+                        <field name="x_deposit_amount" readonly="1"/>
+                        <field name="amount" readonly="1" force_save="1"/>
+                        <field name="x_cashbox_id" widget="one2many">
+                            <tree editable="bottom" delete="false">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="number"/>
+                                <field name="coin_value" readonly="1" force_save="1"/>
+                                <field name="subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </tree>
+                        </field>
+                        <field name="state" invisible="1"/>
+                        <field name="communication" invisible="1"/>
+                        <field name="payment_type" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="post" string="Confirm" type="object" class="btn-primary"/>
+                        <button class="btn-secondary" special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

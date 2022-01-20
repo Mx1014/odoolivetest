@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="module_category_Delivery">
+        <field name="name">Delivery</field>
+        <field name="description">Category For Delivery</field>
+<!--        <field name="sequence">45</field>-->
+    </record>
+      <!--Store_Keeper group-->
+    <record id="group_Store_Keeper" model="res.groups">
+        <field name="name">Store Keeper</field>
+        <field name="category_id" ref="module_category_Delivery"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Store Keeper</field>
+    </record>
+    <!--Store_Manager group-->
+    <record id="group_Store_Manager" model="res.groups">
+        <field name="name">Store Manager</field>
+        <field name="category_id" ref="module_category_Delivery"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Store Manager</field>
+    </record>
+    <!--Accounting group-->
+    <record id="group_Accounting" model="res.groups">
+        <field name="name">Accounting</field>
+        <field name="category_id" ref="module_category_Delivery"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Accounting</field>
+    </record>
+    <!--Store_Manager group-->
+    <record id="group_Logistics" model="res.groups">
+        <field name="name">Logistics</field>
+        <field name="category_id" ref="module_category_Delivery"/>
+        <!--<field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>-->
+        <field name="comment">custom group for Logistics</field>
+    </record>
+
+    <record model="ir.module.category" id="module_category_care_of">
+        <field name="name">Care Of</field>
+        <field name="description">Category For Care Of Approval</field>
+<!--        <field name="sequence">45</field>-->
+    </record>
+
+     <record id="group_care_of" model="res.groups">
+        <field name="name">Care of Approval</field>
+        <field name="category_id" ref="module_category_care_of"/>
+        <field name="comment">To Be Able To Give Approval For Care Of Request</field>
+    </record>
+
+
+</odoo>

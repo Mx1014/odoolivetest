@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_requisition_view_purchase_requisition_form_pap_purchase" model="ir.ui.view">
+            <field name="name">purchase.requisition.view.purchase.requisition.form</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//sheet//notebook//page//field[@name='line_ids']//tree//field[@name='price_unit']"
+                       position="after">
+                    <field name="x_taxes_id" widget="many2many_tags"/>
+                    <field name="x_price_subtotal"/>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//page//field[@name='line_ids']//tree//field[@name='account_analytic_id']"
+                       position="attributes">
+                     <attribute name="domain">['|', ('x_users', '=', uid), ('x_users', '=', False)]</attribute>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//page//field[@name='line_ids']" position="after">
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="purchase_total">
+                        <field name="x_untaxed_amount" widget='monetary'/>
+                        <field name="x_amount_tax" widget='monetary'/>
+                        <field name="x_amount_total" widget='monetary'/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

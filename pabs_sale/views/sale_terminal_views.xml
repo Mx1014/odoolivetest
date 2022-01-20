@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="open_account_journal_dashboard_kanban_in_sales" model="ir.actions.act_window">
+        <field name="name">Cash Journals</field>
+        <field name="res_model">account.journal</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="account.account_journal_dashboard_kanban_view"/>
+        <field name="usage">menu</field>
+        <field name="context">{'search_default_dashboard':1, 'is_cash_journal': True}</field>
+        <field name="domain">[('x_master_cashier','in', context.get('uid'))]</field>
+<!--        <field name="help" type="html">-->
+<!--            <p class="o_view_nocontent_neutral_face">-->
+<!--                This is the accounting dashboard-->
+<!--            </p><p>-->
+<!--                If you have not installed a chart of account, please install one first.<br/>-->
+<!--               <a type="action" name="%(account.open_account_charts_modules)d" tabindex="-1">Browse available countries.</a>-->
+<!--            </p>-->
+<!--        </field>-->
+    </record>
+
+    <record id="sale_terminal_view_kanban" model="ir.ui.view">
+        <field name="name">sale.terminal.kanban</field>
+        <field name="model">sale.terminal</field>
+        <field name="arch" type="xml">
+            <kanban create="false" class="o_kanban_dashboard o_sale_terminal_kanban">
+                <field name="name"/>
+                <field name="current_session_id"/>
+                <field name="current_session_state"/>
+                <field name="last_session_closing_date"/>
+                <field name="sale_session_username"/>
+                <field name="sale_session_state"/>
+                <field name="currency_id"/>
+                <field name="current_user_id" invisible="1" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title mb16">
+                                    <div class="o_primary">
+                                        <t t-esc="record.name.value"/>
+                                    </div>
+                                    <t t-if="record.sale_session_state.raw_value == 'open'">
+                                        <div class="badge badge-info o_kanban_inline_block">Open Session</div>
+                                    </t>
+                                    <t t-if="!record.current_session_id.raw_value &amp;&amp; record.sale_session_username.value">
+                                        <div class="badge badge-info o_kanban_inline_block">Opened by <t t-esc="record.sale_session_username.value"/></div>
+                                    </t>
+                                    <t t-if="record.sale_session_state.raw_value == 'open'">
+                                        <div class="badge badge-warning o_kanban_inline_block">
+                                             To Close
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_content">
+                                <div class="row">
+                                    <div class="col-6 o_kanban_primary_left">
+                                        <button t-if="record.current_session_state.raw_value === 'open'" class="btn btn-primary" name="open_existing_session_cb" type="object">View Session</button>
+
+<!--                                        <button t-if="_.contains(['open'], record.current_session_state.raw_value)" class="btn btn-secondary" name="close_session" type="object">Close</button>-->
+
+                                        <button t-if="!record.current_session_id.raw_value &amp;&amp; !record.sale_session_username.value" class="btn btn-primary" name="open_session_cb" type="object">New Session</button>
+                                    </div>
+                                    <div class="col-6 o_kanban_primary_right">
+                                        <div t-if="record.last_session_closing_date.value" class="row">
+                                            <div class="col-6">
+                                                <span>Last Closing Date</span>
+                                            </div>
+                                            <div class="col-6">
+                                                <span><t t-esc="record.last_session_closing_date.value"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="text-align:right;" t-if="record.current_user_id.value">
+                                    <img class="oe_kanban_avatar o_image_24_cover" t-att-src="kanban_image('res.users', 'image_128', record.current_user_id.raw_value)" t-att-title="record.current_user_id.value" t-att-alt="record.current_user_id.value"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="sale_terminal_view_form" model="ir.ui.view">
+        <field name="name">sale.terminal.form</field>
+        <field name="model">sale.terminal</field>
+        <field name="arch" type="xml">
+            <form string="Sale Terminal" duplicate="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_all_realted_opened_session" class="oe_stat_button" icon="fa-pencil-square-o" type="object" attrs="{'invisible': [('user_statement_count', '=', 0)]}">
+                            <field name="user_statement_count" widget="statinfo" string="Sessions"/>
+                        </button>
+                    </div>
+                    <div class="oe_title" id="title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <field name="company_id" />
+                        <field name="currency_id" invisible="1"/>
+                        <field name="last_session_closing_date" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_terminal_view_tree" model="ir.ui.view">
+        <field name="name">sale.terminal.tree</field>
+        <field name="model">sale.terminal</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Terminal" >
+                <field name="name"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="tid_reader_view_form" model="ir.ui.view">
+        <field name="name">tid_reader_view_form</field>
+        <field name="model">bank.card.readers</field>
+        <field name="arch" type="xml">
+            <form string="TID Configuration">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="holder_id"/>
+                        <field name="payment_methods"/>
+                        <field name="terminal_ids" readonly="1" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+     <record id="tid_reader_view_tree" model="ir.ui.view">
+        <field name="name">tid_reader_view_tree</field>
+        <field name="model">bank.card.readers</field>
+        <field name="arch" type="xml">
+            <tree string="TID Configuration">
+                <field name="name"/>
+                <field name="holder_id"/>
+                <field name="payment_methods"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_sale_terminal" model="ir.actions.act_window">
+        <field name="name">Sales Sessions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.terminal</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="sale_terminal_view_kanban"/>
+        <field name="domain">[('allowed_team.member_ids', 'in', context.get('uid'))]</field>
+    </record>
+
+     <record id="action_tid_config" model="ir.actions.act_window">
+        <field name="name">TID Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bank.card.readers</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+
+
+    <menuitem id="terminal_config_main" name="Sales Session" parent="sale.menu_sale_config" sequence="2"/>
+
+     <menuitem
+        name="Sales Session"
+        id="menu_sale_session"
+        parent="sale.sale_menu_root"
+        sequence="5"/>
+
+    <menuitem id="menu_sale_terminal"
+        action="pabs_sale.action_sale_terminal"
+        parent="pabs_sale.menu_sale_session"
+        sequence="1"/>
+
+    <record id="action_sale_terminal_tree" model="ir.actions.act_window">
+        <field name="name">Sales Terminals</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.terminal</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_sale_terminal_tree"
+        action="pabs_sale.action_sale_terminal_tree"
+        parent="pabs_sale.terminal_config_main"
+        sequence="4"/>
+
+    <menuitem id="menu_board_journal_1_in_sales" name="Cash Journals" action="open_account_journal_dashboard_kanban_in_sales"
+              parent="pabs_sale.menu_sale_session" sequence="1" groups="sales_team.group_sale_manager"/>
+
+    <menuitem id="sales_team_config"
+            name="Sales Teams"
+            parent="pabs_sale.terminal_config_main"
+            action="sales_team.sales_team_config_action"
+            sequence="2"/>
+
+    <menuitem id="menu_action_tid_config"
+        action="pabs_sale.action_tid_config"
+        parent="pabs_sale.terminal_config_main"
+        sequence="5"/>
+
+
+    <delete model="ir.ui.menu" id="sale.sales_team_config" />
+</odoo>

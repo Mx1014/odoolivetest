@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <record id="view_picking_form_inherit_pabs_logistics" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.pabs.logistics</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="fleet_vehicle_id" domain="[('picking_type_id', '=', picking_type_id)]"/>
+                <field name="slot_allocation_time_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']//tree//field[@name='product_id']" position="after">
+                <field name="slot_allocation_time_id" readonly="1" force_save="1" />
+            </xpath>
+        </field>
+    </record>
+    <record id="view_picking_type_form_inherit_pabs_logistics" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.inherit.pabs.logistics</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='show_reserved']" position="after">
+                <field name="fleet_vehicle_ids" widget="many2many_tags" domain="[('picking_type_id', '=', False)]"/>
+                <field name="capacity_qty" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fleet_vehicle_log_services_view_form_inherit_pabs_fleet" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.services.view.form.inherit.pabs.fleet</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <field name="vendor_id" position="after">
+                    <field name="x_invoice_id"/>
+                    <field name="x_invoice_line_id"/>
+                </field>
+            </data>
+        </field>
+    </record>
+</odoo>

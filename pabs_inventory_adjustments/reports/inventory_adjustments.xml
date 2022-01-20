@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inventory_adjustments_report" inherit_id="stock.report_inventory">
+        <xpath expr="//div[@class='row mt32 mb32']" position="after">
+            <div style="margin-top:20mm">
+                <img style="position:fixed;top:38mm"
+                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('Code128', o.name, 300, 50)"/>
+                                <span style="position: fixed;top:52mm;left:34mm"  t-field="o.name"/>
+                <img style="position:fixed;top:38mm;left:140mm"
+                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('Code128', o.location_ids, 300, 50)"/>
+                                <span style="position: fixed;top:52mm;left:153mm"  t-field="o.location_ids"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

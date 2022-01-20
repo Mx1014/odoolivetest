@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="final_settlement_printout">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            table, th, td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            }
+                            td, th {
+                            padding-left: 3px;
+                            }
+                        </style>
+                        <!--                        <t t-esc="o.date_end"/>-->
+                        <center>
+                            <h3>Full/Final Settlement</h3>
+                        </center>
+                        <!--                        <t t-set="serial_no" t-value="1"/>-->
+                        <table style="width:100%;">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="4">Employee Details</th>
+                            </tr>
+                            <tr>
+                                <th>Employee Name</th>
+                                <td>
+                                    <t t-esc="o.employee_name.name"/>
+                                </td>
+                                <th>Supervisor Name</th>
+                                <td>
+                                    <t t-esc="o.employee_name.parent_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Employee CPR</th>
+                                <td>
+                                    <t t-esc="o.employee_name.identification_id"/>
+                                </td>
+                                <th>Joining Date</th>
+                                <td>
+                                    <t t-esc="o.employee_name.date_of_join"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Department</th>
+                                <td>
+                                    <t t-esc="o.employee_name.department_id.name"/>
+                                </td>
+                                <th>Resignation Submission Date</th>
+                                <td>
+                                    <t t-esc="o.resignation_date"/>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <th>Designation</th>
+                                <td>
+                                    <t t-esc="o.employee_name.job_id.name"/>
+                                </td>
+                                <th>Last Working Date</th>
+                                <td>
+                                    <t t-esc="o.verification_leaving_date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Employee Code</th>
+                                <td>
+                                    <t t-esc="o.employee_name.registration_number"/>
+                                </td>
+                                <th>Notice Period Deduction Days</th>
+                                <td>
+                                    <span t-field="o.x_deduction_days.difference_days"/>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <th>Salary Per Day</th>
+                                <td>
+                                    <t t-esc="o.x_salary_per_day"/>
+                                </td>
+                                <th>Basic Salary</th>
+                                <td>
+                                    <t t-esc="o.basic_salary"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Contact No</th>
+                                <td>
+                                    <t t-esc="o.employee_name.mobile"/>
+                                </td>
+                                <th>Date</th>
+                                <td>
+                                    <!--                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>-->
+                                    <span t-esc="o.date.strftime('%Y-%m-%d')"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Slip Date From</th>
+                                <td>
+                                    <span t-esc="o.x_employee_slips.date_from"/>
+                                </td>
+                                <th>Slip Date to</th>
+                                <td>
+                                    <span t-esc="o.x_employee_slips.date_to"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Leaving Reason</th>
+                                <td colspan="3">
+                                    <t t-esc="o.verification_leaving_reason.name"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <t t-if="o.x_employee_slips">
+                            <table style="width:100%;">
+                                <tr style="background-color:#B1B3B8;">
+                                    <th class="text-center" colspan="3">Remunerations</th>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Hour</th>
+                                    <th>Amount(BD)</th>
+                                </tr>
+                                <tr t-foreach="o.x_employee_slips.line_ids.filtered(lambda line: line.appears_on_payslip)"
+                                    t-as="line">
+                                    <!--                                <td t-if="line.code in ['NET','GROSS']">-->
+                                    <!--                                    <strong>-->
+                                    <!--                                        <span style="background-color:#E8E5E4" t-esc="serial_no"/>-->
+                                    <!--                                    </strong>-->
+                                    <!--                                </td>-->
+                                    <!--                                <td t-if="line.code not in ['NET','GROSS']">-->
+                                    <!--                                    <span t-esc="serial_no"/>-->
+                                    <!--                                </td>-->
+                                    <td t-if="line.code in ['NET','GROSS', 'TSP']">
+                                        <strong>
+                                            <span style="background-color:#E8E5E4" t-field="line.name"/>
+                                        </strong>
+                                    </td>
+                                    <td t-if="line.code not in ['NET','GROSS', 'TSP']">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.hour"/>
+                                    </td>
+                                    <td t-if="line.code in ['NET','GROSS', 'TSP']" class="text-right">
+                                        <strong>
+                                            <span style="background-color:#E8E5E4; margin-right:2mm"
+                                                  t-esc="'%.3f'%(line.total)"
+                                            />
+                                            <!--                                        <span style="background-color:#E8E5E4" t-esc="line.total"-->
+                                            <!--                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>-->
+                                        </strong>
+                                    </td>
+                                    <td t-if="line.code not in ['NET','GROSS', 'TSP']" class="text-right"
+                                    >
+                                        <span style="margin-right:2mm" t-esc="'%.3f'%(line.total)"/>
+                                        <!--                                    <span t-esc="line.total"-->
+                                        <!--                                          t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>-->
+                                    </td>
+
+                                    <!--                                <t t-set="serial_no" t-value="serial_no + 1"/>-->
+                                </tr>
+                            </table>
+                        </t>
+                        <t t-if="o.indemnity_ids">
+                            <table style="width:100%;" t-if="o.nationality.id != 23">
+                                <tr style="background-color:#B1B3B8;">
+                                    <th class="text-center" colspan="8">Indemnity Computation</th>
+                                </tr>
+                                <tr>
+                                    <th>Period</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Total Working Days</th>
+                                    <th>Unpaid Days</th>
+                                    <th>Final Working Days</th>
+                                    <th>Indemnity Days</th>
+                                    <th>Indemnity Amount</th>
+                                </tr>
+                                <tr t-foreach="o.indemnity_ids" t-as="line">
+                                    <td class="text-center">
+                                        <span t-field="line.x_period"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="line.x_date_of_join"/>
+                                    </td>
+                                     <td class="text-center">
+                                        <span t-field="line.x_date_to"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_total_working_days)"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_unpaid_leave)"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_final_working_days)"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-esc="'%.3f'%(line.x_indemnity_balance)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span style="margin-right:2mm" t-esc="'%.3f'%(line.x_indemnity_amount)"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+                        <t t-if="o.x_vacation_payments">
+                            <table style="width:100%;" t-if="o.nationality.id != 23">
+                                <tr style="background-color:#B1B3B8;">
+                                    <th class="text-center" colspan="5">Vacation Computation</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Leave Type(Days)</th>
+                                    <th class="text-center">Total Leave(Days)</th>
+                                    <th class="text-center">Leave Taken</th>
+                                    <th class="text-center">Remaining(BD)</th>
+                                    <th>Total</th>
+                                </tr>
+                                <tr t-foreach="o.x_vacation_payments" t-as="line">
+                                    <td class="text-center">
+                                        <span t-field="line.x_leave_type"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_total_leaves_taken)"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_leaves_taken)"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="'%.3f'%(line.x_leave)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span style="margin-right:2mm" t-esc="'%.3f'%(line.x_total)"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+                        <t t-if="o.ticket_price">
+                            <table style="width:100%;" t-if="o.nationality.id != 23">
+                                <tr style="background-color:#B1B3B8;">
+                                    <th class="text-center" colspan="4">Ticket Details</th>
+                                </tr>
+                                <tr>
+                                    <td>Ticket Price</td>
+                                    <td class="text-center">
+                                        <span t-field="o.ticket_price"/>
+                                    </td>
+                                    <td style="background-color:#B1B3B8; font-weight: bold;" class="text-center"
+                                        colspan="2">Visa Details
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Air Lines</td>
+                                    <td>
+                                        <span t-field="o.air_line"/>
+                                    </td>
+                                    <td>Issue Date</td>
+                                    <td>
+                                        <span t-field="o.x_visa_issue_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ticket No</td>
+                                    <td>
+                                        <span t-field="o.ticket_number"/>
+                                    </td>
+                                    <td>Expiry Date</td>
+                                    <td>
+                                        <span t-field="o.x_visa_expiry_date"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+                        <p style="page-break-after: always;"/>
+                        <p style="text-align: center;">DECLARATION</p>
+                        <div>
+                            <p>I, the undersigned,
+                                <t t-esc="o.employee_name.name"/>
+                                hereby confirm that upon receipt oe the amount of (Cheque No.________________,Bank
+                                Name.________________________)/(Cash Voucher No.________________)from Al-Salam Gas,
+                                being the final settlement of all my employment benefits and entitlements under any
+                                employment contract, letter or offer.
+                            </p>
+                            <p>
+                                I declare having received in full and in final settlement, all my rights and the
+                                salaries due to me for my entire period of Service with the said employer, whether in
+                                respect of normal or overtime work, allowances, leaves, airfares, notice or ant other
+                                ordinary or exceptional dues, less any arising liabilities to the firm.
+                            </p>
+                            <br></br>
+                            <p>
+                                I hereby also declare that i renounce all rights and claims against Al-Salam Gas, and
+                                its Partners and members of their firm, in connection with such rights and i do hereby
+                                release them all, finally and fully, from any further obligation or liabilities of any
+                                kind whatsoever.
+                            </p>
+                            <br></br>
+                            <p>
+                                I also declare that i did not take copies or soft copies of Al-Salam Gas or its clients
+                                working papers or any tool developed or owned by Al-Salam Gas.
+                            </p>
+                            <br></br>
+                            <p>
+                                I also confirm that i shall observe the strict code of confidentiality and security of
+                                information as set out in the office employment manual after i leave the employment of
+                                the firm.
+                            </p>
+                            <br></br>
+                            <p>
+                                I have cleared and signed off all items on the exit checklist and it has been signed off
+                                by the HR Department and CFO.
+                            </p>
+
+                        </div>
+                        <br></br>
+                        <div style="float:left">
+                            <div>
+                                __________________________________________________________
+                            </div>
+                            <span t-esc="o.employee_name.name"/>
+                        </div>
+                        <div>
+                            <div style="float:right">
+                                <div>
+                                    __________________________________________________________
+                                </div>
+                                <span>Date</span>
+                            </div>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <div>
+                            <div>
+                                <p>
+                                    I confirm that the above person has no loans or credit card outstanding, and he has
+                                    cleared all matters on the exit checklist, and confirm that above calculations are
+                                    in
+                                    line with employee records.
+                                </p>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div>
+                            <div style="float:left">
+                                <div>
+                                    __________________________________________________________
+                                </div>
+                                <span>Prepared By</span>
+                                <br></br>
+                                <span t-esc="o.create_uid.name"/>
+                                <br></br>
+                                <span t-esc="o.create_uid.employee_ids.job_id.name"/>
+                            </div>
+                            <div>
+                                <div style="float:right">
+                                    <div>
+                                        __________________________________________________________
+                                    </div>
+                                    <span>Date</span>
+                                </div>
+                            </div>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <div style="float:left">
+                            <div>
+                                __________________________________________________________
+                            </div>
+                            <span>Approved For Release By</span>
+                            <br></br>
+                            <span>Ali Al-Bunni</span>
+                            <br></br>
+                            <span>CFO</span>
+                        </div>
+                        <div>
+                            <div style="float:right">
+                                <div>
+                                    __________________________________________________________
+                                </div>
+                                <span>Date</span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

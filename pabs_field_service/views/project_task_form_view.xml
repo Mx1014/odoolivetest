@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="project_task_view_form_inherit_pabs_field_service" model="ir.ui.view">
+            <field name="name">project.task.view.form.inherit.pabs.field.service</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="industry_fsm.project_task_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="x_helpdesk_product_id" invisible="1"/>
+                    <field name="x_is_collect_ticket" invisible="1"/>
+                    <field name="x_helpdesk_lot_id" invisible="1"/>
+                    <field name="x_helpdesk_ticket_team_id" invisible="1"/>
+                    <field name="x_helpdesk_use_product_returns" invisible="1"/>
+                    <field name="x_helpdesk_use_product_repairs" invisible="1"/>
+                    <field name="x_invoices_id" invisible="1"/>
+                    <field name="x_invoices" invisible="1"/>
+                    <button type="action" name="%(stock.act_stock_return_picking)d"
+                            groups="stock.group_stock_user"
+                            string="Return"
+                            attrs="{'invisible': ['|', '|',('x_helpdesk_use_product_returns', '=', False), ('helpdesk_ticket_id', '=', False), ('x_is_collect_ticket', '!=', False)]}"
+                            context="{'default_ticket_id': helpdesk_ticket_id, 'default_company_id': company_id, 'default_x_helpdesk_team_id': x_helpdesk_ticket_team_id }"/>
+                    <button type="action" name="%(pabs_repair.act_stock_collect_picking)d"
+                            string="Collect"
+                            context="{'default_x_ticket_id': helpdesk_ticket_id, 'default_x_product_id': x_helpdesk_product_id, 'default_x_partner_id': partner_id, 'default_x_helpdesk_team_id': x_helpdesk_ticket_team_id}"
+                            attrs="{'invisible': ['|', ('helpdesk_ticket_id', '=', False), ('x_is_collect_ticket', '=', False)]}"/>
+
+                    <button name="%(helpdesk_repair.action_repair_order_form)d" type="action"
+                            groups="stock.group_stock_user"
+                            string="Repair"
+                            attrs="{'invisible': ['|' ,('x_helpdesk_use_product_repairs', '=', False), ('helpdesk_ticket_id', '=', False)]}"
+                            context="{'default_product_id': x_helpdesk_product_id, 'default_lot_id': x_helpdesk_lot_id, 'default_partner_id': partner_id, 'default_ticket_id': helpdesk_ticket_id, 'default_company_id': company_id}"/>
+                    <!--                    <button name="action_print_custom_worksheet_report" type="object"-->
+                    <!--                            string="Print Worksheet"/>-->
+                    <!--                    <button name="action_email_custom_worksheet_report" type="object"-->
+                    <!--                            string="Send Worksheet"/>-->
+                    <!--                            attrs="{'invisible': ['|' ,('x_helpdesk_use_product_repairs', '=', False), ('helpdesk_ticket_id', '=', False)]}"-->
+                    <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('fsm_done', '!=', False)]}"/>
+                </xpath>
+
+                <xpath expr="//div[@name='button_box']//button[@name='action_fsm_view_material']" position="after">
+                    <button class="oe_stat_button" name="action_fsm_view_services"
+                            type="object" icon="fa-cart-plus" help="Add materials"
+                            attrs="{'invisible': ['|', ('partner_id', '=', False), ('allow_material', '=', False)]}">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                <!--                                Services-->
+                                <field name="service_line_service_count" widget="statinfo" string="Services"
+                                       class="mr-1"/>
+                            </span>
+                            <field name="service_line_total_service_price" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" invisible="True"/>
+                        </div>
+                    </button>
+                </xpath>
+
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_field_plan_calendar_sale_quotation" class="oe_stat_button" icon="fa-dollar"
+                            type="object"
+                            attrs="{'invisible': [('sale_order_id', '=', False)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Sale</span>
+                            <span class="o_stat_text">Quotation</span>
+                        </div>
+                    </button>
+                    <button name="action_field_plan_calendar_shift_task" class="oe_stat_button" icon="fa-table"
+                            type="object"
+                            attrs="{'invisible': ['|', '|', ('x_slot', '=', False), ('x_business_line', '=', False), ('fsm_done', '!=', False)]}"
+                            context="{'slot': x_slot, 'business_line': x_business_line, 'task_id': id}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Reschedule</span>
+                            <span class="o_stat_text">Visit</span>
+                        </div>
+                    </button>
+                    <button name="action_field_plan_calendar_task" class="oe_stat_button" icon="fa-table" type="object"
+                            attrs="{'invisible': ['|', '|', ('x_slot', '!=', False), ('x_business_line', '=', False), ('fsm_done', '!=', False)]}"
+                            context="{'business_line': x_business_line, 'task_id': id}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Schedule</span>
+                            <span class="o_stat_text">Visit</span>
+                        </div>
+                    </button>
+                </xpath>
+                <field name="name" position="after">
+                    <field name="x_issue_type"/>
+                    <field name="x_batch_id" invisible="0"/>
+                    <!--                    <field name="x_no_charge"/>-->
+                    <field name="x_priority" widget="priority"/>
+                </field>
+
+                <field name="name" position="before">
+                    <field name="x_no_charge" invisible="1"/>
+                    <field name="x_spare_parts" widget="selection_badge" decoration-danger="x_spare_parts == 'request'" decoration-success="x_spare_parts == 'arrange'"/>
+                </field>
+                <field name="partner_id" position="after">
+                    <field name="x_zone_id"/>
+
+                    <!--                 <field name="partner_id" position="after">
+                                        <field name="x_zone_id"/>
+                                    </field>
+                                    <field name="user_id" position="before">
+                                        <field name="x_slot" readonly="1"/>
+                                        <field name="x_crm_id" attrs="{'invisible': [('x_crm_id', '=', False)]}"/> -->
+
+                </field>
+                <!--                <field name="user_id" position="before">-->
+                <!--                    <field name="x_slot" readonly="1"/>-->
+                <!--                    <field name="x_crm_id" attrs="{'invisible': [('x_crm_id', '=', False)]}"/>-->
+                <!--                </field>-->
+                <label for="planned_date_begin" position="before">
+
+                    <field name="x_scheduled_date" readonly="1" force_save="1"/>
+		    <field name="related_x_is_not_required" invisible="1"/>
+                </label>
+
+                <field name="project_id" position="after">
+                    <field name="x_invoice_method" required="1" attrs="{'readonly': [('x_sale_state', 'not in', ['draft', 'sent'])]}"/>
+                    <label for="" string=" "/>
+                    <span attrs="{'invisible': [('x_invoice_method', '=', 'warranty')]}" class="text-danger">
+                        <strong>(Not Covered By warranty)</strong>
+                    </span>
+		    <field name="x_invoice_partner_id" force_save="1" attrs="{'readonly': [('fsm_done', '=', True)], 'required': [('related_x_is_not_required', '=',False)],'invisible':[('related_x_is_not_required', '=', True)]}"/>
+                    <field name="x_sale_state" invisible="1"/>
+                </field>
+                <!--                <field name="project_id" position="after">-->
+                <!--                    <field name="x_business_line"/>-->
+                <!--                    <field name="x_team_id"/>-->
+                <!--                    <field name="x_route_id"/>-->
+                <!--                    <field name="sale_order_id" string="Sale Reference" readonly="1"/>-->
+                <!--                </field>-->
+                <!--                <field name="sale_order_id" position="after">-->
+                <!--                    <field name="x_product_id" attrs="{'invisible': [('x_product_id', '=', False)]}"/>-->
+                <!--                    <field name="x_warranty_id" attrs="{'invisible': [('x_product_id', '=', False)]}"/>-->
+                <!--                    <field name="x_warranty_end_date" attrs="{'invisible': [('x_product_id', '=', False)]}"/>-->
+                <!--                    <field name="x_extended_end_date" attrs="{'invisible': [('x_product_id', '=', False)]}"/>-->
+                <!--                    <field name="x_warranty_state" attrs="{'invisible': [('x_product_id', '=', False)]}"/>-->
+                <!--                </field>-->
+
+                <!--                <xpath expr="//sheet//group" position="inside">-->
+                <field name="description" position="before">
+                    <group string="References">
+                        <field name="x_slot" readonly="1"/>
+                        <field name="x_crm_id" attrs="{'invisible': [('x_crm_id', '=', False)]}"/>
+                        <field name="x_business_line"/>
+                        <field name="x_team_id"/>
+                        <field name="x_route_id"/>
+                        <field name="sale_order_id" string="Sale Reference" readonly="1"/>
+                        <field name="x_date_start"/>
+                        <field name="x_technician"/>
+                    </group>
+                    <group string="Product">
+                        <field name="x_product_id" attrs="{'invisible': [('x_product_id', '=', False)]}"/>
+                        <field name="x_warranty_id" attrs="{'invisible': [('x_product_id', '=', False)]}"/>
+                        <field name="x_warranty_end_date" attrs="{'invisible': [('x_product_id', '=', False)]}"/>
+                        <field name="x_extended_end_date" attrs="{'invisible': [('x_product_id', '=', False)]}"/>
+                        <field name="x_warranty_state" attrs="{'invisible': [('x_product_id', '=', False)]}"/>
+                    </group>
+                </field>
+            <!--                </xpath>-->
+
+
+            <xpath expr="//button[@name='action_send_report'][2]" position="after">
+                <field name="x_show_inspection_print" invisible="1"/>
+                <button name="action_print_custom_worksheet_report" type="object"
+                        string="Print Worksheet" attrs="{'invisible': [('x_show_inspection_print', '=', False)]}"/>
+            </xpath>
+
+                <xpath expr="//button[@name='action_fsm_validate']" position="attributes">
+                    <attribute name="name">action_task_reschedule_form_view</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='action_fsm_validate'][1]" position="attributes">
+                    <attribute name="name">action_task_reschedule_form_view</attribute>
+                </xpath>
+        </field>
+
+    </record>
+
+</data>
+        </odoo>
+        <!--options="{'no_open': True}"-->

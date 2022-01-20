@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pabs_product_procurement_manager,access.pabs.product.procurement.manager,product.model_product_template,pabs_product.group_procurement_manager,1,1,1,1
+access_pabs_product_procurement_user,access.pabs.product.procurement.user,product.model_product_template,pabs_product.group_procurement_user,1,0,1,0
+access_pabs_product_accounting,access.pabs.product.accounting,product.model_product_template,pabs_product.group_accounting,1,0,1,0
+access_pabs_product_accounting_manager,access.pabs.product.accounting.manager,product.model_product_template,pabs_product.group_accounting_manager,1,1,1,1
+access_pabs_product_inventory_manager,access.pabs.product.inventory.manager,product.model_product_template,pabs_product.group_inventory_manager,1,1,1,1
+access_pabs_product_amc_manager,access.pabs.product.amc.manager,product.model_product_template,pabs_product.group_amc_manager,1,1,1,1
+access_pabs_product,access.pabs.product,pabs_sale_extra.model_multi_product_barcode,base.group_user,1,1,1,1
+access_product_part_rel,access_product_part_rel,model_product_part_rel,base.group_user,1,1,1,1
+

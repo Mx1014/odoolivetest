@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_overtime_view_forms" model="ir.ui.view">
+        <field name="name">hr.overtime.form</field>
+        <field name="model">hr.overtime</field>
+        <field name="arch" type="xml">
+            <form string="Current Overtime">
+                <header>
+                    <button name="action_reset_to_draft"
+                            attrs="{'invisible': [('state', '=', 'validated'), ('state', '!=', 'draft')]}" string="Reset To Draft"
+                            type="object" groups="hr_payroll.group_hr_payroll_manager"/>
+                    <button name="action_approval"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"
+                            string="Approval"
+                            type="object" groups="hr_payroll.group_hr_payroll_manager"/>
+                    <button name="action_first_approve"
+                            attrs="{'invisible': [('state', '!=', 'approval')]}" string="First Approve"
+                            type="object" groups="hr_payroll.group_hr_payroll_manager"/>
+<!--                    <button name="action_final_approve" attrs="{'invisible': [('state', '!=', 'first_approval')]}"-->
+<!--                            string="Final Approve"-->
+<!--                            groups="hr_payroll.group_hr_payroll_manager" type="object"/>-->
+                    <button name="action_validate" attrs="{'invisible': [('state', '!=', 'first_approval')]}"
+                            string="Validate"
+                            groups="hr_payroll.group_hr_payroll_manager" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="validated"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="x_employee_name" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                   force_save="1" required="1"/>
+                            <field name="current_user" invisible="1"/>
+                            <field name="x_user_id" invisible="1"/>
+                            <field name="x_cpr"/>
+                            <field name="x_employee_code"/>
+                            <field name="x_contact_no"/>
+                            <field name="x_holiday_status_id"
+                                   attrs="{'invisible': [('x_compensation', '=', 'payment')], 'readonly': [('state', '!=', 'draft')]}"
+                                   options="{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                            'no_quick_create': True}"/>
+                            <field name="allocation_type" attrs="{'invisible': [('x_compensation', '=', 'payment')]}"
+                                   readonly="1"/>
+                            <!--                            <field name="x_computed_work_entry"/>-->
+                        </group>
+                        <group>
+                            <field name="x_department"/>
+                            <field name="x_position"/>
+                            <field name="x_manager_name"/>
+                            <field name="x_compensation" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"/>
+                            <field name="x_holiday_type" attrs="{'invisible': [('x_compensation', '=', 'payment')]}"
+                                   readonly="1"/>
+                            <field name="x_request_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Overtime Period" name="Overtime Period">
+                            <field name="overtime_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree editable="bottom">
+                                    <field name="overtime_id" invisible="1"/>
+                                    <field name="x_work_entry_type_id"
+                                           attrs="{'column_invisible': [('parent.x_compensation', '=', 'time_off')]}"
+                                           options="{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}"/>
+                                    <field name="x_overtime_date_for_allocation"
+                                           attrs="{'column_invisible': [('parent.x_compensation', '=', 'payment')]}"/>
+                                    <field name="x_overtime_date_from"
+                                           attrs="{'column_invisible': [('parent.x_compensation', '=', 'time_off')]}"/>
+                                    <field name="x_overtime_date_to"
+                                           attrs="{'column_invisible': [('parent.x_compensation', '=', 'time_off')]}"/>
+                                    <field name="x_overtime_time_from" widget="float_time"
+                                           attrs="{'column_invisible': [('parent.x_compensation', '=', 'payment')]}"/>
+                                    <field name="x_overtime_time_to" widget="float_time"
+                                           attrs="{'column_invisible': [('parent.x_compensation', '=', 'payment')]}"/>
+                                    <field name="x_overtime_period" sum="Total"
+                                           attrs="{'column_invisible': [('parent.x_compensation', '=', 'payment')]}"/>
+                                    <field name="x_overtime_day"
+                                           attrs="{'column_invisible': [('parent.x_compensation', '=', 'time_off')]}"/>
+                                    <field name="x_overtime_reason"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_work_entry_type_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.work.entry.type.form.inherit</field>
+        <field name="model">hr.work.entry.type</field>
+        <field name="inherit_id" ref="hr_work_entry.hr_work_entry_type_view_form"/>
+        <field name="arch" type="xml">
+            <field name="sequence" position="after">
+                <field name="x_is_overtime"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_overtime_view_tree" model="ir.ui.view">
+        <field name="name">hr.overtime.tree</field>
+        <field name="model">hr.overtime</field>
+        <field name="arch" type="xml">
+            <tree string="Current Overtime">
+                <field name="x_employee_name"/>
+                <field name="x_cpr"/>
+                <field name="x_employee_code"/>
+                <field name="x_contact_no"/>
+                <field name="x_department"/>
+                <field name="x_position"/>
+                <field name="x_compensation"/>
+                <field name="x_request_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="inherit_hr_overtime_view_forms" model="ir.ui.view">
+        <field name="name">inherit.hr.overtime.form</field>
+        <field name="model">hr.overtime</field>
+        <field name="inherit_id" ref="pabs_hr.hr_overtime_view_forms"/>
+        <field name="groups_id" eval="[(6,0, [ref('hr_payroll.group_hr_payroll_user')])]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet//group//group//field[@name='x_employee_name']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!--    <record id="action_hr_overtimes_" model="ir.actions.act_window">-->
+    <!--        <field name="name">Overtime</field>-->
+    <!--        <field name="res_model">hr.overtime</field>-->
+    <!--        <field name="view_mode">tree,form</field>-->
+    <!--        <field name="domain">[('state', '=', 'first_approve')]-->
+    <!--        </field>-->
+    <!--    </record>-->
+    <!--        <record id="action_hr_overtimes_to_approve" model="ir.actions.act_window">-->
+    <!--            <field name="name">All Overtime</field>-->
+    <!--            <field name="res_model">hr.overtime</field>-->
+    <!--            <field name="view_mode">tree,form</field>-->
+    <!--            <field name="domain">[('x_employee_name.user_id', '=', uid)]</field>-->
+    <!--        </record>-->
+    <record id="view_to_approve_search" model="ir.ui.view">
+        <field name="name">view.to.approve.search</field>
+        <field name="model">hr.overtime</field>
+        <field name="arch" type="xml">
+            <search string="Purchase Orders">
+                <field name="x_registration_number"/>
+                <field name="x_employee_name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="pabs_hr_overtime_server_action_to_approve" model="ir.actions.server">
+        <field name="name">To Approve Overtime</field>
+        <field name="model_id" ref="model_hr_overtime"/>
+        <!--        <field name="binding_model_id" ref="hr.overtime"/>-->
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_domain_overtime()
+        </field>
+    </record>
+
+    <record id="pabs_hr_overtime_server_action_all_overtime" model="ir.actions.server">
+        <field name="name">All Overtime</field>
+        <field name="model_id" ref="model_hr_overtime"/>
+        <!--        <field name="binding_model_id" ref="hr.overtime"/>-->
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_domain_all_overtime()
+        </field>
+    </record>
+
+    <menuitem id="hr_menu_overtime"
+              name="Overtime"
+              parent="hr.menu_hr_root"
+              sequence="6"
+    />
+    <menuitem
+            id="hr_menu_overtime_to_approve"
+            name="To Approve"
+            parent="hr_menu_overtime"
+            sequence="1"/>
+    <menuitem id="hr_menu_overtime1"
+              action="pabs_hr.pabs_hr_overtime_server_action_to_approve"
+              parent="hr_menu_overtime_to_approve"
+              sequence="1"/>
+    <menuitem
+            id="hr_menu_overtime_all"
+            name="All"
+            parent="hr_menu_overtime"
+            sequence="2"/>
+    <menuitem id="hr_menu_overtime2"
+              action="pabs_hr.pabs_hr_overtime_server_action_all_overtime"
+              parent="hr_menu_overtime_all"
+              sequence="2"/>
+
+</odoo>

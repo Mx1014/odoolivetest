@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+        <record id="account_move_invoice_line_access_group" model="res.groups">
+            <field name="name">Invoice Lines access</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record id="view_repair_order_form_inherit_pabs_field_service" model="ir.ui.view">
+            <field name="name">view.repair.order.form.inherit.pabs.field.service</field>
+            <field name="model">repair.order</field>
+            <field name="inherit_id" ref="repair.view_repair_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Problems &amp; Solutions">
+                        <field name="x_problem_suggested_solution_line">
+                            <tree editable="bottom">
+                                <field name="x_problem_id"/>
+                                <field name="x_problem_solution_ids" widget="many2many_tags"/>
+                                <field name="x_solution_ids" widget="many2many_tags"/>
+                                <field name="x_qty"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <button name="action_repair_cancel" position="after">
+                    <field name="x_sale_service_type" invisible="1"/>
+                    <button name="service_type_action" type="object" string="Change to Credit Service" attrs="{'invisible': ['|', ('x_sale_service_type', '=', 'credit'), ('state', 'in', ['cancel', 'draft'])]}"/>
+                </button>
+            </field>
+        </record>
+    </data>
+</odoo>

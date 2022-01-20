@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-extend="reconciliation.line">
+        <t t-jquery=".o_notebook" t-operation="before">
+            <div class="danger-alert-space" style="height:40px;margin-top: 10px;"></div>
+        </t>
+    </t>
+</templates>

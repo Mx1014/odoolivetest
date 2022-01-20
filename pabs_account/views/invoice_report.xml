@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_invoice_report_tree" model="ir.ui.view">
+        <field name="name">account.invoice.report.tree</field>
+        <field name="model">account.invoice.report</field>
+        <field name="arch" type="xml">
+            <tree string="Invoices Analysis">
+                <field name="name"/>
+                <field name="x_source_document"/>
+                <field name="invoice_date"/>
+                <field name="partner_id"/>
+                <field name="x_partner_mobile"/>
+                <field name="product_id"/>
+                <!--                <field name="product_brand_id"/>-->
+                <field name="quantity"/>
+                <!--                <field name="x_list_price"/>-->
+                <field name="x_invoice_price_unit"/>
+                <field name="x_related_order_line_id"/>
+                <field name="x_price_unit"/>
+                <field name="x_sales_person"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_account_invoice_report_alll" model="ir.actions.act_window">
+        <field name="name">Invoices Analysis</field>
+        <field name="res_model">account.invoice.report</field>
+        <field name="view_mode">tree</field>
+    </record>
+    <menuitem name="Invoice Lines" action="action_account_invoice_report_alll"
+              id="menu_action_account_invoice_report_all"
+              parent="account.account_reports_management_menu" sequence="2"/>
+
+    <record id="view_account_move_reversal_inherit" model="ir.ui.view">
+        <field name="name">account.move.reversal.form.inherit</field>
+        <field name="model">account.move.reversal</field>
+        <field name="inherit_id" ref="account.view_account_move_reversal"/>
+        <field name="arch" type="xml">
+            <field name="reason" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

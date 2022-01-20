@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="view_order_form_inherit_analytic" model="ir.ui.view">
+            <field name="name">sale_view_order_form_inherit_analytic</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][2]" position="replace">
+                    <field name="sale_order_type" invisible="1"/>
+
+                    <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Down Payment"
+                            type="action" context="{'default_advance_payment_method': 'fixed'}"
+                            attrs="{'invisible': ['|','|','|','|',('invoice_status', '=', 'invoiced'), ('state', '!=', 'sale'), ('sale_order_type', '=', 'cash_memo'), ('x_downpayment_amount', '&lt;=', 0.0)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="attributes">
+                    <attribute name="string">Create Invoice</attribute>
+                </xpath>
+                <xpath expr="//field[@name='amount_total']" position="after">
+                    <field name="x_amount_residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state','!=','sale')]}"/>
+                    <field name="x_downpayment_amount" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

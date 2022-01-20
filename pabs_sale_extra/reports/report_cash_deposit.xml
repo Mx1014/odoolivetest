@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+    id="report_cash_deposit_button"
+    model="account.payment"
+    string="Cash Deposit"
+    report_type="qweb-pdf"
+    name="pabs_sale_extra.report_cash_deposit_template"
+    file="pabs_sale_extra.report_cash_deposit_template"
+    paperformat="pabs_sale_extra.paperformat_cash_deposit"
+    />
+</odoo>

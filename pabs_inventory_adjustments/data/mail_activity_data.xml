@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="mail_activity_stock_take" model="mail.activity.type">
+        <field name="name">Task - Stock Take</field>
+        <field name="icon">fa-file-text-o</field>
+        <field name="category">reminder</field>
+        <field name="summary">Stock Take</field>
+        <field name="res_model_id" ref="stock.model_stock_inventory"/>
+        <field name="default_description">You have been assigned for inventory adjustment</field>
+        <field name="delay_count">30</field>
+    </record>
+
+     <record id="mail_activity_stock_take_review" model="mail.activity.type">
+        <field name="name">Task - Stock Take Review</field>
+        <field name="icon">fa-file-text-o</field>
+        <field name="category">reminder</field>
+        <field name="summary">Stock Take Review</field>
+        <field name="res_model_id" ref="stock.model_stock_inventory"/>
+        <field name="default_description">You have been assigned for inventory adjustment Review</field>
+        <field name="delay_count">30</field>
+    </record>
+
+     <record id="mt_inventory_confirmed" model="mail.message.subtype">
+        <field name="name">Inventory Confirmed</field>
+        <field name="res_model">stock.inventory</field>
+        <field name="default" eval="False" />
+    </record>
+    <record id="mt_inventory_done" model="mail.message.subtype">
+        <field name="name">Inventory Done</field>
+        <field name="res_model">stock.inventory</field>
+        <field name="default" eval="False" />
+    </record>
+</odoo>

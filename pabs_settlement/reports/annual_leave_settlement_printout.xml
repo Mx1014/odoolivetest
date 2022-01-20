@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="annual_leave_settlement_printout">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            table, th, td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            }
+                            td, th {
+                            padding-left: 3px;
+                            }
+                        </style>
+                        <center>
+                            <h3>Encashment/Annual Leave Settlement</h3>
+                        </center>
+                        <table style="width:100%;">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="4">Employee Details</th>
+                            </tr>
+                            <tr>
+                                <th>Employee Name</th>
+                                <td>
+                                    <t t-esc="o.employee_name.name"/>
+                                </td>
+                                <th>Request Date</th>
+                                <td>
+                                    <t t-esc="o.date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Employee Code</th>
+                                <td>
+                                    <t t-esc="o.employee_name.registration_number"/>
+                                </td>
+                                <th>Department</th>
+                                <td>
+                                    <t t-esc="o.employee_name.department_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Employee CPR</th>
+                                <td>
+                                    <t t-esc="o.employee_name.identification_id"/>
+                                </td>
+                                <th>Supervisor Name</th>
+                                <td>
+                                    <t t-esc="o.employee_name.parent_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Designation</th>
+                                <td>
+                                    <t t-esc="o.employee_name.job_id.name"/>
+                                </td>
+                                <th>Joining Date</th>
+                                <td>
+                                    <t t-esc="o.employee_name.date_of_join"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Basic Salary</th>
+                                <td>
+                                    <t t-esc="'{:,.3f}'.format(o.basic_salary)"/>
+                                </td>
+                                <th>Gross Salary</th>
+                                <td>
+                                    <t t-esc="'{:,.3f}'.format(o.x_employee_contract.x_gross_salary)"/>
+                                </td>
+                            </tr>
+                            <!--                            <tr t-foreach="o.x_encashment_leaves.filtered(lambda line: line.x_leave_type.code)"-->
+                            <!--                                t-as="line">-->
+                            <tr>
+                                <!--                                <t t-if="line.x_leave_type.code == 'ANL'">-->
+                                <th>Leave Balance</th>
+                                <td>
+                                    <span t-esc="sum(o.x_encashment_leaves.mapped('x_current_balance'))"/>
+                                </td>
+
+                                <th>Applied Days</th>
+                                <td>
+                                    <span t-esc="sum(o.x_encashment_leaves.mapped('x_requested_days'))"/>
+                                </td>
+                                <!--                                </t>-->
+                            </tr>
+                            <tr>
+                                <th>Application No</th>
+                                <td>
+                                    <t t-esc="o.x_name"/>
+                                </td>
+                                <th>Outstanding Credit</th>
+                                <td>
+                                    <t t-esc="'{:,.3f}'.format(o.x_loan_and_credit_amount)"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width:100%;">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="7">Encashment Computation</th>
+                            </tr>
+                            <tr>
+                                <th>Leave Type</th>
+                                <th>Current Balance(Days)</th>
+                                <th>Requested Days</th>
+                                <th>Remaining Balance(Days)</th>
+                                <th>Total Amount(BD)</th>
+                            </tr>
+                            <tr t-foreach="o.x_encashment_leaves" t-as="line">
+                                <td class="text-center">
+                                    <span t-field="line.x_leave_type"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="'%.3f'%(line.x_current_balance)"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="'%.3f'%(line.x_requested_days)"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="'%.3f'%(line.x_remaining_balance)"/>
+                                </td>
+                                <td class="text-right">
+                                    <span style="margin-right:2mm; background-color:#E8E5E4"
+                                          t-esc="'%.3f'%(line.total_amount)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <span>Total Encashment Payment</span>
+                                </td>
+                                <td  class="text-right">
+                                    <span style="margin-right:2mm; background-color:#E8E5E4"
+                                          t-esc="sum(o.x_encashment_leaves.mapped('total_amount'))"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!--                        <table style="width:100%;">-->
+                        <!--                            <tr style="background-color:#B1B3B8;">-->
+                        <!--                                <th class="text-center" colspan="2">Days Steeled</th>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Current Annual Balance</th>-->
+                        <!--                                <t t-foreach="o.x_encashment_leaves.filtered(lambda line: line.x_leave_type.code)"-->
+                        <!--                                   t-as="line">-->
+                        <!--                                    <td t-if="line.x_leave_type.code == 'ANL'">-->
+                        <!--                                        <span t-esc="'{:,.2f}'.format(line.x_current_balance)"/>-->
+                        <!--                                    </td>-->
+                        <!--                                </t>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Current Overtime Balance</th>-->
+                        <!--                                <t t-foreach="o.x_encashment_leaves.filtered(lambda line: line.x_leave_type.code)"-->
+                        <!--                                   t-as="line">-->
+                        <!--                                    <td t-if="line.x_leave_type.code == 'OVTL'">-->
+                        <!--                                        <span t-esc="'{:,.2f}'.format(line.x_current_balance)"/>-->
+                        <!--                                    </td>-->
+                        <!--                                </t>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Total Days(Annual/OT)</th>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-esc="'{:,.2f}'.format(sum(o.x_encashment_leaves.mapped('x_current_balance')))"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Amount</th>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-esc="'{:,.3f}'.format(sum(o.x_encashment_leaves.mapped('x_current_balance')) * o.x_salary_per_day) "/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Encashment Requested Days</th>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-esc="sum(o.x_encashment_leaves.mapped('x_requested_days'))"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr>-->
+                        <!--                                <th style="background-color:#E8E5E4">Amount of Encashment Stelled Days</th>-->
+                        <!--                                <td style="background-color:#E8E5E4">-->
+                        <!--                                    <span t-esc="'{:,.3f}'.format(sum(o.x_encashment_leaves.mapped('total_amount')))"/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Annual Leave Balance After Deduction</th>-->
+                        <!--                                <t t-foreach="o.x_encashment_leaves.filtered(lambda line: line.x_leave_type.code)"-->
+                        <!--                                   t-as="line">-->
+                        <!--                                    <td t-if="line.x_leave_type.code == 'ANL'">-->
+                        <!--                                        <span t-field="line.x_remaining_balance"/>-->
+                        <!--                                    </td>-->
+                        <!--                                </t>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Overtime Leave Balance After Deduction</th>-->
+                        <!--                                <t t-foreach="o.x_encashment_leaves.filtered(lambda line: line.x_leave_type.code)"-->
+                        <!--                                   t-as="line">-->
+                        <!--                                    <td t-if="line.x_leave_type.code == 'OVTL'">-->
+                        <!--                                        <span t-field="line.x_remaining_balance"/>-->
+                        <!--                                    </td>-->
+                        <!--                                </t>-->
+                        <!--                            </tr>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Amount</th>-->
+                        <!--                                <td>-->
+                        <!--                                    <span t-esc="'{:,.3f}'.format(sum(o.x_encashment_leaves.mapped('x_remaining_balance')) * o.x_salary_per_day) "/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                            &lt;!&ndash;                            <tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <th>No of Leave Days</th>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    <span t-esc="sum(o.x_encashment_leaves.mapped('x_requested_days'))"/>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                </td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            <tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <th>Amount of Leave Days</th>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    <span t-esc="'{:,.3f}'.format(sum(o.x_encashment_leaves.mapped('total_amount')))"/>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                </td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            <tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <th>Overtime Leave Balance After Deduction</th>&ndash;&gt;-->
+
+                        <!--                            &lt;!&ndash;                                <t t-foreach="o.x_encashment_leaves.filtered(lambda line: line.x_leave_type.code)"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                   t-as="line">&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    <td t-if="line.x_leave_type.code == 'OVTL'">&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                        <span t-field="line.x_remaining_balance"/>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    </td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                </t>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            <tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <th>Annual Leave Balance After Deduction</th>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <t t-foreach="o.x_encashment_leaves.filtered(lambda line: line.x_leave_type.code)"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                   t-as="line">&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    <td t-if="line.x_leave_type.code == 'ANL'">&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                        <span t-field="line.x_remaining_balance"/>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    </td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                </t>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            <tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <th>NO od Leave Days After Deduction</th>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    <span t-esc="sum(o.x_encashment_leaves.mapped('x_remaining_balance'))"/>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                </td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            <tr>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <th>Total Paid Payment To Employee</th>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    <span t-esc="'{:,.3f}'.format(sum(o.x_encashment_leaves.mapped('total_amount')))"/>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                </td>&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </tr>&ndash;&gt;-->
+                        <!--                        </table>-->
+                        <table style="width:100%;">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="2">Payment</th>
+                            </tr>
+                            <tr>
+                                <th>Payment Reference</th>
+                                <td style="width:80%">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Bank Name</th>
+                                <td style="width:80%">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Payment Date</th>
+
+                                <td style="width:80%">
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width:100%;">
+                            <tr style="background-color:#B1B3B8;">
+                                <th class="text-center" colspan="3">Signature and Approval</th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" colspan="3">I declare and approve by all what are mentioned in
+                                    this application
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="width:25%">Employee Signature</th>
+                                <th class="text-center" style="width:25%">HR Department</th>
+                                <th class="text-center" style="width:25%">Finance Department</th>
+                            </tr>
+                            <tbody>
+                                <tr style="height: 120px">
+                                    <td style=""></td>
+                                    <td style=""></td>
+                                    <td style=""></td>
+                                </tr>
+                                <tr>
+                                    <td style="">Name:</td>
+                                    <td style="">Name:</td>
+                                    <td style="">Name:</td>
+                                </tr>
+                                <tr>
+                                    <td style="">Date:</td>
+                                    <td style="">Date:</td>
+                                    <td style="">Date:</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="increment_wages_wizard_view_form" model="ir.ui.view">
+        <field name="name">increment.wages.wizard.form</field>
+        <field name="model">increment.wages</field>
+        <field name="arch" type="xml">
+            <form string="Confirmation">
+              <group>
+                  <span>Are You Sure You Want To Increment The Wages of All Employees</span>
+              </group>
+                <footer>
+                    <button string="Done" name="do_increments" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

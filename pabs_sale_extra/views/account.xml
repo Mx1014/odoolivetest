@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_account_journal_form_inherit_pabs_sale_extra" model="ir.ui.view">
+        <field name="name">account.journal.form.inherit.pabs.sale.extra</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+<!--            <xpath expr="//field[@name='account_control_ids']" position="after">-->
+<!--                <field name="x_allowed_sale_team" widget="many2many_tags" />-->
+<!--            </xpath>-->
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="x_master_cashier" widget="many2many_tags" attrs="{'invisible': [('type', '!=', 'cash'), ('x_bank_type', '!=', 'cheque')]}"/>
+                <field name="x_bank_type" widget="radio" options="{'horizontal': true}"
+                       attrs="{'invisible': [('type','!=', 'bank')]}"/>
+                <field name="x_bill_journal" attrs="{'invisible': [('type','not in', ['cash', 'bank'])]}"/>
+            </xpath>
+        </field>
+    </record>
+
+   <record id="view_account_payment_form_inherit" model="ir.ui.view">
+            <field name="name">account.payment.form.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='cheque_bank_details']" position="after">
+                    <group>
+                        <field name="x_auth"/>
+                        <field name="x_tid"/>
+                        <field name="x_batch"/>
+                    </group>
+                    <group>
+                        <field name="x_benefit_ref"/>
+                    </group>
+                    <group>
+                        <field name="x_cheque_date"/>
+                        <field name="x_cheque_number"/>
+                        <field name="x_bank_id" string="Bank Name"/>
+                        <field name="x_account_number" string="Bank Account"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    <record id="view_account_payment_form_inherit_pabs_sale_extra" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.pabs.sale.extras</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="pabs_sale.view_account_payment_form_inherit_pabs_sale"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <div class="alert alert-warning" role="alert" style="margin-bottom:0px;" attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('x_amount_to_deposit', '=', 0)]}">
+                        <span>You have <field name="x_amount_to_deposit" nolabel="1"/> in cash statement need to be deposit</span>
+                    </div>
+            </xpath>
+            <field name="payment_date" position="before">
+                <field name="x_deposit_amount" attrs="{'invisible': [('x_deposit_amount', '=', 0.0)], 'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="x_bank_statement_id" invisible="1"/>
+            </field>
+            <xpath expr="//group[@name='right_column']//field[@name='amount']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('x_bank_statement_id', '!=', False), ('state', '!=', 'draft')]}</attribute>
+            </xpath>
+             <xpath expr="//group[@name='right_column']//field[@name='amount']" position="attributes">
+                <attribute name="force_save">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='amount_div']//field[@name='currency_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('x_bank_statement_id', '!=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='right_column']" position="before">
+                <field name="x_bank_type" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//group[@name='cheque_bank_details']" position="attributes">
+                <attribute name="attrs">{'invisible':[('x_bank_type', '!=', 'cheque'), ('payment_method_code', '!=', 'check_printing')]}</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='cheque_bank_details']" position="after">
+                <group attrs="{'invisible':[('x_bank_type', '!=', 'card')]}">
+                    <field name="x_auth"/>
+                    <field name="x_tid"/>
+                    <field name="x_batch"/>
+                </group>
+                <group attrs="{'invisible':[('x_bank_type', '!=', 'online')]}">
+                    <field name="x_benefit_ref"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+     <record model="ir.ui.view" id="account_payment_view_list_pabs_extra">
+      <field name="name">payment_view_list_inherits</field>
+      <field name="model">account.payment</field>
+      <field name="inherit_id" ref="account.view_account_payment_tree"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='communication']" position="after">
+            <field name="x_auth"/>
+            <field name="x_tid"/>
+            <field name="x_benefit_ref"/>
+        </xpath>
+      </field>
+    </record>
+
+</odoo>

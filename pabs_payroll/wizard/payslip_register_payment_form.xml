@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_payslip_register_payment" model="ir.ui.view">
+            <field name="name">Register Payment</field>
+            <field name="model">payslip.register.payment</field>
+            <field name="arch" type="xml">
+                <form string="Register Payment">
+<!--                    <p class="oe_grey">-->
+<!--                        Invoices will be created in draft so that you can review-->
+<!--                        them before validation.-->
+<!--                    </p>-->
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="journal_id"/>
+                    </group>
+                    <footer>
+                        <button name="action_register_single_payment" string="Confirm" type="object"
+                           class="btn-primary"/>
+<!--                        <button name="create_invoices" string="Create Invoice" type="object"/>-->
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_payslip_register_payment" model="ir.actions.act_window">
+            <field name="name">Register Payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">payslip.register.payment</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+<!--            <field name="groups_id" eval="[(4,ref('sales_team.group_sale_salesman'))]"/>-->
+<!--            &lt;!&ndash; TODO: check if we need this &ndash;&gt;-->
+            <field name="binding_model_id" ref="account.model_account_move" />
+<!--            <field name="binding_view_types">list</field>-->
+        </record>
+
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+     <t t-inherit="stock_barcode.stock_barcode_lines_template" t-inherit-mode="extension">
+        <xpath expr="//span[@t-if='line.theoretical_qty']" position="replace">
+            <span t-if="line.theoretical_qty and groups.group_inventory_manager" t-esc="'/ ' + line.theoretical_qty"/>
+        </xpath>
+
+         <xpath expr="//div[hasclass('list-group-item')][2]" position="attributes">
+            <attribute name="style">visibility: hidden</attribute>
+        </xpath>
+    </t>
+
+
+
+</templates>

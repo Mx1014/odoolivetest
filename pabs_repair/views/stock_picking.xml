@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_picking_form_inherit_pabs_repair" model="ir.ui.view">
+        <field name="name">view.stock.picking.form.inherit.pabs.repair</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="pabs_logistics_extra.view_stock_picking_form_inherit_pabs_logistics_extra"/>
+        <field name="arch" type="xml">
+            <field name="x_total_amount" position="after">
+                <field name="x_helpdesk_ticket_id" attrs="{'invisible': [('x_helpdesk_ticket_id', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_stock_picking_batch_form_inherit_pabs_logistics_extra_inherit_repair" model="ir.ui.view">
+        <field name="name">view.stock.picking.batch.form.inherit.pabs.logistics.extra.inherit.repair</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="pabs_logistics_extra.view_stock_picking_batch_form_inherit_pabs_logistics_extra"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_ids']//tree//field[@name='name']" position="before">
+                <field name="x_ticket_id" optional="hide"/>
+                <field name="x_ticket_type" optional="hide"/>
+                <field name="x_ticket_product" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='picking_ids']//tree//field[@name='state']" position="after">
+                <field name="x_ticket_stage_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

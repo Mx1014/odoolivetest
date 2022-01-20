@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_price_tag_small_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div t-attf-style="width: 115mm; height:45mm; background-image:url('/pabs_tags/static/img/tag_small_2.jpg'); background-size:115mm 45mm;">
+                            <div style="float: right;margin-right:12mm; width:50mm; height:40mm; margin-top:1mm">
+                                <center>
+                                    <!--                                    <div style="width: 45mm; height: 8mm">-->
+                                    <!--                                        <img style="display: block; margin-left: auto; margin-right: auto; max-height: 100%; max-width: 100%;"-->
+                                    <!--                                             class="align-self-center"-->
+                                    <!--                                             t-if="o.product_brand_id.logo"-->
+                                    <!--                                             t-att-src="image_data_uri(o.product_brand_id.logo)" alt="Logo"/>-->
+                                    <!--                                    </div>-->
+                                    <div style="width: 45mm; height: 8mm">
+                                        <span style="font-size: 25px;  font-weight: 900;"
+                                              t-field="o.product_brand_id.name"/>
+                                    </div>
+                                    <div style="width: 55mm; height: 6mm; overflow: hidden;
+                                                    text-overflow: ellipsis; word-wrap: break-word; display: block;
+                                                    line-height: 6mm;max-height: 6mm; color: #2C3091;">
+                                        <strong>
+                                            <span style="font-size: 18px" t-field="o.categ_id.name"/>
+                                        </strong>
+                                    </div>
+                                    <div style="width: 55mm; height: 6mm; overflow: hidden;
+                                                    text-overflow: ellipsis; word-wrap: break-word; display: block;
+                                                    line-height: 6mm;max-height: 6mm; color: #EA1F27;">
+                                        <strong>
+                                            <span style="font-size: 18px" t-field="o.default_code"/>
+                                        </strong>
+                                    </div>
+                                </center>
+                                <div style="height: 23mm; width: 60mm">
+                                    <t t-set="i" t-value="0"/>
+                                    <t t-foreach="o.product_tmpl_id.attribute_line_ids" t-as="line">
+                                        <!--                                    <t t-foreach="o.product_template_attribute_value_ids" t-as="line">-->
+                                        <t t-if="i &lt; 3">
+                                            <t t-if="line.x_is_print">
+                                                <div style="color: #2C3091;">
+                                                    <span>-
+                                                        <span style="font-size: 18px"
+                                                              t-field="line.value_ids.name"/>
+                                                        <!--                                                              t-field="line.product_attribute_value_id"/>-->
+                                                    </span>
+                                                    <t t-set="i" t-value="i + 1"/>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </div>
+                            </div>
+                            <div style="position:relative;top:20mm;left:90mm">
+                                <!--                            <t t-if="o.barcode">-->
+
+                                <!--                                        <img style="-webkit-transform: rotate(90deg)"-->
+                                <!--                                             t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('Code128', o.barcode, 130,25)"/>-->
+
+                                <!--                            </t>-->
+                            </div>
+                            <div style="position: fixed; top: 20mm; left: 7mm; width:50mm; height:20mm; font-size: 52px; color: #EA1F27; font-weight: bold; font-weight: 900;">
+                                <span t-esc="'{:,.2f}'.format(o.lst_price)"/>
+                                <!--                                <span t-field="o.lst_price"/>-->
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

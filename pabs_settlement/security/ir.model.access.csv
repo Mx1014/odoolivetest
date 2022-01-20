@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_settlement,access_hr_settlement,model_hr_settlement,base.group_user,1,1,1,1
+access_settlement_type,access_settlement_type,model_settlement_type,base.group_user,1,1,1,1
+access_indemnity_lines,access_indemnity_lines,model_indemnity_lines,base.group_user,1,1,1,1
+access_leaving_reason,access_leaving_reason,model_leaving_reason,base.group_user,1,1,1,1
+access_hr_input,access_hr_input,model_hr_input,base.group_user,1,1,1,1
+access_vacation_payment,access_vacation_payment,model_vacation_payment,base.group_user,1,1,1,1
+access_employee_leaves,access_employee_leaves,model_employee_leaves,base.group_user,1,1,1,1
+access_encashment_lines,access_encashment_lines,model_encashment_lines,base.group_user,1,1,1,1
+access_deduction_days,access_deduction_days,model_deduction_days,base.group_user,1,1,1,1
+access_anual_provision_lines,access_anual_provision_lines,model_anual_provision_lines,base.group_user,1,1,1,1
+access_indemnity_provision_lines,access_indemnity_provision_lines,model_indemnity_provision_lines,base.group_user,1,1,1,1
+access_vacation_payment_lines,access_vacation_payment_lines,model_vacation_payment_lines,base.group_user,1,1,1,1
+access_indemnity_vacation_payment_lines,access_indemnity_vacation_payment_lines,model_indemnity_vacation_payment_lines,base.group_user,1,1,1,1

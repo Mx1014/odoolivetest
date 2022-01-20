@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="extended_warranty_1y_period" model="extended.warranty.period">
+            <field name="name">1 Years</field>
+            <field name="period_countable">1</field>
+        </record>
+        <record id="extended_warranty_2y_period" model="extended.warranty.period">
+            <field name="name">2 Years</field>
+            <field name="period_countable">2</field>
+        </record>
+        <record id="extended_warranty_product" model="product.product">
+            <field name="name">Extended Warranty 1Year</field>
+            <field name="product_brand_id" ref="product_brand.product_brand_template"/>
+            <field name="purchase_ok">False</field>
+            <field name="sale_ok">True</field>
+            <field name="is_extended">True</field>
+            <field name="categ_id">1</field>
+            <field name="barcode">Ext1y</field>
+            <field name="list_price">21.0</field>
+            <field name="standard_price">21.0</field>
+            <field name="type">service</field>
+            <field name="default_code">EXT-War-1y</field>
+            <field name="extended_time" ref="pabs_warranty.extended_warranty_1y_period"/>
+        </record>
+        <record id="extended_warranty_products" model="product.product">
+            <field name="name">Extended Warranty 2Year</field>
+            <field name="product_brand_id" ref="product_brand.product_brand_template"/>
+            <field name="purchase_ok">False</field>
+            <field name="sale_ok">True</field>
+            <field name="is_extended">True</field>
+            <field name="categ_id">1</field>
+            <field name="barcode">Ext2y</field>
+            <field name="list_price">31.0</field>
+            <field name="standard_price">31.0</field>
+            <field name="type">service</field>
+            <field name="default_code">EXT-War-2y</field>
+            <field name="extended_time" ref="pabs_warranty.extended_warranty_2y_period"/>
+        </record>
+    </data>
+</odoo>

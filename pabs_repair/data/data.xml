@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="project_project_repair" model="project.project" forcecreate="0">
+            <field name="name">Repair</field>
+            <field name="privacy_visibility">portal</field>
+            <field name="allow_timesheets">True</field>
+            <field name="allow_timesheet_timer">True</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="comeback" model="helpdesk.ticket.type" forcecreate="0">
+            <field name="name">ComeBack Job</field>
+        </record>
+    </data>
+
+     <data noupdate="0">
+        <record id="product_cancellation" model="helpdesk.ticket.type" forcecreate="0">
+            <field name="name">Product Cancellation</field>
+        </record>
+
+    </data>
+
+</odoo>
+        <!--<field name="facet_id" ref="documents_hr.documents_hr_documents"/>-->
+        <!--            <field name="sequence">13</field>-->

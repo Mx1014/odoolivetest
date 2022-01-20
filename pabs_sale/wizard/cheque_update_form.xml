@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="update_cheque_form_view" model="ir.ui.view">
+        <field name="name">update.cheque.form.view</field>
+        <field name="model">update.cheque</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="payment_method" required="1" options="{'no_create': True}"/>
+                        <field name="journal_id" required="0" invisible="1"/>
+                        <field name="bank_type" invisible="1"/>
+                        <field name="journal_type" invisible="1"/>
+                    </group>
+                    <group attrs="{'invisible': [('bank_type', '!=', 'cheque')]}">
+                        <field name="bank_id" attrs="{'required': [('bank_type', '=', 'cheque')]}"/>
+                        <field name="cheque_date" attrs="{'required': [('bank_type', '=', 'cheque')]}"/>
+                        <field name="cheque_number" attrs="{'required': [('bank_type', '=', 'cheque')]}"/>
+                        <field name="account_number" attrs="{'required': [('bank_type', '=', 'cheque')]}"/>
+<!--                        <field name="cheque_type" attrs="{'required': [('bank_type', '=', 'cheque')]}"/>-->
+                    </group>
+                    <group attrs="{'invisible': [('bank_type', '!=', 'card')]}">
+                         <field name="auth" attrs="{'required': [('bank_type', '=', 'card')]}"/>
+                        <field name="tid" attrs="{'required': [('bank_type', '=', 'card')]}"/>
+                        <field name="batch" attrs="{'required': [('bank_type', '=', 'card')]}"/>
+                    </group>
+                    <group  attrs="{'invisible': [('bank_type', '!=', 'online')]}">
+                         <field name="benefit_ref" attrs="{'required': [('bank_type', '=', 'online')]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button class="oe_highlight" name="update_check" string="Update" type="object"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" close="1"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    <data>-->
+<!--        <record id="action_staff_computation_report" model="ir.actions.act_window">-->
+<!--            <field name="name">Compensations</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">hr.payslip.line</field>-->
+<!--            <field name="view_mode">pivot</field>-->
+<!--        </record>-->
+
+<!--        <menuitem id="computation_pivot"-->
+<!--                  action="action_staff_computation_report"-->
+<!--                  parent="hr_payroll.menu_hr_payroll_report"-->
+<!--                  sequence="100"-->
+<!--        />-->
+<!--    </data>-->
+</odoo>

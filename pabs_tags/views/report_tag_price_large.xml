@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="report_tag_price_large_button"
+            model="product.product"
+            string="Price Tag Large"
+            report_type="qweb-pdf"
+            name="pabs_tags.report_tag_price_large_template"
+            file="pabs_tags.report_tag_price_large_template"
+            paperformat="pabs_tags.paperformat_tag_price_large"
+    />
+</odoo>

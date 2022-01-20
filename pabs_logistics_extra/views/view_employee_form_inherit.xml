@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_employee_form_inherit_pabs_logistic_extra" model="ir.ui.view">
+            <field name="name">view.employee.form.inherit.pabs.logistic.extra</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page name="internal_logistics_team" string="Logistics Teams">
+                    <group>
+                        <field name="x_is_supervisor"/>
+                        <field name="x_teams" attrs="{'invisible': [('x_is_supervisor', '=', False)]}"/>
+                    </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+<!--        <act_window id="stock.stock_picking_to_batch_action_stock_picking"-->
+<!--        name="to batch"-->
+<!--        res_model="stock.picking.to.batch"-->
+<!--        binding_model="stock.picking"-->
+<!--        binding_views="list"-->
+<!--        view_mode="form" target="new"-->
+<!--    />-->

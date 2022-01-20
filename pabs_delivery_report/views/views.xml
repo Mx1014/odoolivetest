@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="print_count" model="ir.ui.view">
+            <field name="name">print.count.inherit.stock</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="pabs_logistics_extra.view_stock_picking_form_inherit_pabs_logistics_extra"/>
+            <field name="arch" type="xml">
+                <field name="x_client_order_ref" position="after">
+                    <field name="x_print_count" readonly="1" forc_save="1" invisible="1"/>
+                    <field name="x_current_time" readonly="1" forc_save="1" invisible="1"/>
+                </field>
+            </field>
+        </record>
+        <!-- explicit list view definition -->
+        <!--
+            <record model="ir.ui.view" id="pabs_delivery_report.list">
+              <field name="name">pabs_delivery_report list</field>
+              <field name="model">pabs_delivery_report.pabs_delivery_report</field>
+              <field name="arch" type="xml">
+                <tree>
+                  <field name="name"/>
+                  <field name="value"/>
+                  <field name="value2"/>
+                </tree>
+              </field>
+            </record>
+        -->
+
+        <!-- actions opening views on models -->
+        <!--
+            <record model="ir.actions.act_window" id="pabs_delivery_report.action_window">
+              <field name="name">pabs_delivery_report window</field>
+              <field name="res_model">pabs_delivery_report.pabs_delivery_report</field>
+              <field name="view_mode">tree,form</field>
+            </record>
+        -->
+
+        <!-- server action to the one above -->
+        <!--
+            <record model="ir.actions.server" id="pabs_delivery_report.action_server">
+              <field name="name">pabs_delivery_report server</field>
+              <field name="model_id" ref="model_pabs_delivery_report_pabs_delivery_report"/>
+              <field name="state">code</field>
+              <field name="code">
+                action = {
+                  "type": "ir.actions.act_window",
+                  "view_mode": "tree,form",
+                  "res_model": model._name,
+                }
+              </field>
+            </record>
+        -->
+
+        <!-- Top menu item -->
+        <!--
+            <menuitem name="pabs_delivery_report" id="pabs_delivery_report.menu_root"/>
+        -->
+        <!-- menu categories -->
+        <!--
+            <menuitem name="Menu 1" id="pabs_delivery_report.menu_1" parent="pabs_delivery_report.menu_root"/>
+            <menuitem name="Menu 2" id="pabs_delivery_report.menu_2" parent="pabs_delivery_report.menu_root"/>
+        -->
+        <!-- actions -->
+        <!--
+            <menuitem name="List" id="pabs_delivery_report.menu_1_list" parent="pabs_delivery_report.menu_1"
+                      action="pabs_delivery_report.action_window"/>
+            <menuitem name="Server to list" id="pabs_delivery_report" parent="pabs_delivery_report.menu_2"
+                      action="pabs_delivery_report.action_server"/>
+        -->
+    </data>
+</odoo>

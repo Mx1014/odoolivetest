@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_delivery_document_pabs_delivery_report_inheit_pabs_field_service"
+              inherit_id="pabs_delivery_report.report_delivery_document_pabs_delivery_report">
+
+        <xpath expr="//div[@class='footer']//div[@class='clearfix']" position="attributes">
+            <attribute name="t-if">o.x_repair_total == 0</attribute>
+        </xpath>
+
+        <xpath expr="//div[@class='footer']//div[@class='clearfix']" position="after">
+            <div class="clearfix" name="hdt_total_summary"
+                 t-if="not o.sale_order_type and o.code == 'outgoing' and o.x_repair_total != 0">
+                <div style="float: left">
+                            <div>Received By: ____________________________</div>
+                            <div>Signature: _______________________________</div>
+                            <div>
+                                <t t-if="o.code in ['outgoing', 'internal']">
+                                    <div>
+                                        <span>Store Keeper:</span>
+                                        <span t-field="o.user_id"/>
+                                    </div>
+                                </t>
+                                <t t-if="o.x_logistics_team">
+                                    <div>
+                                        <span>Delivered By:</span>
+                                        <span t-field="o.x_logistics_team"/>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div>Delivered By: _______________________________</div>
+                                </t>
+                                <div>
+                                    <span>Delivery Time:</span>
+                                    <span t-field="o.period"/>
+                                </div>
+                            </div>
+                        </div>
+
+                <div id="repair_total" name="repair_total">
+                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                        <h2>
+                            <span>Repair Summary</span>
+                        </h2>
+                        <table class="table table-sm">
+                            <tr class="border-black o_subtotal" style="">
+                                <td name="td_repair_amount_untaxed_label">
+                                    <strong>Repair Balance</strong>
+                                </td>
+                                <td name="td_repair_x_total_amount" class="text-right">
+                                    <span t-field="o.x_repair_total"/>
+                                </td>
+                            </tr>
+                            <tr class="border-black o_subtotal" style="">
+                                <td colspan="3">
+                                    Driver Recv. Signature: ____________________
+                                </td>
+
+                            </tr>
+                            <tr class="border-black o_subtotal" style="">
+                                <td colspan="3">
+                                    Amount Received: BD______________________
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

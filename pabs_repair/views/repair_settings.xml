@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_pabs_repair" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.pabs.repair</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="200"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Repair" string="Repair" data-key="repair" groups="stock.group_stock_manager">
+                        <h2>Repair Settings</h2>
+                        <div class="row mt16 o_settings_container">
+                                <div class="o_setting_left_pane">
+                                    <label for="default_x_repair_project" string="Repair Project"/>
+                                    <field name="default_x_repair_project"/>
+                                </div>
+
+                        </div>
+                    </div>
+                </xpath>
+
+            </field>
+    </record>
+
+     <record id="action_config_settings_repair" model="ir.actions.act_window">
+        <field name="name">Repair Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="res_config_settings_view_form_inherit_pabs_repair"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'repair'}</field>
+    </record>
+     <menuitem id="repair_menu_settings"
+               action="action_config_settings_repair"
+               name="Settings"
+               parent="repair.repair_menu_config"
+               groups="stock.group_stock_manager"/>
+</odoo>
+
+
+
+
+
+

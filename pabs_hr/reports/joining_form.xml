@@ -1,0 +1,454 @@
+<odoo>
+    <template id="joining_form">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="header">
+                        <img t-att-src="'/pabs_hr/static/src/img/AlSalam_Logo.png'"
+                             style="max-height:120px; float:right"/>
+                    </div>
+                    <div class="page">
+                        <table name="employee-infos" style="width:100%" class="table table-sm table-bordered">
+                            <tr>
+                                <tr style="background-color:#B1B3B8;">
+                                    <td class="text-center" colspan="5">
+                                        <strong>EMPLOYEE DETAILS</strong>
+                                    </td>
+                                </tr>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>Employee:</strong>
+                                </td>
+                                <td colspan="3">
+                                    <span t-field="o.name"/>
+                                </td>
+                                <td rowspan="5" style="width:110pt">
+                                    <center>
+                                        <img t-if="o.image_1920" t-att-src="image_data_uri(o.image_1920)"
+                                             style="max-height:110pt; max-width:100%" alt="Employee Image"/>
+                                    </center>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>CPR:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.identification_id"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Code ID:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <span t-field="o.registration_number"/>
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>Date of Joining:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.date_of_join"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Department:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <span t-field="o.department_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>Position:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.job_id"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Email:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.private_email"/>
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>Nationality:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.country_id"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>DOB:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.birthday"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>Passport No:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.passport_id"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Martial Status:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <span t-field="o.marital"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>Date of Expiry:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.passport_expiration"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Age:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <span t-field="o.age"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>Sex:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.gender"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Contact-1:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <span t-field="o.phone"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>Contact-2:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.mobile"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>License:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <span t-field="o.license_availability"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>EMP Status:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.employee_status"/>
+                                </td>
+                                <td style="width:15%">
+                                    <strong>Religion:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <span t-field="o.religion"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">
+                                    <strong>Reference By:</strong>
+                                </td>
+                                <td colspan="4">
+                                    <span t-field="o.reference_by"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm table-bordered" style="width:100%">
+                            <tr style="background-color:#B1B3B8;">
+                                <td class="text-center" colspan="5">
+                                    <strong>Educational History</strong>
+                                </td>
+                            </tr>
+                            <td style="width:20%">
+                                <strong>Languages Known:</strong>
+                            </td>
+                            <t t-foreach="o.employee_skill_ids" t-as="line">
+                                <!--                                <tr>-->
+
+                                <td>
+                                    <span t-esc="line.skill_id.name"/>
+                                </td>
+                                <!--                                </tr>-->
+                            </t>
+                            <tr style="background-color:#B1B3B8">
+                                <th>
+                                    <strong>Name of University</strong>
+                                </th>
+                                <th>
+                                    <strong>Qualifications Obtained</strong>
+                                </th>
+                                <th>
+                                    <strong>From</strong>
+                                </th>
+                                <th>
+                                    <strong>To</strong>
+                                </th>
+                            </tr>
+                            <!--                            <t t-set="resume_lines"-->
+                            <!--                               t-value="o.resume_line_ids.filtered(lambda x: x.line_type_id.name == 'Experience')">-->
+                            <t t-foreach="o.resume_line_ids.filtered(lambda x: x.line_type_id.id == %(hr_skills.resume_type_education)d)"
+                               t-as="rec">
+                                <tr>
+                                    <td>
+                                        <span t-field="rec.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="rec.line_type_id"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="rec.date_start"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="rec.date_end"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <!--                            </t>-->
+                        </table>
+
+                        <table class="table table-sm table-bordered" style="width:100%">
+                            <t t-set="allowances"
+                               t-value="{'Basic' : o.contract_id.wage,
+                               'Rent': o.contract_id.home_rent_allowance,
+                               'Food': o.contract_id.food_allowance,
+                               'Lab': o.contract_id.labour_allowance,
+                               'Other': o.contract_id.other_allowance,
+                               'Per': o.contract_id.performance_allowance,
+                               'Shift': o.contract_id.shift_allowance,
+                               'Social': o.contract_id.social_allowance,
+                               'Spec': o.contract_id.special_allowance,
+                               'Trans': o.contract_id.transportation_allowance,
+                               'Phone': o.contract_id.phone_allowance,
+                               'Net': o.contract_id.x_netpayable}"/>
+
+
+                            <tr>
+                                <td class="text-left" style="background-color:#B1B3B8">
+                                    <strong>Salary Details</strong>
+                                </td>
+                                <t t-set="count" t-value="0"></t>
+                                <td>
+                                    <t t-foreach="allowances" t-as="line">
+                                        <!--                                        <td t-if="line_value > 0">-->
+                                        <!--                                        <div>-->
+                                        <t t-if="line_value > 0">
+                                            <span t-esc="line"/>
+                                            <span>:</span>
+                                            <span t-esc="line_value"/>
+                                            <span>BD</span>
+                                            <t t-if="count == 5">
+                                                <t t-set="count" t-value="0"/>
+                                                <br></br>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="count" t-value="count + 1"/>
+                                            </t>
+                                        </t>
+
+                                        <!--                                        </div>-->
+
+
+                                        <!--                                    </td>-->
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                        <!--                        <t t-set="count" t-value="0"></t>-->
+                        <!--                        <t t-foreach="allowances" t-as="line">-->
+                        <!--                            &lt;!&ndash;                            <td t-if="line_value > 0">&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                <div>&ndash;&gt;-->
+                        <!--                            <span t-esc="line"/>-->
+                        <!--                            <span>:</span>-->
+                        <!--                            <span t-esc="line_value"/>-->
+                        <!--                            <span>BD</span>-->
+                        <!--                            <t t-if="count == 3">-->
+                        <!--                                <t t-set="count" t-value="0"/>-->
+                        <!--                                <br></br>-->
+                        <!--                            </t>-->
+                        <!--                            <t t-else="">-->
+                        <!--                                <t t-set="count" t-value="count + 1"/>-->
+                        <!--                            </t>-->
+
+                        <!--                            &lt;!&ndash;                                </div>&ndash;&gt;-->
+
+
+                        <!--                            &lt;!&ndash;                            </td>&ndash;&gt;-->
+                        <!--                        </t>-->
+                        <!--                        &lt;!&ndash;                        <tr>&ndash;&gt;-->
+                        <table class="table table-sm table-bordered" style="width:100%">
+                            <tr>
+                                <td class="text-left" style="background-color:#B1B3B8">
+                                    <strong>Bank Name</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.bank_account_id.bank_id"/>
+                                </td>
+                                <td class="text-left">
+                                    <strong>IBAN</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_iban"/>
+                                </td>
+                                <td class="text-left">
+                                    <strong>A/C NO</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.bank_account_id.acc_number"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-sm table-bordered" style="width:100%">
+                            <tr>
+                                <td class="text-center" colspan="5" style="background-color:#B1B3B8;">
+                                    <strong>Permanent Address</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Country Address</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.x_country_address"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Resident Address</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.address_home_id"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-sm table-bordered" style="width:100%">
+                            <tr>
+                                <td class="text-center" colspan="6" style="background-color:#B1B3B8;">
+                                    <strong>Emergency Contacts</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    <strong>Full Name</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.first_name"/>
+                                </td>
+                                <td class="text-left">
+                                    <strong>Relationship</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.first_relation"/>
+                                </td>
+                                <td class="text-left">
+                                    <strong>Mobile Tel</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.first_phone"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    <strong>Full Name</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.second_name"/>
+                                </td>
+                                <td class="text-left">
+                                    <strong>Relationship</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.second_relation"/>
+                                </td>
+                                <td class="text-left">
+                                    <strong>Mobile Tel</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.second_phone"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    <strong>Full Name</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.third_name"/>
+                                </td>
+                                <td class="text-left">
+                                    <strong>Relationship</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.third_relation"/>
+                                </td>
+                                <td class="text-left">
+                                    <strong>Mobile Tel</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.third_phone"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm table-bordered" style="width:100%">
+                            <tr style="background-color:#B1B3B8;">
+                                <td class="text-center" colspan="5">
+                                    <strong>Work Experience</strong>
+                                </td>
+                            </tr>
+                            <tr style="background-color:#DCDCDC	">
+                                <th>
+                                    <strong>Company Name</strong>
+                                </th>
+                                <th>
+                                    <strong>From</strong>
+                                </th>
+                                <th>
+                                    <strong>To</strong>
+                                </th>
+                                <th>
+                                    <strong>Position</strong>
+                                </th>
+                            </tr>
+                            <t t-foreach="o.resume_line_ids.filtered(lambda x: x.line_type_id.id == %(hr_skills.resume_type_experience)d)"
+                               t-as="rec">
+                                <tr>
+                                    <td>
+                                        <span t-field="rec.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="rec.date_start"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="rec.date_end"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="rec.x_position"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <!--                            </t>-->
+
+                        </table>
+                        <p>Signature:</p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

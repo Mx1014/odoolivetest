@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="task"
+            model="project.task"
+            string="Field Service Task Report"
+            report_type="qweb-pdf"
+            name="pabs_field_service.field_service_task"
+            file="pabs_field_service.field_service_task"
+            paperformat="pabs_field_service.paperformat_task_report"
+    />
+</odoo>

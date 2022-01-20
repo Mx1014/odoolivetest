@@ -1,0 +1,244 @@
+<odoo>
+    <data>
+        <record id="view_repair_order_form_inherit_pabs_repair" model="ir.ui.view">
+            <field name="name">view.repair.order.form.inherit.pabs.repair</field>
+            <field name="model">repair.order</field>
+            <field name="inherit_id" ref="repair.view_repair_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="x_repair_project" invisible="1"/>
+                    <button name="action_repair_invoice_create_for_company"
+                            type="object"
+                            string="Create Invoice"
+                            class="oe_highlight"
+                            groups="account.group_account_invoice"
+                            attrs="{'invisible': ['|', '|', ('invoiced', '!=', False), ('state', '!=', 'done'), ('invoice_method', '!=', 'warranty')]}"/>
+                    <field name="x_task_id" invisible="1"/>
+                    <button name="action_repair_invoice_create_for_none"
+                            type="object"
+                            string="Create Invoice"
+                            class="oe_highlight"
+                            groups="account.group_account_invoice"
+                            attrs="{'invisible': ['|', '|', ('invoiced', '!=', False), ('state', '!=', 'done'), ('invoice_method', '!=', 'none')]}"/>
+
+                </xpath>
+		<xpath expr="//header//button[@name='action_repair_start']" position="after">
+                    <button name="set_to_quotation"
+                            type="object"
+                            string="Set To Quotation"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
+                </xpath>
+                <field name="invoice_method" position="after">
+                    <field name="x_not_covered" invisible="1"/>
+                    <label for="" string=" "/>
+                    <span attrs="{'invisible': ['|', ('x_not_covered', '=', False), ('invoice_method', '=', 'none')]}" class="text-danger">
+                        <strong>(Not Covered By warranty)</strong>
+                    </span>
+                </field>
+                <xpath expr="//form//sheet//notebook//page//tree//field[@name='price_unit']" position="after">
+                    <field name="discount"/>
+                    <field name="x_discount_amount"/>
+                </xpath>
+                <xpath expr="//field[@name='fees_lines']//tree" position="inside">
+                    <field name="currency_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//page[2]//tree//field[@name='price_unit']" position="after">
+                    <field name="discount"/>
+                    <field name="x_discount_amount"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_task_form_view" class="oe_stat_button" icon="fa-tasks"
+                            type="object" attrs="{'invisible': [('x_task_id', '=', False)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Task</span>
+                        </div>
+                    </button>
+                    <button name="action_view_pickings" class="oe_stat_button" icon="fa-tasks" type="object" attrs="{'invisible': [('x_pickings_count', '=', 0)]}">
+                        <field name="x_pickings_count" string="Delivery" widget="statinfo"/>
+                    </button>
+                </xpath>
+                <xpath expr="//h1" position="after">
+                    <h2 class="text-right">
+                        <label for="x_spare_parts" attrs="{'invisible': [('state','!=','confirmed')]}"/>
+                        <field name="x_spare_parts" widget="selection_badge" decoration-danger="x_spare_parts == 'request'" decoration-success="x_spare_parts == 'arrange'" attrs="{'invisible': [('state','!=','confirmed')]}"/>
+                    </h2>
+                </xpath>
+                <button name="action_created_invoice" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('invoice_method','=','none'),
+                        ('state','in',('confirmed','2binvoiced','draft')), ('invoice_id','=',False)]}
+                    </attribute>
+
+                </button>
+
+                <button name="action_created_invoice" position="attributes">
+                    <attribute name="attrs">{'invisible': [('invoiced', '=', False)]}</attribute>
+                </button>
+                <field name="name" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                </field>
+                <field name="partner_id" position="after">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="sale_order_id" attrs="{'invisible': [('sale_order_id', '=', False)]}"/>
+                    <field name="warranty" invisible="1"/>
+                    <field name="warranty_state"/>
+                </field>
+                <field name="amount_untaxed" position="attributes">
+                    <attribute name="widget">monetary</attribute>
+                </field>
+                <field name="amount_tax" position="attributes">
+                    <attribute name="widget">monetary</attribute>
+                </field>
+                <field name="amount_total" position="attributes">
+                    <attribute name="widget">monetary</attribute>
+                </field>
+                <field name="product_id" position="after">
+                    <field name="product_brand"/>
+                    <field name="x_product_serial_no" required="1"/>
+                    <field name="product_model" required="1"/>
+                </field>
+                <field name="tag_ids" position="after">
+                    <field name="create_date" string="Quote Date"/>
+                    <field name="repair_date"/>
+                    <field name="x_repair_end_date"/>
+                    <field name="technician" required="1" options="{'no_create': True, 'no_edit': True, 'no_create_edit': True, 'no_quick_create': True}"/>
+                    <field name="diagnosis"/>
+                    <field name="receive_condition" required="1"/>
+                </field>
+                <xpath expr="//field[@name='operations']//tree" position="inside">
+                    <field name="currency_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//form//sheet/group//group//field[@name='product_id']" position="attributes">
+                  <attribute name="options">{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                    'no_quick_create': True}</attribute>
+                </xpath>
+
+                <xpath expr="//notebook" position="inside">
+                    <field name="analytic_account_active" invisible="1"/>
+                    <field name="allow_timesheets" invisible="1"/>
+                    <field name="subtask_count" invisible="1"/>
+                    <field name="project_id" invisible="1"/>
+                    <page string="Timesheets" id="timesheets_tab"
+                          attrs="{'invisible': ['|', ('allow_timesheets', '=', False), ('x_task_id', '=', False)]}">
+                        <group>
+                            <group>
+                                <field name="planned_hours" widget="float_time"/>
+                                <label for="subtask_planned_hours" groups="project.group_subtask_project"
+                                       attrs="{'invisible': [('subtask_count', '=', 0)]}"/>
+                                <div class="o_row" groups="project.group_subtask_project"
+                                     attrs="{'invisible': [('subtask_count', '=', 0)]}">
+                                    <field name="subtask_planned_hours" widget="float_time"/>
+                                    <span>planned hours</span>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="progress" widget="progressbar"/>
+                            </group>
+                        </group>
+                        <group name="timesheet_error" attrs="{'invisible': [('analytic_account_active', '!=', False)]}">
+                            <div class="alert alert-warning" role="alert">
+                                You can not log timesheets on this project since is linked to an inactive analytic
+                                account. Please change it, or reactivate the current one to timesheet on the project.
+                            </div>
+                        </group>
+                        <field name="timesheet_ids" mode="tree,kanban"
+                               attrs="{'invisible': [('analytic_account_active', '=', False)]}"
+                               context="{'default_project_id': project_id, 'default_name':'', 'default_task_id': x_task_id}">
+                            <tree editable="bottom" string="Timesheet Activities" default_order="date">
+                                <field name="task_id" invisible="1"/>
+                                <field name="date"/>
+                                <field name="user_id" invisible="1"/>
+                                <field name="employee_id" required="1"/>
+                                <field name="name"/>
+                                <field name="unit_amount" widget="timesheet_uom"/>
+                                <field name="project_id" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                            </tree>
+                            <kanban class="o_kanban_mobile">
+                                <field name="date"/>
+                                <field name="user_id"/>
+                                <field name="employee_id"/>
+                                <field name="name"/>
+                                <field name="unit_amount"/>
+                                <field name="project_id"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <strong>
+                                                        <span>
+                                                            <t t-esc="record.employee_id.value"/>
+                                                        </span>
+                                                    </strong>
+                                                </div>
+                                                <div class="col-6 pull-right text-right">
+                                                    <strong>
+                                                        <t t-esc="record.date.value"/>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 text-muted">
+                                                    <span>
+                                                        <t t-esc="record.name.value"/>
+                                                    </span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <span class="pull-right text-right">
+                                                        <field name="unit_amount" widget="float_time"/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                            <form string="Timesheet Activities">
+                                <sheet>
+                                    <group>
+                                        <field name="date"/>
+                                        <field name="user_id" invisible="1"/>
+                                        <field name="employee_id" required="1"/>
+                                        <field name="name"/>
+                                        <field name="unit_amount" string="Duration" widget="float_time"/>
+                                        <field name="project_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                        <group attrs="{'invisible': [('analytic_account_active', '=', False)]}">
+                            <group class="oe_subtotal_footer oe_right" name="project_hours">
+                                <field name="effective_hours" widget="float_time"/>
+                                <field name="subtask_effective_hours" widget="float_time"
+                                       attrs="{'invisible' : [('subtask_effective_hours', '=', 0.0)]}"/>
+                                <field name="total_hours_spent" widget="float_time" class="oe_subtotal_footer_separator"
+                                       attrs="{'invisible' : [('subtask_effective_hours', '=', 0.0)]}"/>
+                                <field name="remaining_hours" widget="float_time" class="oe_subtotal_footer_separator"
+                                       attrs="{'invisible' : [('planned_hours', '=', 0.0)]}"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+                <xpath expr="//field[@name='operations']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state','not in', ['draft', 'under_repair', 'confirmed', 'cancel'])]}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="pabs_repair_account_move_line_inherits" model="ir.ui.view">
+            <field name="name">pabs.repair.account.move.form.inherits</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <field name="journal_id" position="after">
+                    <field name="x_ticket_id" readonly="1" force_save="1"
+                           attrs="{'invisible' : [('x_ticket_id', '=', False)]}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

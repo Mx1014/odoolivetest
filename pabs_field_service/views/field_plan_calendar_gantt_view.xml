@@ -1,0 +1,103 @@
+<odoo>
+    <record id="field_plan_calendar_search_view" model="ir.ui.view">
+        <field name="name">field.plan.calendar.search</field>
+        <field name="model">field.plan.calendar</field>
+        <field name="arch" type="xml">
+            <search string="Slots">
+                <filter string="Available" name="available" domain="[('status', '=', 'available')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Business Line" name="group_by_business_line" domain="[]"
+                            context="{'group_by': 'business_line'}"/>
+                    <filter string="Status" name="group_by_status" domain="[]" context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+
+        </field>
+    </record>
+    <record id="field_plan_calendar_form_view" model="ir.ui.view">
+        <field name="name">field.plan.calendar.form.view</field>
+        <field name="model">field.plan.calendar</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="business_line"/>
+                            <field name="x_task"/>
+                            <field name="status"/>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime" invisible="1"/>
+                            <field name="note"/>
+                            <field name="period"/>
+                            <field name="x_priority" widget="priority"/>
+                            <button name="action_shift_field_plan_calendar_view_gantt"
+                                    string="Shift Booked Slot"
+                                    class="btn-primary"
+                                    type="object" context="{'business_line': business_line, 'slot_id': id}"
+                                    attrs="{'invisible': [('x_task', '=', False)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="field_plan_calendar_tree_view" model="ir.ui.view">
+        <field name="name">field.plan.calendar.tree.view</field>
+        <field name="model">field.plan.calendar</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="business_line"/>
+                <field name="x_task"/>
+                <field name="status"/>
+                <field name="start_datetime"/>
+                <field name="note"/>
+                <field name="period"/>
+                <field name="x_priority" widget="priority"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--                <footer>-->
+    <!--                    <button name="action_save_reminder" class="btn-primary" string="Book Slot" type="object"/>-->
+    <!--                    <button string="Discard" class="btn-secondary" special="cancel" close="1"/>-->
+
+    <!--                </footer>-->
+    <record id="field_plan_calendar_gantt_view" model="ir.ui.view">
+        <field name="name">field.plan.calendar.gantt.view</field>
+        <field name="model">field.plan.calendar</field>
+        <field name="arch" type="xml">
+            <gantt js_class="planning_gantt"
+                   form_view_id="%(field_plan_calendar_form_view)d"
+                   date_start="start_datetime"
+                   date_stop="end_datetime"
+                   default_group_by="business_line"
+                   default_scale="week" plan="false" scales="day,week,month"
+                   precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
+                   display_unavailability="1"
+                   decoration-info="status == 'available'" decoration-success="status == 'booked'"
+                   color="color">
+                <field name="status"/>
+            </gantt>
+        </field>
+    </record>
+    <record id="action_field_plan_calendar_gantt_view" model="ir.actions.act_window">
+        <field name="name">Field Service Planning</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">field.plan.calendar</field>
+        <field name="view_mode">gantt</field>
+        <!--        <field name="view_id" ref="field_plan_calendar_gantt_view"/>-->
+        <field name="view_mode">gantt,tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                                    (0, 0, {'view_mode': 'gantt', 'view_id': ref('field_plan_calendar_gantt_view')}),
+                                    (0, 0, {'view_mode': 'form', 'view_id': ref('field_plan_calendar_form_view')})]"/>
+        <field name="search_view_id" ref="field_plan_calendar_search_view"/>
+        <field name="context">{'search_default_group_by_business_line': 1, 'search_default_group_by_status': 1}</field>
+    </record>
+
+    <menuitem action="action_field_plan_calendar_gantt_view" id="field_service_field_plan_calendar_menu"
+              parent="industry_fsm.fsm_menu_planning"
+              sequence="0" name="Service plan Calendar"/>
+</odoo>
+        <!--        <field name="target">new</field>-->
+        <!--        <field name="context">{'default_product_id': active_id, 'search_default_product_id': active_id}</field>-->

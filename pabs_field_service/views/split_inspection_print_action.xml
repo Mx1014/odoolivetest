@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="task_custom_report_split_inspection"
+            string="Worksheet Report"
+            model="split.inspection.worksheet"
+            report_type="qweb-pdf"
+            name="pabs_field_service.split_inspection_worksheet_report_template"
+            file="pabs_field_service.split_inspection_worksheet_report_template"
+            paperformat="pabs_field_service.field_split_inspection_paperformat"
+            print_report_name="'Inspection Worksheet Report'"
+            menu="True"
+        />
+
+    </data>
+</odoo>

@@ -1,0 +1,86 @@
+<odoo>
+    <record id="split_service_worksheet_template_view_form" model="ir.ui.view">
+        <field name="name">split.service.worksheet.template.view.form</field>
+        <field name="model">split.service.worksheet</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <div>
+                            <group string="Product Information">
+                                <field name="x_product_id"/>
+                                <field name="x_product_default_code"/>
+                                <field name="x_product_brand"/>
+                                <field name="x_product_serial"/>
+                            </group>
+                            <group string="Warranty Information">
+                                <field name="x_warranty_id"/>
+                                <field name="x_warranty_expiry_date"/>
+                                <field name="x_warranty_extended_expiry_date"/>
+                                <field name="x_warranty_state"/>
+                            </group>
+                        </div>
+                            <group string="Task Information">
+                                <field name="x_task_id" readonly="1" force_save="1" context="{'form_view_ref': 'industry_fsm.project_task_view_form'}"/>
+                                <field name="x_technician_id"/>
+                                <field name="x_technician_Supervisor_id"/>
+                                <field name="x_date_repaired"/>
+                                <field name="x_diagnosis"/>
+                            </group>
+                    </group>
+                    <notebook>
+                        <page string="Problems &amp; Solutions">
+                            <field name="x_problem_suggested_solution_line">
+                                <tree editable="bottom">
+                                    <field name="x_problem_id"/>
+                                    <field name="x_problem_solution_ids" widget="many2many_tags"/>
+                                    <field name="x_solution_ids" widget="many2many_tags"/>
+                                    <field name="x_qty"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="split_service_worksheet_template_view_tree" model="ir.ui.view">
+        <field name="name">split.service.worksheet.template.view.tree</field>
+        <field name="model">split.service.worksheet</field>
+        <field name="arch" type="xml">
+            <tree string="Split Worksheets">
+                <field name="name"/>
+                <field name="x_task_id"/>
+                <field name="x_product_id"/>
+                <field name="x_product_default_code"/>
+                <field name="x_product_brand"/>
+                <field name="x_product_serial"/>
+                <field name="x_warranty_id"/>
+                <field name="x_warranty_expiry_date"/>
+                <field name="x_warranty_extended_expiry_date"/>
+                <field name="x_warranty_state"/>
+                <field name="x_technician_id"/>
+                <field name="x_technician_Supervisor_id"/>
+                <field name="x_date_repaired"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_split_service_worksheet_template_view_form" model="ir.actions.act_window">
+        <field name="name">Split service Worksheet</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">split.service.worksheet</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="fsm_worksheet_template_split_service_worksheet" model="project.worksheet.template"
+            context="{'fsm_worksheet_no_generation': True}">
+        <field name="name">Split Service Worksheet</field>
+        <field name="color">2</field>
+        <field name="model_id" ref="pabs_field_service.model_split_service_worksheet"/>
+        <field name="action_id" ref="pabs_field_service.action_split_service_worksheet_template_view_form"/>
+        <field name="report_view_id" ref="pabs_field_service.split_service_worksheet_report_template_task"/>
+    </record>
+
+</odoo>

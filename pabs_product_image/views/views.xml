@@ -1,0 +1,10 @@
+<odoo>
+
+    <menuitem id="menu_product_image"
+              name="Product"
+              web_icon="pabs_product_image,static/description/images/icon.png"/>
+
+    <menuitem name="Products" id="productImage_menu_list_1" parent="menu_product_image"
+              action="mrp.product_template_action"/>
+
+</odoo>

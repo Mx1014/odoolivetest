@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="create_fsm_task_view_form_inherit_pabs_field_service" model="ir.ui.view">
+            <field name="name">create.fsm.task.view.form.inherit.pabs.field.service</field>
+            <field name="model">helpdesk.create.fsm.task</field>
+            <field name="inherit_id" ref="helpdesk_fsm.create_fsm_task_view_form"/>
+            <field name="arch" type="xml">
+                <button name="action_generate_task" position="replace">
+                    <button string="Create Task" class="btn btn-primary" name="action_generate_and_return_to_ticket" type="object"/>
+                </button>
+            </field>
+        </record>
+    </data>
+</odoo>

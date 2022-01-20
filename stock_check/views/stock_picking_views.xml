@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field eval="12" name="priority"/>
+        <field name="arch" type="xml">
+            <field name="reserved_availability" position="before">
+
+                <field name="forecast_expected_date" invisible="1"/>
+                <field name="forecast_availability" string="Reserved"
+                       attrs="{'column_invisible': ['|', ('parent.picking_type_code', '!=', 'outgoing'), ('parent.state','=', 'done')]}"
+                       widget="forecast_widget"/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="sale_view_order_form_forecast_popover" model="ir.ui.view">
+        <field name="name">sale.view_order_form_forecast_popover</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='order_line']/tree//field[@name='price_unit']" position="after">
+                <field name="x_related_stock_quant_ids" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="action_so_ticket"
+            string="Sales Ticket"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="pabs_sale_extra.report_so_ticket"
+            name="pabs_sale_extra.report_so_ticket"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+            paperformat="pabs_sale_extra.paperformat_sale_ticket"
+
+        />
+    </data>
+</odoo>

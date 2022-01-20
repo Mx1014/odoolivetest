@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_annual_leave_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            table, th, td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            }
+                        </style>
+<!--                        <t t-esc="o.date_end"/>-->
+                        <center><h1>ANNUAL LEAVE SETTLEMENT</h1></center>
+                        <table style="width:100%;">
+                            <tr>
+                                <th colspan="3">EMPLOYEE DETAILS</th>
+                                <th>DATE</th>
+                                <th><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/></th>
+                            </tr>
+                            <tr>
+                                <th>Employee Name</th>
+                                <td><t t-esc="o.employee_id.name"/></td>
+                                <th>Nationality</th>
+                                <td colspan="2"><t t-esc="o.employee_id.country_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <th>Designation</th>
+                                <td><t t-esc="o.employee_id.job_id.name"/></td>
+                                <th>Employee No./CPR</th>
+                                <td colspan="2"><t t-esc="o.employee_id.identification_id"/></td>
+                            </tr>
+                            <tr>
+                                <th>Department</th>
+                                <td><t t-esc="o.employee_id.department_id.name"/></td>
+                                <th>Supervisor</th>
+                                <td colspan="2"><t t-esc="o.employee_id.parent_id.name"/></td>
+                            </tr>
+                        </table>
+                        <table style="width:100%; margin-top: 5px;">
+                            <tr>
+                                <th>Buyer</th>
+                                <td><t t-esc="o.company_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <th>Seller</th>
+                                <td><t t-esc="o.employee_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <th>Date of Join</th>
+                                <td><t t-esc="o.contract_id.date_start"/></td>
+                            </tr>
+                            <tr>
+                                <th>Overtime Leave</th>
+                                <td><t t-esc="o.x_overtime_leaves"/> days</td>
+                            </tr>
+                            <tr>
+                                <th>Annual leave Balance</th>
+                                <td><t t-esc="o.x_annual_leave"/> days</td>
+                            </tr>
+                            <tr>
+                                <th>Total Leave Days</th>
+                                <td><t t-esc="o.x_total_leaves"/> days</td>
+<!--                                <td><t t-esc="o.employee_id.allocation_display - o.employee_id.allocation_used_display"/> </td>-->
+                            </tr>
+                            <tr>
+                                <th>Total Days Buying</th>
+                                <td>Smith dfklgjslk dfsgkl;jsdfkl</td>
+                            </tr>
+                        </table>
+                        <table style="width:100%; margin-top: 5px;">
+                            <tr>
+                                <th colspan="3">Salary Details</th>
+                            </tr>
+                            <tr>
+                                <th>Basic Salary</th>
+                                <th>Per Day</th>
+                                <th>Total in BD</th>
+                            </tr>
+                            <tr>
+                                <td><t t-esc="'%.3f'%(o.contract_id.wage)"/></td>
+                                <td><t t-esc="'%.3f'%(o.contract_id.wage / o.x_month_days)"/></td>
+                                <td><t t-esc="'%.3f'%(o.contract_id.wage)"/></td>
+                            </tr>
+                        </table>
+                        <table style="width:100%; margin-top: 5px;">
+                            <tr>
+                                <th colspan="2">Vacation Settlement/Remittance Advice</th>
+                            </tr>
+                            <tr>
+                                <th>Due Leave Days</th>
+                                <td>123</td>
+                            </tr>
+                            <tr>
+                                <th>Overtime Leave Balance After Deduction</th>
+                                <td>123</td>
+                            </tr>
+                            <tr>
+                                <th>Annual Leave Balance After Deduction</th>
+                                <td>123</td>
+                            </tr>
+                            <tr>
+                                <th>Total Payment Paid To Employee</th>
+                                <td>123</td>
+                            </tr>
+                        </table>
+                        <t t-set="i" t-value="0"/>
+                        <t t-foreach="o.worked_days_line_ids" t-as="line">
+                            <t t-if="line.name == 'Legal Leaves 2020'">
+                                <t t-set="i" t-value="line.number_of_days"/>
+                            </t>
+                        </t>
+                        <div style="border-style: solid; border-width: 1px;">
+                            <p>I declare that on payment of the said sum for that of my annual leave deducted from
+                                my
+                                annual leave balance. 26.825 days has been deducted
+                                from his over time leave days his balance in OT leave is
+                                <t t-esc="i"/>
+                                and 21.60 has been
+                                deducted from his annual leave balance, Outstanding balance
+                                in his annual leave is 48.423 days.
+                            </p>
+                        </div>
+                        <table style="width: 100%">
+                            <tr style="height: 150px; ">
+                                <td>
+                                    <div style="text-align: center;">HR Department</div>
+                                    <div style="margin-top: 100px">Date:</div>
+                                </td>
+                                <td>
+                                    <div style="text-align: center;">Management</div>
+                                    <div>Checked by:</div>
+                                    <div style="margin-top: 80px">Date:</div>
+                                </td>
+                                <td>
+                                    <div style="text-align: center;">Employee signature</div>
+                                    <div style="margin-top: 100px">Date:</div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

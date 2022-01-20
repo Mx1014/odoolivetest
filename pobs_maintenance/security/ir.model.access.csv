@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_permises_permises,access_permises_permises,model_permises_permises,base.group_user,1,1,1,1
+access_sub_location,access_sub_location,model_sub_location,base.group_user,1,1,1,1
+access_floor_list,access_floor_list,model_floor_list,base.group_user,1,1,1,1
+access_maintenance_issue,access_maintenance_issue,model_maintenance_issue,base.group_user,1,1,1,1

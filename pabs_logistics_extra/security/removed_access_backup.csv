@@ -1,0 +1,3 @@
+access_logistics_team,access_logistics_team,model_logistics_team,base.group_user,1,1,1,1
+access_plan_calendar,access_plan_calendar,model_plan_calendar,base.group_user,1,1,1,1
+access_business_line,access_business_line,model_business_line,base.group_user,1,1,1,1

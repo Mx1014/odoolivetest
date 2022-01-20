@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="base_view_partner_tree_inherit" model="ir.ui.view">
+            <field name="name">base_view_partner_tree_inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <field name="display_name" position="before">
+                    <field name="x_code"/>
+                </field>
+                <field name="phone" position="after">
+                    <field name="mobile"/>
+                </field>
+                <field name="email" position="after">
+                    <field name="x_address_block"/>
+                    <field name="city_id"/>
+                    <field name="country_id"/>
+                    <field name="create_date"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_contact_test" model="ir.ui.view">
+            <field name="name">base.view_partner_form_inherit_test</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']//button[2]" position="after">
+                    <button name="action_view_delivery" icon="fa-truck" type="object" class="oe_stat_button">
+                        <field name="x_delivery_count" string="Deliveries" widget="statinfo"/>
+                    </button>
+                </xpath>
+                <xpath expr="//div[hasclass('o_address_format')]" position="after">
+                    <field name="x_other_address" readonly="1"/>
+                    <field name="x_zone_id" readonly="1" force_save="1"/>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//form//sheet//group[@col='12']//group[@colspan='5']"
+                       position="replace">
+                    <group colspan="5">
+                        <field name="name" string="Contact Name" attrs="{'required' : [('type', '=', 'contact')]}"/>
+                        <field name="title" placeholder="e.g. Mr." attrs="{'invisible': [('type','!=', 'contact')]}"/>
+                        <field name="function" placeholder="e.g. Sales Director"
+                               attrs="{'invisible': [('type','!=', 'contact')]}"/>
+                        <label for="street" string="Address" attrs="{'invisible': [('type','=', 'contact')]}"/>
+                        <div attrs="{'invisible': [('type','=', 'contact')]}">
+                            <div class="o_address_format">
+                                <field name="street_number" placeholder="House" class="o_address_street" required="1" string="Ali"/>
+                                <field name="x_address_block" placeholder="Block" class="o_address_street"
+                                       required="1"/>
+                                <field name="x_address_road" placeholder="Road" class="o_address_street" required="1"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State"
+                                       options="{&quot;no_open&quot;: True}"
+                                       context="{'country_id': country_id, 'zip': zip}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"
+                                       options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                            </div>
+                        </div>
+                    </group>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//form//sheet//group[@col='12']//group[@colspan='5']//field[@name='email']"
+                       position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//form//sheet//group[@col='12']//group[@colspan='5']//field[@name='phone']"
+                       position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//form//sheet//group[@col='12']//group[@colspan='5']//field[@name='mobile']"
+                       position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+                <!--                                <xpath expr="//form//sheet//notebook//page[@name='sales_purchases']//group//group//field[@name='user_id']" position="attributes">-->
+                <!--                                    <attribute name="attrs">{'required': [('x_credit_customer', '=', True)]}</attribute>-->
+                <!--                                </xpath>-->
+
+                <field name="is_company" position="after">
+                    <field name="customer_rank" invisible="1"/>
+                    <field name="supplier_rank" invisible="1"/>
+                </field>
+                <!--                adding name whith new attributes-->
+                <field name="name" position="replace">
+                    <field name="name" default_focus="1" placeholder="Name" style="text-transform: capitalize"
+                           force_save="1"
+                           attrs="{'required' : [('company_type', '=', 'company')], 'readonly': [('company_type', '=', 'person')]}"/>
+                </field>
+                <!--                added code, first name, mid name and last name-->
+                <xpath expr="//sheet//group//group[2]//field[3]" position="after">
+                    <field name="x_whatsapp_mobile"  widget="phone"/>
+                    <field name="x_mobile" widget="phone"/>
+                </xpath>
+                <xpath expr="//sheet//group//group[2]//field[1]" position="after">
+                    <field name="x_cpr"
+                           attrs="{'required': ['&amp;', ('company_type', '=', 'person'), ('child_ids', '=', []),('x_third_party', '=', False)], 'invisible': [('company_type', '=', 'company')]}"/>
+                    <field name="x_cr"
+                           attrs="{'required': [('company_type', '=', 'company'),('x_third_party', '=', False)], 'invisible': [('company_type', '=', 'person')]}"/>
+                </xpath>
+
+                <xpath expr="//sheet//div[2]//div[1]" position="before">
+
+                    <div style="float: left;">
+                        <group>
+                            <field name="x_code" placeholder="code" readonly="1" force_save="1"/>
+                        </group>
+                    </div>
+                    <!--                    <div style="float: left;">-->
+                    <!--                        <group>-->
+                    <!--                            <button class="btn btn-primary" name="code_generator" string="Generate Code" type="object"-->
+                    <!--                                    attrs="{'invisible': [('x_code', '!=', False)]}"/>-->
+                    <!--                        </group>-->
+                    <!--                    </div>-->
+                    <group>
+                        <field name="x_first_name" placeholder="First Name"
+                               attrs="{'required': [('company_type', '=', 'person')], 'invisible': [('company_type', '=', 'company')]}"/>
+                    </group>
+                    <group>
+                        <field name="x_mid_name" placeholder="Middle Name"
+                               attrs="{'required': ['&amp;',('company_type', '=', 'person'), ('x_credit_customer', '=', True)], 'invisible': [('company_type', '=', 'company')]}"/>
+                    </group>
+                    <group>
+                        <field name="x_last_name" placeholder="Last Name"
+                               attrs="{'required': [('company_type', '=', 'person')], 'invisible': [('company_type', '=', 'company')]}"/>
+                    </group>
+
+
+                </xpath>
+                <!--                added country_id attributes-->
+                <field name="type" position="after">
+                    <field name="country_id" position="move"/>
+                </field>
+                <!--   street-->
+                <field name="country_id" position="attributes">
+                    <attribute name="required">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                    <attribute name="attrs">{'readonly': [('company_type', '=', 'person')]}</attribute>
+                </field>
+                <!--                added flat and gate-->
+                <xpath expr="//label[@for='street_number2']" position="replace"/>
+                <field name="street_number2" position="replace"/>
+
+                <field name="street_number" position="after">
+                    <label for="x_address_block"/>
+                    <span></span>
+                    <field name="x_address_block" class="o_address_flat" attrs="{'required': [('country_id', '=', 23)]}"
+                           options="{'no_create': True}"/>
+                    <!--                    <label for="x_address_road" />-->
+                    <!--                    <span> </span>-->
+                    <!--                    <field name="x_address_road" class="o_address_flat" required="1"/>-->
+                </field>
+                <field name="street_name" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+                <field name="street2" position="after">
+                    <div class="oe_edit_only o_row">
+                        <label for="x_flat"/>
+                        <span></span>
+                        <field name="x_flat"/>
+                        <label for="x_gate"/>
+                        <span></span>
+                        <field name="x_gate"></field>
+                        <!--                    <label for="x_block_area"/>-->
+                        <!--                    <span> </span>-->
+                        <!--                    <field name="x_block_area"></field>-->
+                    </div>
+                </field>
+
+                <field name="street2" position="before">
+                    <div class="oe_edit_only o_row">
+                        <label for="x_address_road"/>
+                        <span></span>
+                        <field name="x_address_road" attrs="{'required': [('country_id', '=', 23)]}"
+                               options="{'no_create': True}"/>
+                        <!--                    <label for="x_block_area"/>-->
+                        <!--                    <span> </span>-->
+                        <!--                    <field name="x_block_area" readonly="False"/>-->
+                    </div>
+                </field>
+
+                <field name="street2" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+                <field name="mobile" position="attributes">
+                    <attribute name="attrs">{'required': ['|',('x_third_party', '=', False), ('company_type','=',
+                        'company')]}
+                    </attribute>
+                </field>
+                <field name="phone" position="attributes">
+                    <attribute name="attrs">{'required': ['|',('x_third_party', '=', False), ('company_type','=',
+                        'company')]}
+                    </attribute>
+                </field>
+                <field name="title" position="attributes">
+                    <attribute name="attrs">{'required': ['&amp;',('company_type', '=', 'person'), ('x_third_party',
+                        '=', False)], 'invisible': [('company_type', '!=', 'person')]}
+                    </attribute>
+                </field>
+
+                <field name="vat" position="attributes">
+                    <attribute name="attrs">{'required': ['&amp;', ('company_type', '=', 'company'), ('x_tax_treatment',
+                        '=', True)], 'invisible': [('company_type', '!=', 'company')]}
+                    </attribute>
+                </field>
+
+                <field name="street_number" position="attributes">
+                    <attribute name="attrs">{'required': [('x_address_block', '!=', False)], 'readonly': [('type', '=',
+                        'contact'),('parent_id', '!=', False)]}
+                    </attribute>
+                </field>
+
+                <field name="vat" position="before">
+                    <field name="x_tax_treatment" attrs="{'invisible': [('company_type', '!=', 'company')]}"/>
+                </field>
+
+                <!--                 <xpath expr="//sheet//group//group[2]//field[3]" position="after">-->
+                <!--                    <field name="x_mobile"/>-->
+                <!--                </xpath>-->
+                <!--                <xpath expr="//sheet//group//group[2]//field[1]" position="after">-->
+                <!--                    <field name="x_cpr" attrs="{'required': ['&amp;', ('company_type', '=', 'person'), ('child_ids', '=', []),('x_third_party', '=', False)], 'invisible': [('company_type', '=', 'company')]}" />-->
+                <!--                    <field name="x_cr" attrs="{'required': [('company_type', '=', 'company')], 'invisible': [('company_type', '=', 'person')]}"/>-->
+                <!--                </xpath>-->
+                <field name="company_type" position="after">
+                    <group>
+                        <field name="x_is_customer" groups="pabs_contact.group_salesmen"/>
+                        <!--                        <field name="x_third_party" groups="pabs_contact.group_senior_accounting"/>-->
+                        <field name="x_third_party"/>
+                        <field name="x_is_vendor" groups="pabs_contact.group_accounting"/>
+                        <field name="employee"/>
+                    </group>
+                </field>
+                <notebook colspan="4" position="inside">
+                    <page name="credit" string="Credit" attrs="{'invisible':[('customer_rank','=', 0)]}"
+                          groups="pabs_contact.group_special_sales">
+                        <group>
+                            <field name="x_credit_customer"/>
+                            <field name="credit_limit" attrs="{'required': [('x_credit_customer','=', True)]}"/>
+                            <field string="Payment Terms" name="property_payment_term_id" required="1"
+                                   widget="selection" groups="account.group_account_invoice"/>
+                        </group>
+                    </page>
+                </notebook>
+                <group name="purchase" position="inside">
+                    <field name="x_credit_limit"
+                           attrs="{'required': [('x_is_vendor','=', True)], 'invisible': [('x_is_vendor', '=', False)]}"/>
+                </group>
+                <field name="industry_id" position="replace">
+                    <field name="industry_id" domain="[('name', '!=', 'Individual')]"
+                           attrs="{'readonly': [('company_type', 'ilike', 'person')], 'required': [('company_type', 'ilike', 'company'),('x_third_party', '=', False)]}"
+                           options="{'no_create': True}"/>
+                </field>
+
+            </field>
+
+
+        </record>
+
+        <record id="res_partner_industry_individual" model="res.partner.industry">
+            <field name="name">Individual</field>
+            <field name="full_name">Individual</field>
+        </record>
+
+        <record id="view_contact_test_inherit_inherit" model="ir.ui.view">
+            <field name="name">res.partner.property.form.inherit.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <!--                <field name="property_payment_term_id" position="replace"/>-->
+                <group name="purchase" position="attributes">
+                    <attribute name="attrs">{'invisible': [('x_is_vendor', '=', False)]}</attribute>
+                </group>
+                <!--                <group name="purchase" position="inside">-->
+                <!--                    <field name="currency_id"/>-->
+                <!--                 </group>-->
+
+            </field>
+
+        </record>
+
+        <record id="view_city_tree_inherit" model="ir.ui.view">
+            <field name="name">view.city.tree.inherit</field>
+            <field name="model">res.city</field>
+            <field name="inherit_id" ref="base_address_city.view_city_tree"/>
+            <field name="arch" type="xml">
+                <field name="zipcode" position="replace">
+                    <field name="x_zone_id"/>
+                    <field name="x_block_id" widget="many2many_tags"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_block_tree" model="ir.ui.view">
+            <field name="name">view.city.tree.inherit</field>
+            <field name="model">city.block</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="name"/>
+                    <field name="road_id" widget="many2many_tags"/>
+                    <field name="block_area"/>
+                </tree>
+
+            </field>
+        </record>
+
+         <record id="view_zone_tree" model="ir.ui.view">
+            <field name="name">view.zone.tree</field>
+            <field name="model">res.zone</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="name"/>
+                </tree>
+
+            </field>
+        </record>
+
+        <record id="action_city_block_tree" model="ir.actions.act_window">
+            <field name="name">Blocks</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">city.block</field>
+            <field name="view_mode">tree</field>
+            <!--            <field name="help">-->
+            <!--                Display and manage the list of all cities that can be assigned to-->
+            <!--                your partner records. Note that an option can be set on each country separately-->
+            <!--                to enforce any address of it to have a city in this list.-->
+            <!--            </field>-->
+        </record>
+
+         <record id="action_zone_tree" model="ir.actions.act_window">
+            <field name="name">Zones</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.zone</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <record id="view_country_form_inherit" model="ir.ui.view">
+            <field name="name">view.country.form.inherit</field>
+            <field name="model">res.country</field>
+            <field name="inherit_id" ref="base.view_country_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button name="%(action_city_block_tree)d" class="oe_stat_button" icon="fa-globe" type="action"
+                            context="{'default_country_id': active_id, 'search_default_country_id': active_id}"
+                            string="Blocks">
+                    </button>
+
+                    <button name="%(action_zone_tree)d" class="oe_stat_button" icon="fa-globe" type="action"
+                            context="{'default_country_id': active_id, 'search_default_country_id': active_id}"
+                            string="Zones">
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_contact_Purchase_test_inherit_inherit" model="ir.ui.view">
+            <field name="name">res.partner.purchase.property.form.inherit.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="purchase.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <field name="property_purchase_currency_id" position="attributes">
+                    <attribute name="attrs">{'required': [('x_is_vendor', '=', True)]}</attribute>
+                </field>
+
+            </field>
+        </record>
+        <record id="test1" model="ir.ui.view">
+            <field name="name">test1</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="name" string="Contacts" filter_domain="['|', '|', '|','|','|','|','|','|',('name', 'ilike', self), ('ref', '=', self), ('email', 'ilike', self), ('phone', 'ilike', self), ('mobile', 'ilike', self)
+                   , ('country_id', 'ilike', self), ('city', 'ilike', self), ('x_cpr', 'ilike', self), ('x_cr', 'ilike', self)]"/>
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="account.partner_view_buttons">
+            <field name="groups_id" eval="[(4, ref('pabs_base.group_logistics_controller'))]"/>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                string="Transfer"
+                id="action_report_delivery_note_pabs_delivery_report"
+                model="stock.picking"
+                report_type="qweb-pdf"
+                name="pabs_delivery_report.report_delivery_note_pabs_delivery_report"
+                file="pabs_delivery_report.report_delivery_note_pabs_delivery_report"
+                paperformat="pabs_delivery_report.paperformat_delivery_note"
+                print_report_name="'Delivery Note - %s - %s' % (object.partner_id.name or '', object.name)"
+        />
+    </data>
+</odoo>

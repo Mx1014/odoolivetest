@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="repair_problem_line_form_view" model="ir.ui.view">
+        <field name="name">repair.problem.line.form.view</field>
+        <field name="model">problem.solution.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="x_problem_id"/>
+                        <field name="x_solution_id" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="repair_solution_line_form_view" model="ir.ui.view">
+        <field name="name">repair.solution.line.form.view</field>
+        <field name="model">problem.solution.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="x_problem_id" invisible="1"/>
+                        <field name="x_solution_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="repair_problem_form_view" model="ir.ui.view">
+        <field name="name">repair.problem.form.view</field>
+        <field name="model">repair.problem</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="x_problem_description"/>
+                        <field name="x_solution_ids" invisible="1"/>
+                        <field name="x_solution_line" context="{'form_view_ref':'pabs_field_service.repair_solution_line_form_view'}">
+                            <tree editable="bottom">
+                                <field name="x_solution_id" required="1"
+                                       domain="[('id', 'not in', parent.x_solution_ids)]"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="repair_solution_form_view" model="ir.ui.view">
+        <field name="name">repair.solution.form.view</field>
+        <field name="model">repair.solution</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="x_solution_description"/>
+                        <field name="x_problem_ids" invisible="1"/>
+                        <field name="x_problem_line" context="{'form_view_ref':'pabs_field_service.repair_problem_line_form_view'}">
+                            <tree editable="bottom">
+                                <field name="x_problem_id" required="1"
+                                       domain="[('id', 'not in', parent.x_problem_ids)]"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="repair_problem_tree_view" model="ir.ui.view">
+        <field name="name">repair.problem.tree.view</field>
+        <field name="model">repair.problem</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="x_problem_description"/>
+                <field name="x_solution_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+    <record id="repair_solution_tree_view" model="ir.ui.view">
+        <field name="name">repair.solution.tree.view</field>
+        <field name="model">repair.solution</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="x_solution_description"/>
+                <field name="x_problem_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_repair_problem" model="ir.actions.act_window">
+        <field name="name">Repair Problems</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">repair.problem</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_repair_solution" model="ir.actions.act_window">
+        <field name="name">Repair Solutions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">repair.solution</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_repair_problem" id="repair_problem_menu" parent="industry_fsm.fsm_menu_settings"
+              sequence="70" name="Repair Problems"/>
+    <menuitem action="action_repair_solution" id="repair_solution_menu" parent="industry_fsm.fsm_menu_settings"
+              sequence="80" name="Repair Solutions"/>
+
+</odoo>

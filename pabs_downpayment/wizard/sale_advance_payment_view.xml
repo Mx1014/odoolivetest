@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_advance_payment_inv_inherit" model="ir.ui.view">
+        <field name="name">Invoice Orders</field>
+        <field name="model">sale.advance.payment.inv</field>
+        <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='advance_payment_method']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('x_sale_order_type','not in', ['service']), ('advance_payment_method','=', 'delivered')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='advance_payment_method']" position="after">
+                <field name="x_os_line" widget="many2many_tags"
+                       attrs="{'invisible': [('advance_payment_method','=', 'delivered')], 'required': [('advance_payment_method','=','specific')], 'readonly': [('x_sale_order_type', 'not in', ['service'])]}"/>
+                <field name="x_invoice_date" readonly="1" required="1"/>
+                <field name="x_sale_order_type" invisible="1"/>
+            </xpath>
+            <xpath expr="//div//field[@name='fixed_amount']" position="attributes">
+                <attribute name="force_save">1</attribute>
+            </xpath>
+             <xpath expr="//div//field[@name='fixed_amount']" position="attributes">
+                <attribute name="attrs">{'readonly': [('x_sale_order_type', 'not in', ['service'])], 'required': [('advance_payment_method', '=', 'fixed')], 'invisible': [('advance_payment_method', '!=','fixed')]}</attribute>
+             </xpath>
+            <!--                <xpath expr="//button[@name='create_invoices']" position="replace">-->
+            <!--                     <button name="create_invoices" string="Create and View Invoice" attrs="{'invisible': [('advance_payment_method','=', 'fixed')]}" type="object" context="{'open_invoices': True}" class="btn-primary"/>-->
+            <!--                     <button name="create_invoices" string="Create and View Invoice" attrs="{'invisible': [('advance_payment_method','=', 'delivered')]}" type="object" context="{'open_invoices': True}" class="btn-primary"/>-->
+            <!--                </xpath>-->
+            <!--                <xpath expr="//button[@name='create_invoices'][3]" position="replace">-->
+            <!--                     <button name="create_invoices" string="Create Invoice" type="object" attrs="{'invisible': [('advance_payment_method','=', 'fixed')]}"/>-->
+            <!--                     <button name="create_invoices" string="Create Invoice" type="object" attrs="{'invisible': [('advance_payment_method','=', 'delivered')]}"/>-->
+            <!--                </xpath>-->
+            <!--                <xpath expr="//field[@name='advance_payment_method']" position="replace">-->
+            <!--                    <field name="advance_payment_method" attrs="{'invisible': [('count','&gt;',1)]}"/>-->
+            <!--                </xpath>-->
+        </field>
+    </record>
+
+
+</odoo>

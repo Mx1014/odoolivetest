@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+
+
+    <record id="crm_call_reasons_tree_view" model="ir.ui.view">
+        <field name="name">CRM Call Reasons</field>
+        <field name="model">call.reason</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="crm_reasons_form_view" model="ir.ui.view">
+        <field name="name">CRM Call Reasons form</field>
+        <field name="model">call.reason</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="name" />
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="crm_phonecall_reasons_action" model="ir.actions.act_window">
+        <field name="name">Phonecall Reasons</field>
+        <field name="res_model">call.reason</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem
+        id="menu_crm_call_reason"
+        name="Reasons"
+        parent="crm_phonecall.menu_crm_config_phonecall"
+        action="crm_phonecall_reasons_action"
+        sequence="48"
+    />
+
+</odoo>
+

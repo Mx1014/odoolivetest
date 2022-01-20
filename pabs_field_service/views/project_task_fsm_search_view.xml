@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_task_view_search_fsm_inherit_pabs_field_service" model="ir.ui.view">
+        <field name="name">project.task.search.fsm.inherit.pabs.field.service</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_search_fsm"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="x_batch_id"/>
+                <field name="x_batch_date"/>
+            </field>
+            <xpath expr="//search//filter[@name='planned_future']" position="after">
+                <filter name="planned_before" string="Before"
+                        domain="[('planned_date_begin', '&lt;', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+
+                 <filter name="planned_today" string="Today"
+                        domain="[('x_batch_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+
+            </xpath>
+
+            <xpath expr="//filter[@name='my_tasks']" position="after">
+                <filter name="pending_tasks" string="Pending" domain="[('x_batch_id', '=', False)]"/>
+            </xpath>
+            <xpath expr="//search//group" position="inside">
+                <separator/>
+                <filter string="Road" name="groupby_road" context="{'group_by':'x_road_id'}"/>
+                <filter string="Block" name="groupby_block" context="{'group_by':'x_block_id'}"/>
+                <filter string="City" name="groupby_city" context="{'group_by':'x_city'}"/>
+                <filter string="Zone" name="groupby_zone" context="{'group_by':'x_zone_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+        <!--<filter name="planned_today" string="Planned for Today" domain="[-->
+        <!--                    ('planned_date_begin','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),-->
+        <!--                    ('planned_date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>-->
+        <!--<filter name="planned_future" string="Future"-->
+        <!--        domain="[('planned_date_begin', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>-->
+        <!-- -->
+        <!--            <xpath expr="//search//filter[@name='planned_today']" position="replace">-->
+        <!--                <filter name="planned_today" string="Planned for Today" domain="[-->
+        <!--                    ('x_scheduled_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),-->
+        <!--                    ('x_scheduled_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>-->
+        <!--            </xpath>-->
+        <!--            <xpath expr="//search//filter[@name='planned_future']" position="replace">-->
+        <!--                <filter name="planned_future" string="Future"-->
+        <!--                        domain="[('x_scheduled_date', '>', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>-->
+        <!--                <filter name="planned_before" string="Before"-->
+        <!--                        domain="[('x_scheduled_date', '<', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>-->
+        <!--            </xpath>-->
+        <!--            <xpath expr="//search//group//filter[@name='groupby_planned_date_begin']" position="replace">-->
+        <!--                <filter string="Start Date" name="groupby_planned_date_begin"-->
+        <!--                        context="{'group_by': 'x_scheduled_date:day'}"/>-->
+        <!--            </xpath>-->

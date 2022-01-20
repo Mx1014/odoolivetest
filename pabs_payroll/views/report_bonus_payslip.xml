@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <report
+            id="action_report_bonus_payslip"
+            model="hr.payslip"
+            string="Bonus Payslip"
+            report_type="qweb-pdf"
+            name="pabs_payroll.report_bonus_payslip"
+            file="pabs_payroll.report_bonus_payslip"
+            print_report_name="'Bonus Payslip - %s' % (object.employee_id.name)"
+        />
+
+        <template id="report_bonus_payslip_document" inherit_id="pabs_payroll.report_payslip_inherit" primary="True">
+            <xpath expr="//h2" position="replace">
+               <h2 class="text-center">Bonus slip</h2>
+            </xpath>
+             <xpath expr="//tr[@name='desc']" position="replace">
+               <tr style="background-color:#B1B3B8;"><td class="text-center" colspan="5"><strong>Bonus Computation</strong></td></tr>
+            </xpath>
+
+        </template>
+
+        <template id="report_bonus_payslip">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+<!--                    <t t-set="lang" t-value="o.employee_id.lang"/>-->
+                    <t t-call="pabs_payroll.report_bonus_payslip_document"/>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

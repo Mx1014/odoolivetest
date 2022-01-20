@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<odoo>
+    <data noupdate="1">
+        <record id="monthly_batch_purchase_confirm_automation" model="ir.cron">
+            <field name="name">Monthly Batch Transfer P.O. Auto Confirm</field>
+            <field name="model_id" ref="model_purchase_order"/>
+            <field name="state">code</field>
+            <field name="code">model.monthly_batch_purchase_confirm()</field>
+            <field name="interval_number">30</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+        </record>
+    </data>
+</odoo>

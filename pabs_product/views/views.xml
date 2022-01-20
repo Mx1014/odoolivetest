@@ -1,0 +1,308 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+    <data>
+        <record id="product_template_form_view_inherit_pabs" model="ir.ui.view">
+            <field name="name">product.template.form.view.inherit.pabs</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+
+                <field name="sale_ok" position="attributes">
+
+                    <attribute name="groups">pabs_product.group_procurement_user, pabs_product.group_amc_manager
+                    </attribute>
+                </field>
+                <label for="sale_ok" position="attributes">
+                    <attribute name="groups">pabs_product.group_procurement_user, pabs_product.group_amc_manager
+                    </attribute>
+                </label>
+                <field name="purchase_ok" position="attributes">
+                    <attribute name="groups">pabs_product.group_procurement_user, pabs_product.group_accounting,
+                        pabs_product.group_inventory_manager
+                    </attribute>
+                </field>
+                <label for="purchase_ok" position="attributes">
+                    <attribute name="groups">pabs_product.group_procurement_user, pabs_product.group_accounting,
+                        pabs_product.group_inventory_manager
+                    </attribute>
+
+                </label>
+
+<!--                <field name="can_be_expensed" position="attributes">-->
+<!--                    <attribute name="groups">pabs_product.group_accounting</attribute>-->
+<!--                </field>-->
+
+<!--                <label for="can_be_expensed" position="attributes">-->
+<!--                    <attribute name="groups">pabs_product.group_accounting</attribute>-->
+<!--                </label>-->
+                <field name="list_price" position="attributes">
+
+                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)], 'required' : [('sale_ok', '=',
+                        True)]}
+                    </attribute>
+
+                </field>
+                <!--                <label for="can_be_expensed" position="attributes">-->
+                <!--                    <attribute name="groups">pabs_product.group_accounting</attribute>-->
+                <!--                </label>-->
+                <xpath expr="//form//notebook//page//group[@name='group_standard_price']//label[@for='list_price']"
+                       position="attributes">
+                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//form//notebook//page//group[@name='group_standard_price']//field[@name='list_price']"
+                       position="attributes">
+                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//form//notebook//page//group[@name='group_standard_price']//button[@name='open_pricelist_rules']"
+                       position="attributes">
+                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>
+                    <attribute name="groups">pabs_product.group_procurement_manager</attribute>
+                </xpath>
+<!--                <field name="expense_policy" position="attributes">-->
+
+<!--                    <attribute name="attrs">{'required' : [('can_be_expensed', '=', True)], 'invisible' :-->
+<!--                        [('can_be_expensed', '=', False)]}-->
+
+<!--                    </attribute>-->
+<!--                </field>-->
+                <xpath expr="//form//notebook//page//group[@name='group_standard_price']//div[@name='standard_price_uom']"
+                       position="after">
+                  <field name="x_last_purchase_price" readonly="1" groups="purchase.group_purchase_manager"/>
+                </xpath>
+                <!--                <field name="list_price" position="attributes">-->
+
+                <!--                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)], 'required' : [('sale_ok', '=',-->
+                <!--                        True)]}-->
+                <!--                    </attribute>-->
+
+                <!--                </field>-->
+                <!--                <label for="list_price" position="attributes">-->
+                <!--                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>-->
+                <!--                </label>-->
+                <!--                <button name="open_pricelist_rules" position="attributes">-->
+                <!--                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>-->
+                <!--                </button>-->
+                <!--                <field name="expense_policy" position="attributes">-->
+
+                <!--                    <attribute name="attrs">{'required' : [('can_be_expensed', '=', True)], 'invisible' :-->
+                <!--                        [('can_be_expensed', '=', False)]}-->
+
+                <!--                    </attribute>-->
+                <!--                </field>-->
+                <field name="invoice_policy" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+
+                <field name="purchase_method" position="attributes">
+                    <attribute name="required">1</attribute>
+                    <attribute name="readonly">1</attribute>
+                </field>
+                <field name="product_brand_id" position="attributes">
+                    <attribute name="attrs">{'required' : [('type', '!=', 'service')]}
+                    </attribute>
+                </field>
+
+<!--                <field name="taxes_id" position="attributes">-->
+<!--                    <attribute name="attrs">{'required' : [('sale_ok', '=', True)]}</attribute>-->
+<!--                </field>-->
+<!--                <field name="supplier_taxes_id" position="attributes">-->
+<!--                    <attribute name="attrs">{'required' : [('purchase_ok', '=', True)], 'readonly' : [('purchase_ok',-->
+<!--                        '=', False)]}-->
+<!--                    </attribute>-->
+<!--                </field>-->
+<!--                <field name="product_brand_id" position="attributes">-->
+<!--                    <attribute name="attrs">{'required' : [('sale_ok', '=', True), ('can_be_expensed', '=', False)]}-->
+<!--                    </attribute>-->
+<!--                </field>-->
+
+<!--                <group name="subscription" position="attributes">-->
+<!--                    <attribute name="groups">pabs_product.group_amc_manager</attribute>-->
+<!--                </group>-->
+
+                <page name="invoicing" position="attributes">
+                    <attribute name="groups">pabs_product.group_accounting</attribute>
+                </page>
+
+                <page name="inventory" position="attributes">
+                    <attribute name="groups">product.group_stock_packaging, pabs_product.group_inventory_manager
+                    </attribute>
+                </page>
+                <div name="options" position="inside">
+                    <div>
+                        <field name="x_is_part"/>
+                        <label for="x_is_part"/>
+                    </div>
+                </div>
+                <page name="invoicing" position="after">
+                    <page string="Spare Parts" name="spare_parts_fit" attrs="{'invisible': [('x_is_part','=', True)]}">
+                        <field name="x_product_fit" context="{'parent_id': active_id, 'parent_model': active_model}">
+                            <tree editable="bottom">
+                                <field name="part"/>
+                                <field name="pa_name"/>
+                                <field name="pa_default_code"/>
+                                <field name="pa_list_price"/>
+
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Compatible Products" name="spare_parts_fit"
+                          attrs="{'invisible': [('x_is_part','!=', True)]}">
+                        <field name="x_part_fit" context="{'parent_id': active_id, 'parent_model': active_model}">
+                            <tree editable="bottom">
+                                <field name="prod"/>
+                                <field name="pr_name"/>
+                                <field name="pr_default_code"/>
+                            </tree>
+                        </field>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+        <record id="view_product_template_kanban_product_template" model="ir.ui.view">
+            <field name="name">view.product.template.kanban.product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban//templates//t//div//ul" position="after">
+                    <field name="sale_ok" invisible="1"/>
+                </xpath>
+                <xpath expr="//kanban//templates//t//div//ul" position="attributes">
+                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_product_template_tree_product_template" model="ir.ui.view">
+            <field name="name">view.product.template.tree.product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="activity_exception_decoration" position="after">
+                    <field name="sale_ok" invisible="1"/>
+                </field>
+                <field name="list_price" position="attributes">
+                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="product_template_only_form_view_inherit_pabs" model="ir.ui.view">
+            <field name="name">product.template.only.form.view.inherit.pabs</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="default_code" position="attributes">
+
+                    <attribute name="attrs">{'invisible': [('product_variant_count', '&gt;', 1)], 'required':
+                        [('attribute_line_ids', '=', [])]}
+                    </attribute>
+
+                </field>
+                <page name="variants" position="attributes">
+                    <attribute name="groups">pabs_product.group_procurement_user</attribute>
+                </page>
+                <field name="barcode" position="attributes">
+                    <attribute name="attrs">{'invisible': [('product_variant_count', '&gt;', 1)]}
+                    </attribute>
+                </field>
+            </field>
+        </record>
+
+<!--        <record id="product_template_only_form_view_inherit_pabs" model="ir.ui.view">-->
+<!--            <field name="name">product.template.only.form.view.inherit.pabs</field>-->
+<!--            <field name="model">product.template</field>-->
+<!--            <field name="inherit_id" ref="product.product_template_only_form_view"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="default_code" position="attributes">-->
+
+<!--                    <attribute name="attrs">{'invisible': [('product_variant_count', '&gt;', 1)], 'required':-->
+<!--                        [('attribute_line_ids', '=', [])]}-->
+<!--                    </attribute>-->
+
+<!--                </field>-->
+<!--                <page name="variants" position="attributes">-->
+<!--                    <attribute name="groups">pabs_product.group_procurement_user</attribute>-->
+<!--                </page>-->
+<!--                <field name="barcode" position="attributes">-->
+<!--                    <attribute name="attrs">{'invisible': [('product_variant_count', '&gt;', 1)]}-->
+<!--                    </attribute>-->
+<!--                </field>-->
+<!--                <xpath expr="//form//notebook//page//group[@name='group_standard_price']//label[@for='list_price']"-->
+<!--                       position="attributes">-->
+<!--                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>-->
+<!--                    <attribute name="groups">pabs_product.group_procurement_manager</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//form//notebook//page//group[@name='group_standard_price']//field[@name='list_price']"-->
+<!--                       position="attributes">-->
+<!--                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>-->
+<!--                    <attribute name="groups">pabs_product.group_procurement_manager</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//form//notebook//page//group[@name='group_standard_price']//button[@name='open_pricelist_rules']"-->
+<!--                       position="attributes">-->
+<!--                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>-->
+<!--                    <attribute name="groups">pabs_product.group_procurement_manager</attribute>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+          <record id="view_purchase_order_form_inherits" model="ir.ui.view">
+            <field name="name">view.purchase_order_form_inherits</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']//field[@name='price_unit']" position="after">
+                    <field name="x_last_purchase_price" readonly="1" force_save="1" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="product_template_pabs" model="ir.ui.view">
+            <field name="name">product.template.pabs</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='list_price']" position="after">
+                    <field name="less_than_cost_condition" invisible="1"/>
+                    <field name="is_less_than_cost" invisible="1"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="after">
+                    <widget name="web_ribbon" title="BELOW COST" bg_color="bg-danger"
+                            attrs="{'invisible' : [('less_than_cost_condition', '!=', True)]}"/>
+                </xpath>
+                <!--<xpath expr="//form//group//group//field[@name='name']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_edit': True, 'no_create_edit': True,
+                        'no_quick_create': True}
+                    </attribute>
+                </xpath>-->
+            </field>
+        </record>
+
+        <record id="product_template_pabs_filter" model="ir.ui.view">
+            <field name="name">product.template.pabs.filter</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='inactive']" position="after">
+                    <filter string="Below Cost" name="below_cost"
+                            domain="[('less_than_cost_condition','=',True)]"/>
+                </xpath>
+            </field>
+        </record>
+
+<!--        <record id="view_product_template_purchase_order_line" model="ir.ui.view">-->
+<!--            <field name="name">view.product.template.purchase.order.line</field>-->
+<!--            <field name="model">purchase.order.line</field>-->
+<!--            <field name="inherit_id" ref="product.product_template_kanban_view"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//kanban//templates//t//div//ul" position="after">-->
+<!--                    <field name="sale_ok" invisible="1"/>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//kanban//templates//t//div//ul" position="attributes">-->
+<!--                    <attribute name="attrs">{'invisible' : [('sale_ok', '=', False)]}</attribute>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+    </data>
+</odoo>

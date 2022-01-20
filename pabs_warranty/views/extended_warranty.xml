@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="extended_warranty_form" model="ir.ui.view">
+            <field name="name">extended.warranty.form</field>
+            <field name="model">get.extended.warranty</field>
+            <field name="arch" type="xml">
+                <form string="Extended Warranty">
+                    <group>
+                        <field name="product_id" domain="[('is_extended', '=', True)]" required="1"/>
+                        <field name="order_line" readonly="1"/>
+                        <field name="extended_quantity"/>
+                    </group>
+                    <footer>
+                        <button name="action_save_extended_warranty" class="btn-primary" type="object" close="1"
+                                string="Save"/>
+                        <button string="Discard" class="btn-secondary" special="cancel" close="1"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="action_extended_warranty" model="ir.actions.server">
+            <field name="name">Extended Warranty</field>
+            <field name="model_id" ref="sale.model_sale_order_line"/>
+            <field name="binding_model_id" ref="sale.model_sale_order_line"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_view_extended_warranty()</field>
+        </record>
+
+        <menuitem id="extended_warranty_list"
+                  action="action_extended_warranty"
+                  parent="sale.product_menu_catalog"
+        />
+    </data>
+</odoo>

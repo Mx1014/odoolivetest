@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.pabs.logistics.extra</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!--            <xpath expr="//button[@name='action_draft']" position="after">-->
+            <!--                 <button name="%(pabs_logistics_extra.action_plan_calendar_view_gantt)d" class="test_button" string="Slots" type="action"/>-->
+            <!--            </xpath>-->
+            <field name="payment_term_id" position="after">
+                <field name="narration"/>
+                <field name="partner_invoice_id"/>
+            </field>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_delivery_reminder_form_view" class="oe_stat_button" icon="fa-table" type="object"
+                        context="{'sale_id': id}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Schedule</span>
+                        <span class="o_stat_text">Delivery Date</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_view_plan_calendar_view_gantt_form" model="ir.ui.view">
+        <field name="name">sale.view.plan.calendar.view.gantt.form</field>
+        <field name="model">plan.calendar</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="x_delivery_domain" invisible="1"/>
+                        <field name="business_line" readonly="1"/>
+                        <field name="delivery" readonly="1"/>
+                        <field name="status" readonly="1"/>
+                        <field name="start_datetime" readonly="1"/>
+                        <field name="end_datetime" readonly="1" invisible="1"/>
+                        <field name="note" readonly="1"/>
+                        <field name="period" readonly="1"/>
+                        <field name="x_priority" widget="priority" readonly="1"/>
+                    </group>
+                    <field name="delivery_items" readonly="1" force_save="1"/>
+                </group>
+                <footer>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_view_plan_calendar_gantt" model="ir.ui.view">
+        <field name="name">sale.view.plan.calendar.gantt</field>
+        <field name="model">plan.calendar</field>
+        <field name="arch" type="xml">
+            <gantt js_class="planning_gantt"
+                   form_view_id="%(sale_view_plan_calendar_view_gantt_form)d"
+                   date_start="start_datetime"
+                   date_stop="end_datetime"
+                   default_group_by="business_line"
+                   default_scale="week" plan="false" scales="day,week,month"
+                   precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
+                   display_unavailability="1"
+                   decoration-info="status == 'available'" decoration-success="status == 'booked'"
+                   color="color" edit="0">
+                <field name="status" readonly="1"/>
+                <field name="start_datetime" readonly="1"/>
+            </gantt>
+        </field>
+    </record>
+
+    <record id="sale_view_plan_calendar_gantt_action" model="ir.actions.act_window">
+        <field name="name">Logistics Calendar</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">plan.calendar</field>
+        <field name="view_mode">gantt,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+    (0, 0, {'view_mode': 'gantt', 'view_id': ref('sale_view_plan_calendar_gantt')}),
+    (0, 0, {'view_mode': 'form', 'view_id': ref('sale_view_plan_calendar_view_gantt_form')})]"/>
+        <field name="domain">[('start_datetime', '&gt;=', datetime.datetime.combine(context_today(),
+            datetime.time(0,0,0)))]
+        </field>
+        <field name="search_view_id" ref="plan_calendar_search_view"/>
+        <field name="context">{'search_default_group_by_business_line': 1, 'search_default_group_by_status': 1}
+        </field>
+    </record>
+
+    <menuitem action="pabs_logistics_extra.sale_view_plan_calendar_gantt_action"
+              id="sale_view_plan_calendar_gantt_menu"
+              name="Logistics Calendar"
+              parent="sale.sale_menu_root"
+              sequence="2"/>
+
+
+
+</odoo>
+

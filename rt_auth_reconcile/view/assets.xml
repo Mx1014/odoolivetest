@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend_auth" name="account assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/rt_auth_reconcile/static/src/css/style.css"/>
+            <script type="text/javascript" src="/rt_auth_reconcile/static/src/js/reconciliation_action.js"></script>
+            <script type="text/javascript" src="/rt_auth_reconcile/static/src/js/reconciliation_model.js"></script>
+            <script type="text/javascript" src="/rt_auth_reconcile/static/src/js/reconciliation_renderer.js"></script>
+        </xpath>
+    </template>
+</odoo>

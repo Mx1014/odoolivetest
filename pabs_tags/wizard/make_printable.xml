@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="make_printable" model="ir.ui.view">
+        <field name="name">make printable?</field>
+        <field name="model">product.make.printable</field>
+        <field name="arch" type="xml">
+            <form string="Invoice Sales Order">
+                <p>
+                    make printable?
+                </p>
+                <footer>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+     <record id="action_make_printable" model="ir.actions.act_window">
+            <field name="name">make printable?</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.make.printable</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+</odoo>

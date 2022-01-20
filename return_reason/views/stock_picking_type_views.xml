@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+    <record id="view_picking_type_form_return_reason" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.return_reason</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='warehouse_id']" position="after">
+                <field name="is_reason_required"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

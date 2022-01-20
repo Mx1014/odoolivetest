@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_tag_price_meduim_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div t-attf-style="width: 90mm; height:130mm; background-image:url('/pabs_tags/static/img/tag_mid_2.jpg'); background-size:90mm 130mm">
+                            <div style="height: 15mm; width: 25mm; position: relative; top: 11mm; font-weight: 900px; font-size: 20px; color:white;">
+                                <t t-set="i" t-value="0"/>
+                                <t t-foreach="o.product_tmpl_id.attribute_line_ids" t-as="line">
+                                    <t t-if="i &lt; 1">
+                                        <t t-if="line.x_print_variant_upper">
+                                            <span style="margin-left:5mm;">
+                                                <span t-field="line.value_ids.name"/>
+                                            </span>
+                                        </t>
+                                        <t t-set="i" t-value="i + 1"/>
+                                    </t>
+                                </t>
+                            </div>
+                            <!--                            <center>-->
+                            <!--                                <div style="height:25px;width:100px; position: relative; top: 4mm; left:20mm">-->
+                            <!--                                    <t t-if="o.barcode">-->
+                            <!--                                        <div>-->
+                            <!--                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('Code128', o.barcode, 220, 40)"/>-->
+                            <!--                                        </div>-->
+                            <!--                                        <div>-->
+                            <!--                                            <center>-->
+                            <!--                                                <span style="position: relative; bottom: 1mm; left:4mm; font-size: 12px;"-->
+                            <!--                                                      t-esc="o.barcode"/>-->
+                            <!--                                            </center>-->
+                            <!--                                        </div>-->
+                            <!--                                    </t>-->
+                            <!--                                </div>-->
+                            <!--                            </center>-->
+
+                            <div style="width: 90mm; height: 30mm;position: relative; top: 5mm; left:2mm; font-weight: 900px;">
+                                <center>
+                                    <h2 style="font-size:50px" t-field="o.product_brand_id.name"/>
+                                </center>
+                                <!--                                    <img style="display: block; margin-left: auto; margin-right: auto; max-height: 100%; max-width: 100%;"-->
+                                <!--                                         class="align-self-center"-->
+                                <!--                                         t-if="o.product_tmpl_id.product_brand_id.logo"-->
+                                <!--                                         t-att-src="image_data_uri(o.product_tmpl_id.product_brand_id.logo)"-->
+                                <!--                                         alt="Logo"/>-->
+
+                            </div>
+                            <center>
+                                <div style="width: 80mm; height: 12mm; overflow: hidden; margin-left:4mm; margin-top:-10mm;
+                                                        text-overflow: ellipsis; word-wrap: break-word; display: block;
+                                                        line-height: 6mm;max-height: 24mm;">
+                                    <strong>
+                                        <h2 style="font-size: 21px;" t-field="o.categ_id.name"/>
+                                    </strong>
+                                </div>
+
+                                <div style="overflow: hidden;width:80mm;height:12mm;
+                                     text-overflow: ellipsis; word-wrap: break-word; display: block;
+                                     line-height: 6mm;max-height: 6mm; margin-top:-7mm">
+                                    <h2 style="font-size: 21px;" t-field="o.default_code"/>
+                                </div>
+                            </center>
+
+
+                            <div style="height: 45mm; width: 84mm">
+                                <div style="height:28.5mm">
+                                    <t t-set="i" t-value="0"/>
+                                    <t t-foreach="o.product_tmpl_id.attribute_line_ids" t-as="line">
+                                        <t t-if="i &lt; 6">
+                                            <t t-if="line.x_is_print">
+                                                <div>
+                                                    <span style="margin-left:5mm;">-
+                                                        <span t-field="line.value_ids.name"/>
+                                                    </span>
+                                                    <t t-set="i" t-value="i + 1"/>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </div>
+                                <!--                                <center>-->
+                                <!--                                    <div style="height:25px;width:135px; position: relative; top: -9mm">-->
+                                <!--                                        <t t-if="o.barcode">-->
+                                <!--                                            <div>-->
+                                <!--                                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('Code128', o.barcode, 220, 40)"/>-->
+                                <!--                                            </div>-->
+                                <!--                                            <div>-->
+                                <!--                                                <center>-->
+                                <!--                                                    <span style="position: relative; bottom: 1mm; left:4mm; font-size: 12px;"-->
+                                <!--                                                          t-esc="o.barcode"/>-->
+                                <!--                                                </center>-->
+                                <!--                                            </div>-->
+                                <!--                                        </t>-->
+                                <!--                                    </div>-->
+                                <!--                                </center>-->
+                                <div style="width: 60mm; height: 20mm;margin-left: 15mm;color: #0033cc;margin-top:12mm">
+                                    <center>
+                                        <span style="font-size: 70px; font-weight: 900px"
+                                              t-esc="'{:,.2f}'.format(o.lst_price)"/>
+                                    </center>
+                                    <!--                                    <span style="font-size: 50px;" t-field="o.lst_price"/>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

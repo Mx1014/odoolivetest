@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_action_portal_qrcode" model="ir.ui.view">
+            <field name="name">Action Portal</field>
+            <field name="model">action.portal</field>
+            <field name="arch" type="xml">
+                <form string="Sharing">
+                    <group>
+                        <h1 class="text-center">
+                            <field name="url" widget="image" style=""  options="{'preview_image': 'url'}" readonly="1"/>
+                        </h1>
+                    </group>
+                    <footer>
+                        <button type="object" name="barcode_scanned" string="Qrcode Scanned"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+     <record id="view_sales_order_qrcode" model="ir.ui.view">
+            <field name="name">sale.order.form.qrcode</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//header//button[@name='action_quotation_send']" position="after">
+                   <button name="action_show_qrcode" string="Show Qrcode" type="object" attrs="{'invisible': [('state', 'not in', ['draft', 'sent'])]}" class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
+</odoo>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="salary_certificate">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div>
+                            <span style="float:right; margin-right:13mm"
+                                  t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                            <!--                            <span style="float:right; margin-right:13mm" t-field="o.x_date_today"/>-->
+                            <!--                        </div>-->
+                            <!--                        <div>-->
+                            <strong style="text-decoration: underline; float:left; margin-left:10mm">
+                                Subject:Salary Certificate
+                            </strong>
+                            <!--                        </div>-->
+                        </div>
+                        <!--                        <br></br>-->
+                        <!--                        <br></br>-->
+                        <!--                        <br></br>-->
+                        <!--                        <br></br>-->
+                        <!--                        <br></br>-->
+                        <div style="padding-top:30mm">
+                            <center>
+                                <strong style="text-decoration: underline;  margin-top:35mm">To Whom it May Concern
+                                </strong>
+                            </center>
+                        </div>
+                        <div style="margin-right:10mm; margin-left:10mm; margin-top:5mm; letter-spacing: 1px;">
+                            <p>
+                                This is to certify that Mr.
+                                <span style="font-weight: bold;" t-field="o.employee_id.name"/>
+                                holding, CPR:
+                                <span style="font-weight: bold;" t-field="o.employee_id.identification_id"/>
+                                is employed with
+                                <strong>Al Salam Gas W.L.L</strong>
+                                from<span style="font-weight: bold;" t-field="o.date_start"/>.He is currently working
+                                with our organization as a
+                                <span style="font-weight: bold;" t-field="o.job_id.name"/>
+                                currently he is drawing monthly salary(BD) as per following breakup.
+                            </p>
+                        </div>
+                        <br></br>
+                        <center>
+                            <table style="border-style: solid; width: 70%;" class="table-sm o_main_table">
+                                <tr style="background-color:#B1B3B8;">
+                                    <strong>
+                                        <th style="border: 1px solid black">Salary Component
+                                        </th>
+                                    </strong>
+                                    <strong>
+                                        <th style="border: 1px solid black">Basic Salary
+                                        </th>
+                                    </strong>
+                                    <strong>
+                                        <th style="border: 1px solid black">Fixed Allowance
+                                        </th>
+                                    </strong>
+                                    <strong>
+                                        <th style="border: 1px solid black">Total Salary</th>
+                                    </strong>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="border: 1px solid black">Amount in BD</td>
+                                    <td class="text-center" style="border: 1px solid black">
+                                        <span t-field="o.wage"/>
+                                    </td>
+                                    <td class="text-center" style="border: 1px solid black">
+                                        <span t-esc="'{:,.3f}'.format(o.x_gross_salary - o.wage)"/>
+                                    </td>
+                                    <td class="text-center" style="border: 1px solid black">
+                                        <span t-esc="'{:,.3f}'.format(o.x_gross_salary)"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>
+                        <br></br>
+                        <br></br>
+                        <div style="margin-right:10mm; margin-left:10mm; letter-spacing: 1px;">
+                            <p>
+                                This letter is issued on behalf of the employee request and bears no financial
+                                responsibility on or behalf of any of the authorized signatories
+                            </p>
+                            <br></br>
+                            <p>
+                                For Al Salam Gas W.L.L
+                            </p>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <div>
+                                _________________________________
+                            </div>
+                            <strong>HR Department</strong>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <strong>Note:Any deletion or alteration or copy affected to this document will render it
+                                invalid.
+                            </strong>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="product_part_rel_form_view" model="ir.ui.view">
+            <field name="name">product.part.rel.form.view</field>
+            <field name="model">product.part.rel</field>
+            <field name="arch" type="xml">
+                <form string="part">
+                    <field name="some_field" invisible="1"/>
+                    <div attrs="{'invisible': [('some_field', '=', True)]}">
+                        <field name="pa_image_1920" widget="image" class="oe_avatar" nolabel="1" style="float: right;"/>
+                        <group string="Part Details">
+                            <field name="part"/>
+                            <field name="pa_name"/>
+                            <field name="pa_default_code"/>
+                            <field name="pa_list_price"/>
+                        </group>
+                    </div>
+                    <div attrs="{'invisible': [('some_field', '!=', True)]}">
+                        <field name="pr_image_1920" widget="image" class="oe_avatar" nolabel="1" style="float: right;"/>
+                        <group string="Product Details">
+                            <field name="prod"/>
+                            <field name="pr_name"/>
+                            <field name="pr_default_code"/>
+                        </group>
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

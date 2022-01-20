@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_offer_large" model="report.paperformat">
+        <field name="name">Offer Large</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">210</field>
+        <field name="page_width">150</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">25</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">0</field>
+    </record>
+    <record id="paperformat_tag_price_large" model="report.paperformat">
+        <field name="name">Offer Large</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">210</field>
+        <field name="page_width">150</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">20</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">0</field>
+    </record>
+    <record id="paperformat_tag_price_medium" model="report.paperformat">
+        <field name="name">Medium Tag</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">110</field>
+        <field name="page_width">100</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">0</field>
+    </record>
+    <record id="paperformat_tag_price_small" model="report.paperformat">
+        <field name="name">Small Tag</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">45</field>
+        <field name="page_width">100</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">4</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">1</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">0</field>
+    </record>
+<!--    <record id="paperformat_deposit_voucher" model="report.paperformat">-->
+<!--        <field name="name">Deposit Voucher</field>-->
+<!--        <field name="default" eval="True"/>-->
+<!--        <field name="format">custom</field>-->
+<!--        <field name="page_height">170</field>-->
+<!--        <field name="page_width">210</field>-->
+<!--        <field name="orientation">Portrait</field>-->
+<!--        <field name="margin_top">0</field>-->
+<!--        <field name="margin_bottom">0</field>-->
+<!--        <field name="margin_left">0</field>-->
+<!--        <field name="margin_right">0</field>-->
+<!--        <field name="header_line" eval="False"/>-->
+<!--        <field name="header_spacing">0</field>-->
+<!--        <field name="dpi">90</field>-->
+<!--    </record>-->
+<!--    <record id="pabs_account.report_deposit_voucher_template" model="ir.actions.report.xml">-->
+<!--        <field name="paperformat_id" ref="pabs_account.paperformat_deposit_voucher"/>-->
+<!--    </record>-->
+</odoo>

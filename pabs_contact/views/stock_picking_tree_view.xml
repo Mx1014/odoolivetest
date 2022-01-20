@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <record id="stock_picking_tree_view_inherit_pabs_contact" model="ir.ui.view">
+            <field name="name">stock.picking.tree.view.inherit.pabs.contact</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <field name="activity_exception_decoration" position="after">
+                    <field name="x_address" optional="hide"/>
+                    <field name="x_zone" optional="show"/>
+                    <field name="x_city" optional="show"/>
+                    <field name="x_block" optional="show"/>
+                    <field name="x_road" optional="hide"/>
+                    <field name="x_house" optional="hide"/>
+                </field>
+                 <field name="location_id" position="attributes">
+                     <attribute name="optional">hide</attribute>
+                 </field>
+                <field name="location_dest_id" position="attributes">
+                     <attribute name="optional">hide</attribute>
+                 </field>
+                <field name="company_id" position="attributes">
+                     <attribute name="optional">hide</attribute>
+                 </field>
+            </field>
+        </record>
+        <record id="view_picking_internal_search_inherit_pabs_contact" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.inherit.pabs.contact</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search//group" position="inside">
+                <filter string="Block" name="block" domain="[]" context="{'group_by': 'x_block'}"/>
+                <filter string="City" name="city" domain="[]" context="{'group_by': 'x_city'}"/>
+                <filter string="Zone" name="zone" domain="[]" context="{'group_by': 'x_zone'}"/>
+            </xpath>
+        </field>
+        </record>
+    </data>
+</odoo>

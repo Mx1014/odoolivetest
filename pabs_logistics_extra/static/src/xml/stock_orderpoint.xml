@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <div t-name="pabs_logistics_extra.leadDaysPopOver">
+        <p>
+        </p>
+        <button class="text-left btn btn-link action_open_forecast"
+            type="button">
+            <i class="fa fa-fw o_button_icon fa-arrow-right"></i>
+            View Forecast
+        </button>
+    </div>
+
+<!--    <t t-name="StockOrderpoint.Buttons">-->
+<!--        <span>-->
+<!--            <button type="button" class="btn d-none btn-primary o_button_order">-->
+<!--                Order-->
+<!--            </button>-->
+<!--            <button type="button" class="btn d-none btn-primary o_button_snooze">-->
+<!--                Snooze-->
+<!--            </button>-->
+<!--        </span>-->
+<!--    </t>-->
+
+</templates>

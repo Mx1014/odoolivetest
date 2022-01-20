@@ -1,0 +1,181 @@
+<odoo>
+    <record id="split_inspection_worksheet_template_view_form" model="ir.ui.view">
+        <field name="name">split.inspection.worksheet.template.view.form</field>
+        <field name="model">split.inspection.worksheet</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="x_task_id" readonly="1" force_save="1"/>
+                        <field name="x_crm_id"/>
+                        <field name="x_sale_id"/>
+                        <field name="x_partner_id" context="{'show_address': 1}" options="{'always_reload': 1}"/>
+                        <field name="x_phone"/>
+                        <field name="x_mobile"/>
+                        <field name="x_technician_id"/>
+                        <field name="x_technician_Supervisor_id"/>
+                        <field name="x_date_inspected"/>
+                    </group>
+                    <notebook>
+                        <page string="Tons Calculation">
+                            <field name="x_split_tonnage_line" mode="tree,kanban" context="{'task_id': x_task_id}">
+                                <form>
+                                    <field name="sequence" invisible="1"/>
+                                    <group>
+                                        <field name="x_room_id"/>
+                                        <field name="x_floor_id"/>
+                                        <field name="x_length"/>
+                                        <field name="x_width"/>
+                                        <field name="x_area"/>
+                                        <field name="x_tonnage"/>
+                                        <field name="x_recommended_tonnage"/>
+                                        <field name="x_product_id_domain" widget="many2many_tags" invisible="1"/>
+                                        <field name="x_product_id" domain="[('id', 'in', x_product_id_domain)]"/>
+                                        <field name="x_qty"/>
+                                        <field name="x_extra_pipe"/>
+                                    </group>
+                                </form>
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="x_room_id"/>
+                                    <field name="x_floor_id"/>
+                                    <field name="x_length"/>
+                                    <field name="x_width"/>
+                                    <field name="x_area"/>
+                                    <field name="x_tonnage"/>
+                                    <field name="x_recommended_tonnage"/>
+                                    <field name="x_product_id_domain" widget="many2many_tags" invisible="1"/>
+                                    <field name="x_product_id" domain="[('id', 'in', x_product_id_domain)]"/>
+                                    <field name="x_qty"/>
+                                    <field name="x_extra_pipe"/>
+                                </tree>
+                                <kanban class="o_kanban_mobile">
+                                    <field name="x_room_id"/>
+                                    <field name="x_floor_id"/>
+                                    <field name="x_length"/>
+                                    <field name="x_width"/>
+                                    <field name="x_area"/>
+                                    <field name="x_tonnage"/>
+                                    <field name="x_recommended_tonnage"/>
+                                    <field name="x_product_id_domain" widget="many2many_tags" invisible="1"/>
+                                    <field name="x_product_id" domain="[('id', 'in', x_product_id_domain)]"/>
+                                    <field name="x_extra_pipe"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                                <!--                                                <t t-if="!record.display_type.raw_value">-->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <strong>
+                                                            <span>
+                                                                <t t-esc="record.x_room_id.value"/>
+                                                                <t t-esc="record.x_floor_id.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 text-muted">
+                                                        <span>
+                                                            Area:
+                                                            <t t-esc="record.x_area.value"/>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-6 text-muted">
+                                                        <span>
+                                                            Rec. Tons:
+                                                            <t t-esc="record.x_recommended_tonnage.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row" t-if="record.x_extra_pipe.value != 0">
+                                                    <div class="col-12 text-muted">
+                                                        <span>
+                                                            Extra Pipe:
+                                                            <t t-esc="record.x_extra_pipe.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row" t-if="record.x_product_id">
+                                                    <div class="col-12 text-muted">
+                                                        Bracket Type:
+                                                        <t t-esc="record.x_product_id.value"/>
+                                                    </div>
+                                                </div>
+                                                <!--                                                </t>-->
+                                                <!--                                                <t t-if="record.display_type.raw_value === 'line_section' || record.display_type.raw_value === 'line_note'">-->
+                                                <!--                                                    <div class="row">-->
+                                                <!--                                                        <div class="col-12">-->
+                                                <!--                                                            <span>-->
+                                                <!--                                                                <t t-esc="record.name.value"/>-->
+                                                <!--                                                            </span>-->
+                                                <!--                                                        </div>-->
+                                                <!--                                                    </div>-->
+                                                <!--                                                </t>-->
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="split_inspection_worksheet_template_view_tree" model="ir.ui.view">
+        <field name="name">split.inspection.worksheet.template.view.tree</field>
+        <field name="model">split.inspection.worksheet</field>
+        <field name="arch" type="xml">
+            <tree string="Split Worksheets">
+                <field name="name"/>
+                <field name="x_task_id"/>
+                <field name="x_crm_id"/>
+                <field name="x_sale_id"/>
+                <field name="x_partner_id"/>
+                <field name="x_technician_id"/>
+                <field name="x_mobile"/>
+                <field name="x_technician_Supervisor_id"/>
+                <field name="x_date_inspected"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_split_inspection_worksheet_template_view_form" model="ir.actions.act_window">
+        <field name="name">Split Inspection Worksheet</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">split.inspection.worksheet</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="fsm_worksheet_template_inspection_service_worksheet" model="project.worksheet.template"
+            context="{'fsm_worksheet_no_generation': True}">
+        <field name="name">Split Inspection Worksheet</field>
+        <field name="color">2</field>
+        <field name="model_id" ref="pabs_field_service.model_split_inspection_worksheet"/>
+        <field name="action_id" ref="pabs_field_service.action_split_inspection_worksheet_template_view_form"/>
+        <field name="report_view_id" ref="pabs_field_service.split_inspection_worksheet_report_template_task"/>
+    </record>
+
+    <record id="pabs_field_service_spilt_inspection_mail_template_data_send_report" model="mail.template">
+            <field name="name">Task Report</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="subject">${object.name} Report</field>
+            <field name="email_to">${(object.partner_id.email_formatted) |safe}</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="lang">${object.partner_id.lang}</field>
+<!--            <field name="report_template" ref="task_custom_report"/>-->
+            <field name="report_name">Worksheet ${object.name}${(' - ' + object.partner_id.name) if object.partner_id else ''}.pdf</field>
+            <field name="body_html" type="html">
+                <p>
+                    Dear ${object.partner_id.name or 'Customer'},<br/><br/>
+                    Please find attached the worksheet of our onsite operation. <br/><br/>
+                    Feel free to contact us if you have any questions.<br/><br/>
+                    Best regards,<br/><br/>
+                </p>
+            </field>
+        </record>
+
+
+</odoo>

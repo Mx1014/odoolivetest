@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pabs_workshop_stock_pabs_workshop_stock,pabs_workshop_stock.pabs_workshop_stock,model_pabs_workshop_stock_pabs_workshop_stock,base.group_user,1,1,1,1

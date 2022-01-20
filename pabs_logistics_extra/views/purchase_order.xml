@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_form_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.pabs.logistics.extra</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="before">
+                <field name="x_is_delivery_expense" invisible="1"/>
+            </field>
+<!--            <field name="purchase_type" position="after">-->
+
+<!--            </field>-->
+            <field name="partner_id" position="after">
+                <field name="x_industry_id"/>
+<!--                <field name="x_team_id" attrs="{'invisible': [('x_team_id', '=', False)]}"/>-->
+                <field name="x_team_id"/>
+                <field name="x_batch" readonly="1" attrs="{'invisible': [('x_batch', '=', False)]}"/>
+                <field name="x_batch_ids" invisible="1"/>
+<!--                <field name="test"/>-->
+            </field>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_batch_form" class="oe_stat_button" icon="fa-cubes" type="object"
+                        attrs="{'invisible': ['|', ('x_is_delivery_expense', '=', False), ('x_batch_ids', '=', False)]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text"><field class="o_stat_text" name="x_batch_count"/> Batch</span>
+                        <span class="o_stat_text">Deliveries</span>
+
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='qty_received']" position="attributes">
+                <attribute name="attrs">
+                    {'column_invisible': [('parent.state', 'not in', ('purchase', 'done')), ('parent.x_is_delivery_expense', '=', False)],
+                    'readonly': [('qty_received_method', '!=', 'manual')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='name']" position="after">
+                <field name="x_delivery_order" readonly="1" force_save="1" attrs="{'column_invisible': [('parent.x_is_delivery_expense', '=', False)]}"/>
+                <field name="x_delivery_customer_id" attrs="{'column_invisible': [('parent.x_is_delivery_expense', '=', False)]}" optional="show"/>
+                <field name="x_sale_id" attrs="{'column_invisible': [('parent.x_is_delivery_expense', '=', False)]}" optional="show"/>
+<!--                <field name="x_stock_move_line_id" invisible="0"/>-->
+            </xpath>
+        </field>
+    </record>
+</odoo>

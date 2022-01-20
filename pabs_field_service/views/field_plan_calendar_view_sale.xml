@@ -1,0 +1,50 @@
+<odoo>
+    <record id="field_plan_calendar_form_view_sale" model="ir.ui.view">
+        <field name="name">field.plan.calendar.form.view.sale</field>
+        <field name="model">field.plan.calendar</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <field name="business_line" readonly="1" force_save="1"/>
+                    <field name="auto_x_task" attrs="{'invisible': [('x_task', '!=', False)]}"/>
+                    <field name="x_task" attrs="{'invisible': [('x_task', '=', False)], 'readonly': [('x_task', '!=', False)]}"/>
+                    <field name="status" readonly="1" force_save="1"/>
+                    <field name="start_datetime" readonly="1" force_save="1"/>
+                    <field name="note"/>
+                    <field name="period"/>
+                    <field name="x_priority" widget="priority"/>
+                    <button name="action_shift_field_plan_calendar_view_gantt_sale"
+                            string="Shift Booked Slot"
+                            class="btn-primary"
+                            type="object" context="{'business_line': business_line, 'slot_id': id}"
+                            attrs="{'invisible': [('x_task', '=', False)]}"/>
+                </group>
+                <footer>
+                    <button name="action_save_field_reminder" class="btn-primary" string="Book Slot" type="object"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" close="1"/>
+
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="field_plan_calendar_gantt_view_sale" model="ir.ui.view">
+        <field name="name">field.plan.calendar.gantt.view.sale</field>
+        <field name="model">field.plan.calendar</field>
+        <field name="arch" type="xml">
+            <gantt js_class="planning_gantt"
+                   form_view_id="%(field_plan_calendar_form_view_sale)d"
+                   date_start="start_datetime"
+                   date_stop="end_datetime"
+                   default_group_by="business_line"
+                   default_scale="week" plan="false" scales="day,week,month"
+                   precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
+                   display_unavailability="1"
+                   decoration-info="status == 'available'" decoration-success="status == 'booked'"
+                   color="color">
+                <field name="status"/>
+            </gantt>
+        </field>
+    </record>
+</odoo>

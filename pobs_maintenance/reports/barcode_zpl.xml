@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="barcode_zpl">
+                <t t-foreach="docs" t-as="o">
+                    <t t-translation="off">
+                        ^XA
+                        ^FO0,0
+                        ^LT90^
+                        ^FT90,0^A0B,20,20^FB600
+                         ^A0N,30,48^FD<t t-esc="o.reference"/>^FS
+                        ^FT90,0^A0B,30,48^FB600
+                        ^FO90,20
+                        <t t-if="o.reference">
+                            ^BCN,100,Y,N,N
+                            ^FD<t t-esc="o.reference"/>^FS
+                        </t>
+                        ^XZ
+                    </t>
+                </t>
+        </template>
+    </data>
+</odoo>

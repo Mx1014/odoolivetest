@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="split_inspection_worksheet_report_template_task">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div style="font-size:25px">
+                        <center>
+                            <h1>
+                                <span>Inspection Worksheet Report</span>
+                            </h1>
+                        </center>
+                    </div>
+
+                    <div style="float:left; padding-bottom:5mm">
+                        <table>
+                            <tr>
+                                <td style="width:150px">
+                                    <strong style="">Customer Name:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.partner_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Invoice Address:</strong>
+                                </td>
+                                <td>
+                                    <t t-if="o.sale_order_id.partner_invoice_id.street_number">
+                                        <strong>H:</strong>
+                                        <span t-field="o.sale_order_id.partner_invoice_id.street_number"/>
+                                        <span>,</span>
+                                    </t>
+                                    <t t-if="o.sale_order_id.partner_invoice_id.x_flat">
+                                        <strong style="padding-left:2mm">F:</strong>
+                                        <span t-field="o.sale_order_id.partner_invoice_id.x_flat"/>
+                                        <span>,</span>
+                                    </t>
+                                    <t t-if="o.sale_order_id.partner_invoice_id.x_address_road">
+                                        <strong style="padding-left:2mm">R:</strong>
+                                        <span t-field="o.sale_order_id.partner_invoice_id.x_address_road"/>
+                                        <span>,</span>
+                                    </t>
+                                    <t t-if="o.sale_order_id.partner_invoice_id.x_address_block">
+                                        <strong style="padding-left:2mm">B:</strong>
+                                        <span t-field="o.sale_order_id.partner_invoice_id.x_address_block"/>
+                                        <span>,</span>
+                                    </t>
+                                    <t t-if="o.sale_order_id.partner_invoice_id.city">
+                                        <strong style="padding-left:2mm">C:</strong>
+                                        <span t-field="o.sale_order_id.partner_invoice_id.city"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Delivery Address:</strong>
+                                </td>
+                                <td>
+                                    <t t-if="o.partner_id.street_number">
+                                        <strong>H:</strong>
+                                        <span t-field="o.partner_id.street_number"/>
+                                        <span>,</span>
+                                    </t>
+                                    <t t-if="o.partner_id.x_flat">
+                                        <strong style="; padding-left:2mm">F:</strong>
+                                        <span t-field="o.partner_id.x_flat"/>
+                                        <span>,</span>
+                                    </t>
+                                    <t t-if="o.partner_id.x_address_road">
+                                        <strong style="; padding-left:2mm">R:</strong>
+                                        <span t-field="o.partner_id.x_address_road"/>
+                                        <span>,</span>
+                                    </t>
+                                    <t t-if="o.partner_id.x_address_block">
+                                        <strong style="; padding-left:2mm">B:</strong>
+                                        <span t-field="o.partner_id.x_address_block"/>
+                                        <span>,</span>
+                                    </t>
+                                    <t t-if="o.partner_id.city">
+                                        <strong style="; padding-left:2mm">C:</strong>
+                                        <span t-field="o.partner_id.city"/>
+                                    </t>
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Phone:</strong>
+                                </td>
+                                <td>
+                                    <t t-if="o.partner_id.phone">
+                                        <span t-field="o.partner_id.phone"/>
+                                    </t>
+                                    <t t-if="o.partner_id.mobile">
+                                        /
+                                        <span t-field="o.partner_id.mobile"/>
+                                    </t>
+                                    <t t-if="o.partner_id.x_mobile">
+                                        /
+                                        <span t-field="o.partner_id.x_mobile"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="">Customer TRN:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.partner_id.vat"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div style="float:right; padding-bottom:5mm">
+                        <table>
+                            <!--                                <tr>-->
+                            <!--                                    <td style="width:90px">-->
+                            <!--                                        <t t-if="o.state == 'confirmed'">-->
+                            <!--                                            <strong>Service Order:</strong>-->
+                            <!--                                        </t>-->
+                            <!--                                        <t t-if="o.state == 'draft'">-->
+                            <!--                                            <strong>Service Quote:</strong>-->
+                            <!--                                        </t>-->
+                            <!--                                    </td>-->
+                            <!--                                    <td>-->
+                            <!--                                        <span t-field="o.name"/>-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <!--                                <tr>-->
+                            <!--                                    <td style="width:160px">-->
+                            <!--                                        <t t-if="o.state == 'confirmed'">-->
+                            <!--                                            <strong>Service Order Date:</strong>-->
+                            <!--                                        </t>-->
+                            <!--                                        <t t-if="o.state == 'draft'">-->
+                            <!--                                            <strong>Service Quote Date:</strong>-->
+                            <!--                                        </t>-->
+                            <!--                                    </td>-->
+                            <!--                                    <td>-->
+                            <!--                                        <span t-field="o.repair_date"/>-->
+                            <!--                                    </td>-->
+                            <!--                                </tr>-->
+                            <tr>
+                                <td>
+                                    <strong style="">Sales Person:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.user_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Technician:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="worksheet.x_technician_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Customer Code:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.partner_id.x_code"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Task Ref.:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Sale Ref.:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.sale_order_id"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <br></br>
+                    <br></br>
+                    <table style="width:100%" class="table-sm o_main_table">
+
+                        <thead>
+                            <tr>
+                                <td colspan="8">
+                                    <center>
+                                        <strong>Estimate of Tons Needed</strong>
+                                    </center>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid black; border-top: 1px solid black">
+                                <th>
+                                    <strong style="">No.</strong>
+                                </th>
+                                <th style="">
+                                    <strong>
+                                        Room
+                                    </strong>
+                                </th>
+                                <!--                                <th>-->
+                                <!--                                    <strong style="">Floor-->
+                                <!--                                    </strong>-->
+                                <!--                                </th>-->
+                                <th class="">
+                                    <strong style="">
+                                        Dimensions
+                                    </strong>
+                                </th>
+                                <!--                                <th class="">-->
+                                <!--                                    <strong style="">-->
+                                <!--                                        Width-->
+                                <!--                                    </strong>-->
+                                <!--                                </th>-->
+                                <th>
+                                    <strong>
+                                        Area
+                                    </strong>
+                                </th>
+                                <th class="">
+                                    <strong>Tons</strong>
+                                </th>
+                                <th class="">
+                                    <strong style="">
+                                        Rec. Tons
+                                    </strong>
+                                </th>
+                                <th class="">
+                                    <strong style="">
+                                        Bracket
+                                    </strong>
+                                </th>
+                                <th class="">
+                                    <strong style="">
+                                        Qty
+                                    </strong>
+                                </th>
+                                <th class="">
+                                    <strong style="">
+                                        Extra pipe
+                                    </strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="count" t-value="1"></t>
+                            <t t-foreach="worksheet.x_split_tonnage_line" t-as="line">
+                                <tr style="">
+                                    <td class="">
+                                        <t t-esc="count"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.x_room_id"/>
+                                        <span t-field="line.x_floor_id"/>
+                                    </td>
+                                    <!--                                    <td>-->
+                                    <!--                                        -->
+                                    <!--                                    </td>-->
+                                    <td>
+                                        <span t-field="line.x_length"/>
+                                        <span> x </span>
+                                        <span t-field="line.x_width"/>
+                                    </td>
+                                    <!--                                    <td>-->
+                                    <!--                                        -->
+                                    <!--                                    </td>-->
+                                    <td>
+                                        <span t-field="line.x_area"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="'{:,.2f}'.format(line.x_tonnage)"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.x_recommended_tonnage"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.x_product_id"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.x_qty"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.x_extra_pipe"/>
+                                    </td>
+                                </tr>
+                                <t t-set="count" t-value="count + 1"/>
+
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

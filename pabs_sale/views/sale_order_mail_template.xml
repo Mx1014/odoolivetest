@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pabs_sale_inherit_mail_template_sale_confirmation" model="mail.template">
+        <field name="name">Sales Order: Confirmation Emails</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="subject">${object.company_id.name}
+            ${(object.get_portal_last_transaction().state == 'pending') and 'Pending Order' or 'Order'} (Ref
+            ${object.name or 'n/a' })
+        </field>
+        <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) | safe}</field>
+        <field name="partner_to">${object.partner_id.id}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 12px;">
+                    Hello,
+                    <br/>
+                    <br/>
+                    % set transaction = object.get_portal_last_transaction()
+                    Your order <strong>${object.name}</strong> amounting in
+                    <strong>${format_amount(object.amount_total, object.currency_id)}</strong>
+                    % if object.state == 'sale' or (transaction and transaction.state in ('done', 'authorized')) :
+                    has been confirmed.
+                    <br/>
+                    Thank you for your trust!
+                    % elif transaction and transaction.state == 'pending' :
+                    is pending. It will be confirmed when the payment is received.
+                    % if object.reference:
+                    Your payment reference is <strong>${object.reference}</strong>.
+                    % endif
+                    % endif
+                    <br/>
+                    <br/>
+                    Do not hesitate to contact us if you have any questions.
+                    <br/>
+                    <br/>
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>

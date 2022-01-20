@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="indemnity_provision_view_form" model="ir.ui.view">
+        <field name="name">indemnity.provision.form</field>
+        <field name="model">indemnity.provision</field>
+        <field name="arch" type="xml">
+            <form string="Current Overtime">
+                <sheet>
+                    <div class="oe_title" name="title">
+                        <label for="name" string="Description"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_name"/>
+                            <field name="x_date"/>
+                            <field name="x_rule"/>
+                            <field name="x_reference"/>
+                        </group>
+                        <group>
+                            <field name="x_total"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="indemnity_provision_tree" model="ir.ui.view">
+        <field name="name">indemnity.provision.tree</field>
+        <field name="model">indemnity.provision</field>
+        <field name="arch" type="xml">
+            <tree name="indemnity_provision">
+                <field name="x_reference"/>
+                <field name="x_rule"/>
+                <field name="name"/>
+                <field name="employee_name"/>
+                <field name="x_date"/>
+                <field name="x_total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_indemnity" model="ir.actions.act_window">
+        <field name="name">Indemnity Leave Provision</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">indemnity.provision</field>
+        <field name="context">{'group_by': 'employee_name'}</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="employee_indemnity_provision"
+              action="action_indemnity"
+              parent="pabs_hr.hr_menu_provisions"
+              sequence="102"
+    />
+</odoo>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_inherit_pabs_sale" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.pabs.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr='//form' position='attributes'>
+                <attribute name="duplicate">false</attribute>
+            </xpath>
+            <field name="payment_term_id" position="after">
+                <field name="x_payment_state" invisible="1"/>
+            </field>
+            <field name="payment_term_id" position="replace">
+                <field name="payment_term_id" required="1" domain="[('payment_term_type', 'in', ['so', 'both'])]" attrs="{'readonly':[('sale_order_type','in', ['cash_memo', 'paid_on_delivery', 'advance_payment', 'credit_sale'])]}" force_save="1"/>
+            </field>
+            <xpath expr="//div[@name='button_box']" position="after">
+                <widget name="web_ribbon" bg_color="bg-success" title="Paid"
+                        attrs="{'invisible': ['|',('x_payment_state', '!=', 'paid'), ('state', '!=', 'sale')]}"/>
+                <widget name="web_ribbon" bg_color="bg-warning" title="Partially Paid"
+                        attrs="{'invisible': ['|',('x_payment_state', '!=', 'partially_paid'), ('state', '!=', 'sale')]}"/>
+                <widget name="web_ribbon" bg_color="bg-warning" title="Not Paid"
+                        attrs="{'invisible': ['|',('x_payment_state', '!=', 'not_paid'), ('state', '!=', 'sale')]}"/>
+            </xpath>
+
+
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="sale_order_type" widget="radio" required="1"
+                       attrs="{'readonly': [('sale_order_type', '!=', 'paid_on_delivery'), ('state', '=', 'sale')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="context">{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True,
+                    'default_customer_rank': 1}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="options">{"always_reload": True, "no_quick_create": True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="user_statement_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//tree//field[@name='price_subtotal']" position="after">
+                <field name="x_product_margin" groups="pabs_sale.group_Branch_Manager,pabs_sale.group_Retail_Manager"
+                       optional="hide"/>
+            </xpath>
+            <xpath expr="//tree//field[@name='route_id']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">True</attribute>
+            </xpath>
+            <xpath expr="//form//sheet//notebook//page[@name='other_information']//group//group//field[@name='client_order_ref']"
+                   position="attributes">
+                <attribute name="attrs">{'required': [('sale_order_type', '=', 'credit_sale')]}</attribute>
+            </xpath>
+            <xpath expr="//form//sheet//notebook" position="inside">
+                <page string="Order History" name="order_history">
+                    <field name="order_history_line">
+<!--                        <form>-->
+<!--                            <field name="order_history_id"/>-->
+<!--                        </form>-->
+<!--                        <tree>-->
+<!--                            <field name="order_history_id"/>-->
+<!--                        </tree>-->
+                    </field>
+                </page>
+            </xpath>
+            <!--            <xpath expr="//tree//field[@name='route_id']" position="after">-->
+            <!--                    <field name="x_virtual_qty"/>-->
+            <!--            </xpath>-->
+
+            <xpath expr="//tree//field[@name='price_unit']" position="after">
+                <field name="x_standard_price" invisible="1"/>
+            </xpath>
+            <field name="date_order" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
+            <!--            <field name="user_id" position="attributes">-->
+            <!--                <attribute name="invisible">1</attribute>-->
+            <!--            </field>-->
+            <field name="validity_date" position="before">
+                <field name="user_id" required="1" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                <field name="x_user_mobile" string="Salesperson Phone"/>
+            </field>
+
+            <field name="client_order_ref" position="after">
+               <field name="opportunity_id" readonly="1"/>
+            </field>
+
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="groups">pabs_base.group_logistics_controller,pabs_base.group_customer_service_agent
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="confirm">You are about to cancel SO, Please create credit note if an invoice is
+                    attached
+                </attribute>
+            </xpath>
+            <!--             <xpath expr="//tree//field[@name='opportunity_id']" position="attributes">-->
+            <!--                <attribute name="groups"></attribute>-->
+            <!--            </xpath>-->
+            <!--            <field name="pricelist_id" position="attributes">-->
+            <!--                <attribute name="readonly">1</attribute>-->
+            <!--                 <attribute name="required">0</attribute>-->
+            <!--            </field>-->
+            <!--               <field name="currency_id" position="attributes">-->
+            <!--                 <attribute name="required">0</attribute>-->
+            <!--            </field>-->
+            <!--            <field name="payment_term_id" position="after">-->
+            <!--                <field name="narration"/>-->
+            <!--            </field>-->
+
+        </field>
+    </record>
+    <!--    <record id="invisibe_opportunity_pabs_sale" model="ir.ui.view">-->
+    <!--        <field name="name">invisibe.opportunity.pabs.sale</field>-->
+    <!--        <field name="model">sale.order</field>-->
+    <!--        <field name="inherit_id" ref="sale.view_order_form"/>-->
+    <!--        <field name="groups_id" eval="[(6,0, [ref('sales_team.group_sale_salesman_all_leads'), ref('sales_team.group_sale_salesman')])]"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//group[@name='technical']//field[@name='opportunity_id']" position="attributes">-->
+    <!--                <attribute name="invisible">False</attribute>-->
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <record id="inherit_pabs_sale_tax_id_readonly" model="ir.ui.view">
+        <field name="name">inherit.pabs.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="groups_id" eval="[(6,0, [ref('account.group_account_user')])]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">False</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!--
+    <record id="inherit_pabs_sale_opportunity_id_readonly" model="ir.ui.view">
+        <field name="name">inherit.pabs.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_crm.sale_view_inherit123"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='opportunity_id']" position="attributes">
+                <attribute name="groups"></attribute>
+            </xpath>
+        </field>
+    </record>
+-->
+
+    <record model="ir.ui.view" id="sale_margin_sale_order_line_form_inherit">
+        <field name="name">sale.order.line.tree.margin.view.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order_line_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='order_line']/tree//field[@name='purchase_price']" position="attributes">
+                <attribute name="groups">purchase.group_purchase_manager</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='purchase_price']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="sale_margin_sale_order_inherit">
+        <field name="name">sale.order.margin.view.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='margin']" position="attributes">
+                <attribute name="groups">purchase.group_purchase_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="pabs_sale.order_quota_list_custom">
+        <field name="name">inherit_order.list.view.custom.quote</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="before">
+                <field name="x_payment_state"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

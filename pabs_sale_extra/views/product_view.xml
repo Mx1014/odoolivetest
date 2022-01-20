@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="pabs_sale_extra.product_template_form_custom">
+      <field name="name">product.template.view.custom</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//group[@name='group_standard_price']" postion="inside">
+               <label for="minimum_cal_number" string="Minimum Margin" attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
+                    <div>
+                        <field name="minimum_cal_number" class="oe_inline"  attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
+                        <field name="minimum_cal_type" class="oe_inline"  attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
+                    </div>
+               <field name="price_minimum" class="oe_inline" widget="monetary" readonly="1" force_save="1" options="{'currency_field': 'currency_id', 'field_digits': True}"  attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
+        </xpath>
+          <xpath expr="//field[@name='barcode']" position="replace">
+              <label for="barcode" attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
+              <div class="o_row" attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}">
+                 <field name="barcode"/>
+                 <button name="random_barcode_generate" string="No barcode? Generate" type="object" attrs="{'invisible':[('barcode','!=', False)]}" class="btn btn-link" />
+              </div>
+          </xpath>
+        <xpath expr="//page[@name='inventory']" position="after">
+               <page string="Barcodes" attrs="{'invisible': [('product_variant_count', '>', 1)]}">
+                   <field name="barcode_ids" widget="one2many">
+                       <tree editable="bottom">
+                           <field name="name"/>
+                           <field name="reference"/>
+                           <field name="check" invisible="1"/>
+                       </tree>
+                   </field>
+               </page>
+        </xpath>
+      </field>
+    </record>
+
+     <record model="ir.ui.view" id="pabs_sale_extra.product_variant_easy_edit_view_custom">
+      <field name="name">product.product.variant.easy.view.custom</field>
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='barcode']" position="replace">
+              <label for="barcode"/>
+              <div class="o_row">
+                 <field name="barcode"/>
+                 <button name="random_barcode_generate" string="No barcode? Generate" type="object" attrs="{'invisible':[('barcode','!=', False)]}" class="btn btn-link" />
+              </div>
+        </xpath>
+        <xpath expr="//sheet" position="inside">
+            <notebook groups="product.group_product_variant">
+               <page string="Barcodes">
+                   <field name="barcode_ids"  widget="one2many">
+                       <tree editable="bottom">
+                           <field name="name"/>
+                           <field name="reference"/>
+                           <field name="check" invisible="1"/>
+                       </tree>
+                   </field>
+               </page>
+            </notebook>
+        </xpath>
+      </field>
+    </record>
+
+
+
+
+     <record model="ir.ui.view" id="pabs_sale_extra.product_template_normal_form_custom">
+      <field name="name">product.template.normal.view.custom</field>
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="product.product_normal_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//group[@name='group_standard_price']" postion="inside">
+               <label for="minimum_cal_number" string="Minimum Margin"/>
+                    <div>
+                        <field name="minimum_cal_number" class="oe_inline"/>
+                        <field name="minimum_cal_type" class="oe_inline"/>
+                    </div>
+               <field name="price_minimum" class="oe_inline" widget="monetary" readonly="1" force_save="1" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+        </xpath>
+         <xpath expr="//field[@name='barcode']" position="replace">
+              <label for="barcode"/>
+              <div class="o_row">
+                 <field name="barcode"/>
+<!--                 <button name="random_barcode_generate" string="Don't has a barcode?" type="object" attrs="{'invisible':[('barcode','!=', False)]}" class="btn btn-link" />-->
+                 <button name="random_barcode_generate" string="No barcode? Generate" type="object" attrs="{'invisible':[('barcode','!=', False)]}" class="btn btn-link" />
+              </div>
+        </xpath>
+        <xpath expr="//page[@name='inventory']" position="after">
+               <page string="Barcodes">
+                   <field name="barcode_ids"  widget="one2many">
+                       <tree editable="bottom">
+                           <field name="name" />
+                           <field name="reference"/>
+                           <field name="check" invisible="1"/>
+                       </tree>
+
+                   </field>
+               </page>
+        </xpath>
+          <field name="standard_price" position="attributes">
+              <attribute name="groups">purchase.group_purchase_manager</attribute>
+          </field>
+           <xpath expr="//button[@name='%(stock_account.action_view_change_standard_price)d']" position="attributes">
+                        <attribute name="groups">purchase.group_purchase_manager</attribute>
+                    </xpath>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pabs_sale_extra.product_template_form_view_inher">
+      <field name="name">product_template_form_view_inher</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_form_view"/>
+      <field name="arch" type="xml">
+          <xpath expr="//page[@name='sales']//group[@name='description']" position="before">
+               <group string="Showroom" name="showroom">
+                   <field name="x_exist_in_pos"/>
+               </group>
+          </xpath>
+          <field name="standard_price" position="attributes">
+              <attribute name="groups">purchase.group_purchase_manager</attribute>
+          </field>
+          <xpath expr="//button[@name='%(stock_account.action_view_change_standard_price)d']" position="attributes">
+                        <attribute name="groups">purchase.group_purchase_manager</attribute>
+                    </xpath>
+      </field>
+    </record>
+
+     <record model="ir.ui.view" id="pabs_sale_extra.product_category_form_custom">
+      <field name="name">product.category.form.custom</field>
+      <field name="model">product.category</field>
+      <field name="inherit_id" ref="product.product_category_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='parent_id']" position="after">
+              <field name="x_category_code"/>
+        </xpath>
+      </field>
+    </record>
+
+     <record id="view_product_search_multi_barcode" model="ir.ui.view">
+        <field name="name">multi.barcode.product.product.search</field>
+        <field name="model">product.product</field>
+         <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+              <field name="barcode_ids" string="Barcode"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_product_template_search_multi_barcode" model="ir.ui.view">
+        <field name="name">multi.barcode.product.template.search</field>
+        <field name="model">product.template</field>
+         <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+              <field name="barcode_ids" string="Barcode"/>
+            </field>
+        </field>
+    </record>
+
+
+
+</odoo>

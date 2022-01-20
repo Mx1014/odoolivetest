@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="inherit_report_picking" inherit_id="stock.report_picking">
+
+            <xpath expr="//div[@class='row mt48 mb32']" position="inside">
+                <t t-if="o.x_client_order_ref">
+                    <div class="col-auto">
+                        <strong>Customer Reference:</strong>
+                        <p t-field="o.x_client_order_ref"/>
+                    </div>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

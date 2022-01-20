@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pabs_logistics_extra/static/src/js/add_to_batch_button.js"></script>
+<!--            <script type="text/javascript" src="/pabs_logistics_extra/static/src/js/color_widget.js"></script>-->
+        </xpath>
+    </template>
+</odoo>

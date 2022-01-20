@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pabs_uppercase_pabs_uppercase,pabs_uppercase.pabs_uppercase,model_pabs_uppercase_pabs_uppercase,base.group_user,1,1,1,1

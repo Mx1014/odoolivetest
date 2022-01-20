@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences for warranty.line -->
+        <record id="seq_warranty" model="ir.sequence">
+            <field name="name">Warranty Reference</field>
+            <field name="code">warranty.sequence</field>
+            <field name="prefix">Wrr</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+         <!-- Sequences for extended.warranty.line -->
+        <record id="extended_warranty" model="ir.sequence">
+            <field name="name">Extended Warranty Reference</field>
+            <field name="code">extended.warranty</field>
+            <field name="prefix">EXX</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+    </data>
+</odoo>

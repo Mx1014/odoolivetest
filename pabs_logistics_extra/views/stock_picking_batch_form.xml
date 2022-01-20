@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_batch_filter_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">stock.picking.batch.filter.inherit.pabs.logistics.extra</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_filter"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="picking_ids" string="Transfers" filter_domain="[('picking_ids.name', 'ilike', self)]"/>
+                <field name="x_business_line" string="Business Line"/>
+                <field name="x_team" string="Team"/>
+                <field name="company_id"/>
+            </field>
+        </field>
+    </record>
+    <record id="picking_ids_custom_tree_view" model="ir.ui.view">
+        <field name="name">picking.ids.custom.tree.view</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="code" optional="show"/>
+                <field name="scheduled_date" widget="date" optional="show"/>
+                <field name="origin" optional="show"/>
+                <field name="state" optional="show"/>
+                <field name="x_zone" optional="show"/>
+                <field name="x_city" optional="show"/>
+                <field name="x_block" optional="show"/>
+                <field name="x_road" optional="show"/>
+                <field name="x_house" optional="show"/>
+                <field name="x_address" optional="hide"/>
+                <field name="period" optional="show"/>
+                <field name="priority" optional="show"/>
+                <field name="x_total_qty_demand" optional="show"/>
+                <field name="x_total_qty_reserved" optional="show"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="x_total_amount" widget="monetary" optional="show"/>
+                <field name="x_mobile" optional="hide"/>
+                <field name="location_id" optional="hide"/>
+                <field name="backorder_id" optional="hide"/>
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_stock_picking_batch_form_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">view.stock.picking.batch.form.inherit.pabs.logistics.extra</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
+        <field name="arch" type="xml">
+            <field name="state" position="attributes">
+                <attribute name="statusbar_visible">in_progress,delivery,done</attribute>
+            </field>
+            <button name="confirm_picking" position="attributes">
+                <attribute name="string">Start</attribute>
+            </button>
+            <field name="state" position="after">
+                 <field name="x_stage" widget="statusbar" statusbar_visible="to_submit,submitted,reviewed,bill,pay" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+            </field>
+            <button name="done" position="replace">
+                <!--                <button name="action_stock_picking_batch_out_for_delivery" states="in_progress" string="Confirm"-->
+                <!--                        type="object" class="oe_highlight"/>-->
+                <button name="action_stock_picking_batch_revert_to_draft" states="in_progress,delivery"
+                        string="Reset To Draft"
+                        type="object" class="oe_highlight"/>
+                <button name="action_stock_picking_batch_confirm_done" states="in_progress,delivery" string="Done"
+                        type="object"
+                        class="oe_highlight"
+                        context="{'batch_id': id}"/>
+
+                <button name="stage_submitted" type="object" string="Submit" attrs="{'invisible': ['|', ('state', '!=', 'done'), ('x_stage', '!=', 'to_submit')]}"/>
+                <button name="stage_reviewed" type="object" string="Reviewed" attrs="{'invisible': [('x_stage', '!=', 'submitted')]}"/>
+                <button name="stage_billed" type="object" string="Billed" attrs="{'invisible': [('x_stage', '!=', 'reviewed')]}"/>
+                <button name="stage_paid" type="object" string="Paid" attrs="{'invisible': [('x_stage', '!=', 'bill')]}"/>
+            </button>
+
+            <button name="cancel_picking" position="replace">
+                <button name="cancel_batch_picking" string="Cancel" type="object" states="in_progress"/>
+            </button>
+
+            <xpath expr="//group//group" position="replace">
+                <group>
+                    <field name="x_delivery_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="x_business_line" domain="[('business_line_type', '=', 'delivery')]"
+                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="x_team" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="x_vendor" attrs="{'invisible': [('x_vendor', '=', False)]}"/>
+                    <field name="x_zone" widget="many2many_tags" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                    <field name="x_team_capacity" readonly="1" force_save="1"/>
+                    <field name="x_delivery_qty" readonly="1" force_save="1"/>
+                    <field name="x_remaining_qty" readonly="1" force_save="1"/>
+                    <field name="x_total_demand"/>
+                    <field name="company_id"/>
+                    <field name="x_batch_po" readonly="1" force_save="1" invisible="1"/>
+                    <field name="x_is_overloaded" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                    <!--                    <field name="test"/>-->
+                </group>
+            </xpath>
+            <xpath expr="//sheet//div[@class='oe_title']" position="before">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_po_view" class="oe_stat_button" icon="fa-money" type="object"
+                            attrs="{'invisible': [('x_batch_po', '=', False)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Purchase</span>
+                            <span class="o_stat_text">Order</span>
+                        </div>
+                    </button>
+                     <button name="action_view_tickets" class="oe_stat_button" icon="fa-ticket" type="object" attrs="{'invisible': [('x_ticket_count','=', 0)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <field name="x_ticket_count" nolabel="1" class="oe_stat_vals"/>
+                            <span class="o_stat_text">Tickets</span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//form//sheet/separator" position="replace"/>
+            <xpath expr="//form//sheet//field[@name='picking_ids']" position="replace">
+                <notebook>
+                    <page string="Transfers">
+                        <field name="picking_ids" widget="many2many" options="{'not_delete': True}" mode="tree,kanban"
+                               attrs="{'readonly': [('state', '=', 'done')]}"
+                               context="{'search_default_before_today': 1,'search_default_available': 1, 'search_default_waiting': 1, 'tree_view_ref':'picking_ids_custom_tree_view'}">
+                            <tree decoration-danger="state=='assigned'" editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name"/>
+                                <field name="sale_order_type" optional="show"/>
+                                <field name="partner_id" optional="show" readonly="1"/>
+                                <field name="x_block" optional="show"/>
+                                <field name="x_total_qty_demand" string="Dmnd. Qty" optional="show"/>
+                                <field name="x_total_qty_reserved" string="Rsrv. Qty" optional="show"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="x_total_amount" widget="monetary" optional="show"/>
+                                <field name="x_mobile" optional="hide"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="scheduled_date" optional="hide"/>
+                                <field name="location_id" optional="hide"/>
+                                <field name="backorder_id" optional="hide"/>
+                                <field name="origin" optional="hide"/>
+                                <field name="state" optional="show"/>
+                                <field name="x_delivery_state" optional="show"/>
+                                <field name="x_is_delivered" invisible="1"/>
+                                <field name="x_ticket_count" invisible="1"/>
+                                <field name="x_care_of_state" invisible="0" readonly="1" optional="show"/>
+                                <button name="action_assign" string="Confirm picking" type="object"
+                                        icon="fa-check text-success"
+                                        attrs="{'invisible': [('state', 'in', ('done', 'cancel', 'confirmed', 'assigned', 'out_delivery'))]}"/>
+				
+				<button name="action_delivered" string="Confirm Delivery" type="object" icon="fa-check text-success" attrs="{'invisible': ['|', '|', '|', '|', ('x_is_delivered', '=', True), ('parent.state', '!=', 'delivery'), ('state', '!=', 'done'), '&amp;', ('x_total_amount', '&gt;', 0), ('x_care_of_state', '!=', 'approve')]}"/>
+                                <button name="action_cancel_delivery_confirmation" string="Cancel Delivery Confirmation" type="object" icon="fa-close text-danger" attrs="{'invisible': ['|', '|', '|',('x_is_delivered', '=', False), ('parent.state', '!=', 'delivery'), ('state', '!=', 'done'), '&amp;', ('x_total_amount', '!=', 0), ('x_care_of_state', '!=', 'approve')]}"/>
+                                <button string="Care-Of" name="care_of_request" type="object"  attrs="{'invisible': ['|', '|', '|',('parent.state', '!=', 'delivery'), ('state', '!=', 'done'), ('x_total_amount', '&lt;=', 0), ('x_care_of_state', '!=', False)]}"/>
+                                <!--  attrs="{'invisible': ['|', '|', '|', '|',('x_is_delivered', '=', True), ('parent.state', '!=', 'delivery'), ('state', '!=', 'done'), ('x_total_amount', '&lt;=', 0), ('x_care_of_state', '!=', False)]}" -->
+                                <field name="x_approval_user" force_save="1" optional="show" attrs="{'invisible':[('x_total_amount', '&lt;', 0)],'readonly':[('x_care_of_state', 'in', ['refuse', 'approve'])]}"/>
+				
+                                <button
+                                        string="Approve"
+                                        name="care_of_approve"
+                                        type="object"
+                                        icon="fa-thumbs-up text-success"
+                                        attrs="{'invisible': ['|', ('x_total_amount', '=', 0), ('x_care_of_state', '!=', 'request')]}"
+                                />
+                                 <button
+                                        string="Refuse"
+                                        name="care_of_refuse"
+                                        type="object"
+                                        icon="fa-thumbs-down text-danger"
+                                        attrs="{'invisible': ['|', ('x_total_amount', '=', 0), ('x_care_of_state', '!=', 'request')]}"
+                                />
+
+<!--                                         attrs="{'invisible': ['|', '|', ('x_is_delivered', '=', False), ('parent.state', '!=', 'delivery'), ('state', '!=', 'done')]}"/> -->
+
+                                <button
+                                        string="Convert to Ticket"
+                                        name="create_ticket"
+                                        icon="fa-ticket"
+                                        type="object"
+                                        attrs="{'invisible': [('x_ticket_count', '!=', 0)]}"
+                                />
+
+
+                                <!--                                <button name="action_cancel" string="Cancel picking" type="object"-->
+                                <!--                                        icon="fa-times-circle text-danger"-->
+                                <!--                                        attrs="{'invisible': [('state', 'in', ('done', 'cancel'))]}"/>-->
+                            </tree>
+                        </field>
+                        <button name="action_stock_picking_batch_add" string="Add" type="object"
+                                class="oe_highlight"
+                                context="{'batch_id': id}"
+                                attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}"/>
+                    </page>
+                    <page string="Detailed Operations">
+                        <field name="x_products_detailed">
+                            <tree>
+                                <field name="product_id"/>
+                                <field name="location_id"/>
+                                <field name="product_uom_qty"/>
+                                <field name="qty_done" sum="total_done"/>
+                                <field name="picking_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Operations">
+                        <field name="x_products">
+                            <tree>
+                                <field name="product_id"/>
+                                <field name="product_uom_qty" sum="total_qty"/>
+                                <field name="reserved_availability"/>
+                                <field name="quantity_done"/>
+                                <field name="state" invisible="1"/>
+                                <field name="picking_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_picking_batch_tree_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">stock.picking.batch.tree.inherit.pabs.logistics.extra</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_tree"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="x_delivery_date" optional="show"/>
+                <field name="x_business_line" optional="show"/>
+                <field name="x_team" optional="show"/>
+                <field name="x_vendor" optional="show"/>
+                <field name="x_total_demand" optional="show"/>
+                <field name="x_delivery_qty" optional="show"/>
+                <field name="x_zone" optional="show"/>
+                <field name="x_is_overloaded" optional="show"/>
+                <field name="picking_ids" invisible="1"/>
+                                    <field name="company_id"/>
+
+            </field>
+        </field>
+    </record>
+    <record id="stock_picking_batch.stock_picking_batch_kanban" model="ir.ui.view">
+        <field name="name">stock.picking.batch.kanban</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="state"/>
+                <field name="x_delivery_date"/>
+                <field name="x_business_line"/>
+                <field name="x_team"/>
+                <field name="x_zone"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top mb16">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                                <field name="state" widget="label_selection"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+
+                                    <span>
+                                        <field name="x_delivery_date"/>
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <strong>
+                                        <span>
+                                            Business Line:
+                                            <!--                                            <field name="x_business_line"/>-->
+                                        </span>
+                                    </strong>
+                                    <t t-esc="record.x_business_line.value"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <strong>
+                                        <span>
+                                            Team:
+                                            <!--                                            <field name="x_team"/>-->
+                                        </span>
+                                    </strong>
+                                    <t t-esc="record.x_team.value"/>
+                                </div>
+                            </div>
+                            <!--                            <div class="row">-->
+                            <!--                                <div class="col-12">-->
+                            <!--                                    <strong>-->
+                            <!--                                        <span>-->
+                            <!--                                            <field name="x_zone"/>-->
+                            <!--                                        </span>-->
+                            <!--                                    </strong>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_picking_internal_search_inherit_pabs_logistics_extra" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.inherit.pabs.logistics.extra</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter name="before_today" string="Tomorrow and Before"
+                        domain="[('scheduled_date', '&lt;=', (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+            </xpath>
+            <xpath expr="//search//group" position="inside">
+                <filter string="Priority" name="priority" domain="[]" context="{'group_by': 'priority'}"/>
+                <filter string="Overloaded" name="x_is_overloaded" domain="[]"
+                        context="{'group_by': 'x_is_overloaded'}"/>
+                     <filter string="Reserved &amp; Normal" name="x_dn_status" domain="[]"
+                            context="{'group_by': 'x_dn_status'}"/>
+            </xpath>
+            <field name="picking_type_id" position="after">
+                <field name="x_client_order_ref" filter_domain="[('x_client_order_ref', 'ilike', self)]"/>
+                    <field name="x_dn_status" string="Reserved or Normal"/>
+                                    <field name="company_id"/>
+            </field>
+                <separator position="after">
+                    <separator/>
+                    <filter name="reserved" string="Reserved" domain="[('x_dn_status', '=', 'reserved'), ('state', '!=', 'done')]" />
+                    <filter name="normal" string="Normal" domain="[('x_dn_status', '=', 'normal'), ('state', '!=', 'done')]" />
+                    <filter name="collect" string="Self Collect" domain="[('x_dn_status', '=', False), ('sale_order_type', '!=', 'service'), ('state', '!=', 'done')]" />
+                    <separator/>
+                </separator>
+            <separator position="after">
+                    <separator/>
+                    <filter name="urgent" string="Urgent" domain="[('x_urgent_request', '!=', False)]" />
+                    <separator/>
+                </separator>
+        </field>
+    </record>
+</odoo>

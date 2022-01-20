@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_field_plan_calendar,access_field_plan_calendar,model_field_plan_calendar,base.group_user,1,1,1,1
+access_project_task_batch,access_project_task_batch,model_project_task_batch,base.group_user,1,1,1,1
+access_helpdesk_ticket_group_logistics_controller,access_helpdesk_ticket_group_logistics_controller,helpdesk.model_helpdesk_ticket,pabs_base.group_logistics_controller,1,0,0,0
+access_split_service_worksheet,access_split_service_worksheet,model_split_service_worksheet,base.group_user,1,1,1,1
+access_repair_problem,access_repair_problem,model_repair_problem,base.group_user,1,1,1,1
+access_repair_solution,access_repair_solution,model_repair_solution,base.group_user,1,1,1,1
+access_problem_solution_line,access_problem_solution_line,model_problem_solution_line,base.group_user,1,1,1,1,
+access_problem_recommended_solution_line,access_problem_recommended_solution_line,model_problem_recommended_solution_line,base.group_user,1,1,1,1
+access_split_inspection_worksheet,access_split_inspection_worksheet,model_split_inspection_worksheet,base.group_user,1,1,1,1
+access_split_tonnage_line,access_split_tonnage_line,model_split_tonnage_line,base.group_user,1,1,1,1
+access_location_room,access_location_room,model_location_room,base.group_user,1,1,1,1
+access_location_floor,access_location_floor,model_location_floor,base.group_user,1,1,1,1

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_deposit_voucher_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <!--                        <div style="padding: 58mm 0mm 0mm 9mm ;">-->
+                        <div style="margin-left: 5mm;">
+                            <div style="margin-left: 16mm; padding-top: 15mm; height: 7.5mm; font-size: 15px;">
+                                <span t-field="o.date"/>
+                            </div>
+                            <div style="margin-left: 38mm; margin-top: 8mm; height: 7.5mm; font-size: 15px;">
+                                <span t-field="o.x_deposit_to.bank_account_id.acc_holder_name"/>
+                            </div>
+<!--                            <br/>-->
+                            <div style="margin-left: 81mm; margin-top: 1mm; letter-spacing: 5.5mm;">
+                                <span t-field="o.x_deposit_to.bank_account_id.acc_number"/>
+                            </div>
+                            <div style="margin: 30mm 0mm 0mm 9mm ; width: 148mm; height: 45mm;">
+                                <t t-foreach="o.payment_ids" t-as="line">
+                                    <div style="width: 30mm; height: 7.5mm; font-size: 15px; float: left;">
+                                        <span t-field="line.cheque_number"/>
+                                    </div>
+                                    <div style="width: 34mm; height: 7.5mm; font-size: 15px; float: left;">
+                                        <span t-field="line.bank_id.name"/>
+                                    </div>
+                                    <div style="width: 39mm; height: 7.5mm; font-size: 15px; float: left;">
+                                        <span t-field="line.account_number"/>
+                                    </div>
+                                    <div style="width: 36mm; height: 7.5mm; font-size: 15px; float: left; text-align: right;">
+                                        <!--                                    <span t-field="line.amount"/>-->
+                                        <span t-esc="'{:,.3f}'.format(float(line.amount))"/>
+                                        <!--                                    float(line.amount)-->
+                                    </div>
+                                    <br/>
+                                </t>
+                            </div>
+                            <div style="margin-left: 112mm;width: 36mm; height: 7.5mm; font-size: 15px; float: left;text-align: right;">
+                                <span t-esc="sum(o.payment_ids.mapped('amount'))"
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </div>
+                            <div style="margin-left: 38mm; margin-top: 41mm; height: 7.5mm; font-size: 15px;">
+                                <span t-field="o.x_amount_in_words"/>
+                            </div>
+                            <div style="margin-left: 38mm; margin-top: 1mm; height: 7.5mm; font-size: 15px;">
+                                <span>Business</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

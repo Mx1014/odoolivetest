@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="field_service_detailed_tripsheet_template">
+            <t t-set="count" t-value="1"></t>
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <t t-esc="o.current_print_datetime()"/>
+                        <t t-esc="o.count_print_no()"/>
+                        <!--                        <br></br>-->
+                        <!--                        <br></br>-->
+                        <!--                        <br></br>-->
+                        <!--                        <br></br>-->
+                        <!--                        <br></br>-->
+                        <!--                        <br></br>-->
+                        <div class="page">
+                            <center>
+                                <h1>Field Service Visit sheet</h1>
+                            </center>
+                            <div style="float:right">
+                                <div>
+                                    <strong>Date:</strong>
+                                    <span t-field="o.x_scheduled_date"/>
+                                </div>
+                                <div>
+                                    <strong>Reference:</strong>
+                                    <span t-field="o.name"/>
+                                </div>
+                            </div>
+                            <div style="float:left; width:50%">
+                                <div>
+                                    <strong>Team:</strong>
+                                    <span t-field="o.x_team"/>
+                                </div>
+                                <div>
+                                    <strong>Business Line:</strong>
+                                    <span t-field="o.x_business_line"/>
+                                </div>
+                            </div>
+                            <!--                            <div t-if="o.user_id">-->
+                            <!--                                <strong>Responsible:</strong>-->
+                            <!--                                <span t-field="o.user_id"/>-->
+                            <!--                            </div>-->
+                            <!--                            <br/>-->
+                            <table class="table table-condensed" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Reference</th>
+                                        <th>Product</th>
+                                        <th>Contact</th>
+                                        <th>City</th>
+                                        <th>Block</th>
+                                        <th>Road</th>
+                                        <th>House</th>
+                                        <!--                                        <th>Zone</th>-->
+                                        <th>Contact No</th>
+                                        <th>S.O.</th>
+                                        <!--                                        <th>Signature</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.x_task_line" t-as="task">
+                                        <td>
+                                            <span t-field="task.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.x_product_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.partner_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.partner_id.city"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.partner_id.x_address_block"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.partner_id.x_address_road"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.partner_id.street_number"/>
+                                        </td>
+                                        <!--                                        <td class="text-center">-->
+                                        <!--                                            <span t-field="task.partner_id.x_zone_id"/>-->
+                                        <!--                                        </td>-->
+                                        <td>
+                                            <span t-field="task.partner_id.mobile"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.sale_order_id"/>
+                                        </td>
+                                        <!--                                        <td>-->
+                                        <!--                                            <span></span>-->
+                                        <!--                                        </td>-->
+                                    </tr>
+                                    <tr>
+
+                                        <td colspan="2">
+                                            <strong>Total Visits</strong>
+                                            <span t-field="o.x_service_qty"/>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="footer">
+                                <div style="font-size:14px">
+                                    <center>
+                                        <span>Printed on:</span>
+                                        <span style="margin-right:2mm" t-field="o.x_current_time"/>
+                                        <span>Printed No.:</span>
+                                        <span t-esc="o.x_print_count"/>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

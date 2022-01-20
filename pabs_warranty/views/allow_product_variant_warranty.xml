@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_warranty" model="ir.ui.view">
+            <field name="name">product.warranty</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='general_information']" position="after">
+                    <page name="warranty" string="Warranty">
+                        <group>
+                            <group attrs="{'invisible' : [('is_extended', '=', True)]}">
+                                <field name="allow_warranty"/>
+                                <field name="warranty_time" style="width:15%%"
+                                       attrs="{'invisible': [('allow_warranty', '=', False)], 'required': [('allow_warranty', '=', True)]}"/>
+                            </group>
+                            <group attrs="{'invisible' : [('is_extended', '=', True)]}">
+                                <field name="allow_extended_warranty"/>
+                            </group>
+                            <group>
+                                <field name="extended_time"
+                                       attrs="{'invisible': [('is_extended', '=', False)], 'required': [('is_extended', '=', True)]}"/>
+                                <field name="extended_warranty_agent"
+                                       attrs="{'invisible': [('is_extended', '=', False)], 'required': [('is_extended', '=', True)]}"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//div[@name='options']" position="inside">
+                    <div>
+                        <field name="is_extended"/>
+                        <label for="is_extended"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

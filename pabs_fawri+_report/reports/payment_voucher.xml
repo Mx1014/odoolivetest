@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="inherit_report_payment_receipt_document"
+                  inherit_id="account.report_payment_receipt_document">
+            <xpath expr="//div//h3" position="replace">
+                <h3 class="text-center" t-if="o.payment_type in ['outbound','transfer']">
+                    <strong>Payment Voucher</strong>
+                </h3>
+                <h3 class="text-center" t-if="o.payment_type == 'inbound'">
+                    <strong>Receipt Voucher</strong>
+                </h3>
+                <div style="float:left">
+                    <table>
+                        <tr t-if="o.partner_type">
+                            <t t-if="o.partner_type == 'customer'">
+                                <td style="width:110px">
+                                    <strong>Customer:</strong>
+                                </td>
+                            </t>
+                            <t t-if="o.partner_type == 'supplier'">
+                                <td>
+                                    <strong>Vendor:</strong>
+                                </td>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Code:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.partner_id.x_code"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Reference:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.name"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--                        <div t-if="o.partner_type">-->
+                    <!--                          <t t-if="o.partner_type == 'supplier'">-->
+                    <!--                                <strong>Customer:</strong>-->
+                    <!--                            </t>-->
+                    <!--                            <t t-if="o.partner_type == 'supplier'">-->
+                    <!--                                <strong>Vendor:</strong>-->
+                    <!--                            </t>-->
+                    <!--                            <span t-field="o.partner_id"/>-->
+                    <!--                        </div>-->
+                    <!--                        <div>-->
+                    <!--                            <strong>Mobile:</strong>-->
+                    <!--                            <span t-field="o.partner_id.phone"/>-->
+                    <!--                        </div>-->
+                    <!--                        <div>-->
+                    <!--                            <strong>Code:</strong>-->
+                    <!--                            <span t-field="o.partner_id.x_code"/>-->
+                    <!--                        </div>-->
+                    <br></br>
+                    <h3 style="float:left;">Invoices</h3>
+                </div>
+                <div style="float:right">
+                    <table>
+                        <tr>
+                            <td style="width:140px">
+                                <strong>Document No:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.x_voucher_no"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Document Date:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.payment_date"/>
+                            </td>
+                        </tr>
+                        <t t-if="o.journal_id">
+                            <tr>
+                                <td>
+                                    <strong>Payment Journal:</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.journal_id"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <!--                        <t t-if="o.cheque_number">-->
+
+                        <!--                            <div>-->
+                        <!--                                <strong>Cheque No:</strong>-->
+                        <!--                                <span t-field="o.cheque_number"/>-->
+                        <!--                            </div>-->
+                        <!--                        </t>-->
+                        <!--                        <t t-if="o.cheque_date">-->
+
+                        <!--                            <div>-->
+                        <!--                                <strong>Cheque Date:</strong>-->
+                        <!--                                <span t-field="o.cheque_date"/>-->
+                        <!--                            </div>-->
+                        <!--                        </t>-->
+
+                    </table>
+                </div>
+            </xpath>
+
+            <!--            <xpath expr="//table[@class='table table-sm']" position="before">-->
+            <!--                   -->
+            <!--            </xpath>-->
+            <xpath expr="//table[@class='table table-sm']" position="inside">
+                <tr>
+                    <td>
+                        <strong>Total Amount</strong>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">
+                        <t t-esc="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                    </td>
+                </tr>
+            </xpath>
+            <xpath expr="//table[@class='table table-sm']" position="after">
+                <br></br>
+                <t t-if="o.x_total_payments">
+                    <h4>Payment Details</h4>
+                    <table class='table table-sm'>
+                        <tr>
+                            <th class="text-left">Name</th>
+                            <th class="text-center">Type</th>
+                            <th class="text-center">Vendor</th>
+                            <th class="text-center">Source Document</th>
+                            <th class="text-right">Amount</th>
+                        </tr>
+
+                        <t t-foreach="o.x_total_payments" t-as="l">
+                            <tr>
+                                <td class="text-left">
+                                    <span t-field="l.name"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="l.type"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="l.partner_id.name"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="l.invoice_origin"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.amount_total_signed"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                </t>
+
+                <br></br>
+                <t t-if="o.cheque_number">
+                    <h4>Cheque Details</h4>
+                    <table class='table table-sm'>
+                        <tr>
+                            <th class="text-left">Cheque No.</th>
+                            <th class="text-center">Cheque Date</th>
+                            <th class="text-center">Bank</th>
+                            <th class="text-center">Bank Number</th>
+                            <th class="text-center">Cheque Type</th>
+                            <th class="text-right">Amount</th>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                <span t-field="o.cheque_number"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="o.cheque_date"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="o.bank_id.name"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="o.account_number"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="o.x_cheque_type"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="o.amount"/>
+                            </td>
+                        </tr>
+                    </table>
+                </t>
+                <br></br>
+                <br></br>
+                <lable style="font-weight: bold;">Net Amount in Words:</lable>
+                <p t-field="o.x_amount_in_words"/>
+                <div>
+                    <strong>Prepared By:</strong>
+                    <span t-field="o.create_uid"/>
+                    <strong style="padding-left:30mm">Checked By:</strong>
+                    <strong style="padding-left:45mm">Approved By:</strong>
+                </div>
+            </xpath>
+            <xpath expr="//div[@class='row']" position="replace"/>
+            <xpath expr="//div[@class='row mb64']" position="replace"/>
+            <xpath expr="//div[@class='row mt64']" position="replace"/>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--    filter_domain="[('status', '=', 'available')]"-->
+    <record id="plan_calendar_search_view" model="ir.ui.view">
+        <field name="name">plan.calendar.search</field>
+        <field name="model">plan.calendar</field>
+        <field name="arch" type="xml">
+            <search string="Slots">
+                <filter string="Available" name="available" domain="[('status', '=', 'available')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Business Line" name="group_by_business_line" domain="[]" context="{'group_by': 'business_line'}"/>
+                    <filter string="Status" name="group_by_status" domain="[]" context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+
+        </field>
+    </record>
+<!-- <filter string="Salesperson" name="salesperson" domain="[]" context="{'group_by': 'user_id'}"/>-->
+<!--                        <filter name="customer" string="Customer" domain="[]" context="{'group_by': 'partner_id'}"/>-->
+<!--                        <filter string="Order Date" name="order_month" domain="[]" context="{'group_by': 'date_order'}"/>-->
+    <record id="plan_calendar_view_form" model="ir.ui.view">
+        <field name="name">plan.calendar.template.form</field>
+        <field name="model">plan.calendar</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <field name="x_delivery_domain" invisible="1"/>
+                    <field name="business_line" readonly="1" force_save="1"/>
+                    <field name="x_delivery_temp" attrs="{'invisible': [('delivery', '!=', False)]}"/>
+                    <field name="delivery" domain="[('id', 'in', x_delivery_domain)]" attrs="{'invisible': [('delivery', '=', False)], 'readonly': [('delivery', '!=', False)]}"/>
+                    <field name="status" readonly="1" force_save="1"/>
+                    <field name="start_datetime" readonly="1" force_save="1"/>
+                    <!--                    <field name="end_datetime"/>-->
+
+                    <field name="note"/>
+                    <field name="period"/>
+                        <field name="x_dn_status"/>
+                    <field name="x_priority" widget="priority"/>
+                    <field name="delivery_items" readonly="1" force_save="1">
+                        <tree decoration-danger="state=='confirmed'">
+                            <field name="state"/>
+                            <field name="date_expected"/>
+                            <field name="origin"/>
+                            <field name="product_id"/>
+                            <field name="product_uom_qty"/>
+                            <field name="product_uom"/>
+                        </tree>
+                    </field>
+                    <button name="action_plan_calendar_view_gantt_method" string="Shift Booked Slot" class="btn-primary" type="object" context="{'bl': business_line, 'coming_from':'sale.order'}" attrs="{'invisible': [('delivery', '=', False)]}"/>
+
+
+                </group>
+                <footer>
+                    <button name="action_save_reminder" class="btn-primary" string="Book Slot" type="object"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" close="1"/>
+
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="plan_calendar_view_gantt" model="ir.ui.view">
+        <field name="name">plan.calendar.gantt</field>
+        <field name="model">plan.calendar</field>
+        <field name="arch" type="xml">
+            <gantt js_class="planning_gantt"
+                   form_view_id="%(plan_calendar_view_form)d"
+                   date_start="start_datetime"
+                   date_stop="end_datetime"
+                   default_group_by="business_line"
+                   default_scale="week" plan="false" scales="day,week,month"
+                   precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full'}"
+                   display_unavailability="1"
+                   decoration-info="status == 'available'" decoration-success="status == 'booked'"
+                   color="color">
+                <field name="status"/>
+            </gantt>
+        </field>
+    </record>
+    <!--                <field name="status"/>-->
+    <!--                <field name="delivery" attrs="{'invisible': [('status', '=', 'available'), '&amp;', ('delivery', '=', False)]}"/>-->
+</odoo>
+        <!--        <field name="search_view_id" ref="plan_calendar_search_view"/>-->
+        <!--        <field name="context">{"search_default_available":1}</field>-->
+        <!--<templates>-->
+        <!--                    <div t-name="gantt-popover" class="container-fluid">-->
+        <!--                        <div class="row no-gutters">-->
+        <!--                            <div class="col">-->
+        <!--                                <ul class="pl-1 mb-0">-->
+        <!--                                    <li>-->
+        <!--                                        <strong>Start Date:</strong>-->
+        <!--                                        <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD hh:mm:ss A')"/>-->
+        <!--                                    </li>-->
+        <!--                                    <li>-->
+        <!--                                        <strong>Stop Date:</strong>-->
+        <!--                                        <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD hh:mm:ss A')"/>-->
+        <!--                                    </li>-->
+        <!--                                    <li id="allocated_hours">-->
+        <!--                                        <strong>Allocated Hours:</strong>-->
+        <!--                                        <t t-esc="'' + Math.floor(allocated_hours) + ':' + ((allocated_hours % 1) * 60 &gt;= 10 ? (allocated_hours % 1) * 60 : '0'+(allocated_hours % 1) * 60)"/>-->
+        <!--                                    </li>-->
+        <!--                                </ul>-->
+        <!--                                <t t-if="publication_warning">-->
+        <!--                                    <br/>-->
+        <!--                                    <span>Some changes were made since this shift was published</span>-->
+        <!--                                </t>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </templates>-->

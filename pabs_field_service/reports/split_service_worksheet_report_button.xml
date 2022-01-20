@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="split_service_worksheet_report_button"
+            model="split.service.worksheet"
+            string="Worksheet"
+            report_type="qweb-pdf"
+            name="pabs_field_service.split_service_worksheet_report_template"
+            file="pabs_field_service.split_service_worksheet_report_template"
+    />
+</odoo>

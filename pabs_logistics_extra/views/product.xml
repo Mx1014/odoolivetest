@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_template_form_view_inherit_pabs_logistics_extra" model="ir.ui.view">
+            <field name="name">product.template.form.view.inherit.pabs.logistics.extra</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='options']" position="inside">
+                    <field name="subcontractor_service"/>
+                    <label for="subcontractor_service"/>
+                </xpath>
+                <xpath expr="//group[@name='group_lots_and_weight']" position="after">
+                    <group string="Dimension">
+                        <field name="dimension_unit"/>
+                        <field name="length"/>
+                        <field name="width"/>
+                        <field name="height"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

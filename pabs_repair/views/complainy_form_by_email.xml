@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="complaint_form_templates_by_email">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="header">
+                        <img t-att-src="'/pap_purchase/static/src/img/AlSalam_IT.png'"
+                             style="max-height:180px"/>
+                    </div>
+                    <div class="page">
+                        <div style="font-size:25px">
+                            <center>
+                                <h1>
+                                    Customer Service Ticket
+                                </h1>
+                            </center>
+                        </div>
+                        <div style="float:left; padding-bottom:5mm">
+                            <table>
+                                <tr>
+                                    <td style="width:130px">
+                                        <strong style="">Customer Name:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.partner_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">Delivery Address:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-if="o.partner_id.street_number">
+                                            <strong>H:</strong>
+                                            <span t-field="o.partner_id.street_number"/>
+                                        </t>
+                                        <t t-if="o.partner_id.x_flat">
+                                            <strong style="padding-left:2mm">F:</strong>
+                                            <span t-field="o.partner_id.x_flat"/>
+                                        </t>
+                                        <t t-if="o.partner_id.x_address_road">
+                                            <strong style="padding-left:2mm">, R:</strong>
+                                            <span t-field="o.partner_id.x_address_road"/>
+                                        </t>
+                                        <t t-if="o.partner_id.x_address_block">
+                                            <strong style="padding-left:2mm">, B:</strong>
+                                            <span t-field="o.partner_id.x_address_block"/>
+
+                                        </t>
+                                         <t t-if="o.partner_id.city_id">
+                                            <strong style="padding-left:2mm">, C:</strong>
+                                            <span t-field="o.partner_id.city_id"/>
+
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">Customer Code:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.partner_id.x_code"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">Phone:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-if="o.partner_id.phone">
+                                            <span t-field="o.partner_id.phone"/>
+                                        </t>
+                                        <t t-if="o.partner_id.mobile">
+                                            /
+                                            <span t-field="o.partner_id.mobile"/>
+                                        </t>
+                                        <t t-if="o.partner_id.x_mobile">
+                                            /
+                                            <span t-field="o.partner_id.x_mobile"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="float:right; padding-bottom:5mm">
+                            <table>
+                                <tr>
+                                    <td style="width:90px">
+                                        <strong style="">Ticket No:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">Ticket Date:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.create_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">CS Agent</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.create_uid"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="">CS Team:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.team_id"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <table style="border-style: solid; width: 100%;" class="table-sm o_main_table">
+                        <tr style="">
+                            <td style="">
+                                <strong style="">Ticket Type:</strong>
+                            </td>
+                            <td colspan="3">
+                                <span t-field="o.ticket_type_id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="">Model/Description:</strong>
+                            </td>
+                            <td colspan="3" style="width:300px">
+                                <span t-field="o.product_id"/>
+                            </td>
+                            <!--                            <td></td>-->
+                            <!--                            <td></td>-->
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="">Barcode:</strong>
+                            </td>
+                            <td style="width:200px">
+                                <span t-field="o.product_id.barcode"/>
+                            </td>
+                            <td>
+                                <strong style="">Serial No:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.x_serial_no"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="">Brand Name:</strong>
+                            </td>
+                            <td style="width:200px">
+                                <span t-field="o.agents_product"/>
+                            </td>
+                            <td>
+                                <strong style="">Brand Agent:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.brand_agent"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="">SO#:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.sale_order_id"/>
+                            </td>
+                            <td>
+                                <strong style="">SO Date:</strong>
+                            </td>
+                            <td>
+                                <span t-field="o.sale_order_date"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="">
+                                <strong>Warranty Ref</strong>
+                            </td>
+                            <td style="">
+                                <span t-field="o.warranty_sequence"/>
+                            </td>
+                            <td style="">
+                                <strong>Warranty End Date</strong>
+                            </td>
+                            <td style="">
+                                <span t-field="o.warranty_end_date"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="">
+                                <strong>Status</strong>
+                            </td>
+                            <td style="">
+                                <span t-field="o.warranty_status"/>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="">
+                                <strong>Complaint Details</strong>
+                            </td>
+                            <td style="">
+                                <span t-field="o.description"/>
+                            </td>
+                            <td style="">
+                                <strong>Issue Type</strong>
+                            </td>
+                            <td style="">
+                                <span t-field="o.x_issue_type"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="">
+                                <strong>Warranty Other Info:</strong>
+                            </td>
+                            <td style="">
+                                <span t-field="o.x_warranty_other_info"/>
+                                <td></td>
+                                <td></td>
+                            </td>
+                        </tr>
+                    </table>
+                    <br></br>
+
+                    <!--                    <table style="border-style: solid; width:100%" class="table-sm o_main_table">-->
+                    <!--                        <br></br>-->
+                    <!--                        <br></br>-->
+                    <!--                        <h5>Receipnt Aknowledgement</h5>-->
+                    <!--                        <thead>-->
+                    <!--                            <tr>-->
+                    <!--                                <th style="width:25%">Customer Service</th>-->
+                    <!--                                <th style="width:25%">Agent/Workshop</th>-->
+                    <!--                                <th style="width:25%">Customer Service</th>-->
+                    <!--                                <th style="width:25%">Customer</th>-->
+                    <!--                            </tr>-->
+                    <!--                        </thead>-->
+                    <!--                        <tbody>-->
+                    <!--                            <tr style="height: 120px">-->
+                    <!--                                <td style=""></td>-->
+                    <!--                                <td style=""></td>-->
+                    <!--                                <td style=""></td>-->
+                    <!--                                <td style=""></td>-->
+                    <!--                            </tr>-->
+                    <!--                            <tr>-->
+                    <!--                                <td style="">Name:</td>-->
+                    <!--                                <td style="">Name:</td>-->
+                    <!--                                <td style="">Name:</td>-->
+                    <!--                                <td style="">Name:</td>-->
+                    <!--                            </tr>-->
+                    <!--                            <tr>-->
+                    <!--                                <td style="">Date:</td>-->
+                    <!--                                <td style="">Date:</td>-->
+                    <!--                                <td style="">Date:</td>-->
+                    <!--                                <td style="">Date:</td>-->
+                    <!--                            </tr>-->
+                    <!--                        </tbody>-->
+                    <!--                    </table>-->
+                    <!--                    <br></br>-->
+                    <!--                    <div>-->
+                    <!--                        <p>Disclaimers : Visiting Charges 5BD</p>-->
+                    <!--                    </div>-->
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

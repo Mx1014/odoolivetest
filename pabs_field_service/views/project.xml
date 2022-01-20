@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="edit_project_form_inherit_pabs_field_service" model="ir.ui.view">
+            <field name="name">edit.project.form.inherit.pabs.field.service</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="business_line" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
+                    <field name="x_sale_order_type" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
+                </field>
+	 	<xpath expr="//form//sheet//notebook//page//group[2]//field[@name='privacy_visibility']" position="after">
+                    <field name="x_is_not_required"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Products">
+                        <field name="x_product_ids" domain="[('type', 'in', ['consu', 'product'])]"/>
+                    </page>
+                    <page string="Services">
+                        <field name="x_service_ids" domain="[('type', '=', 'service')]"/>
+                    </page>
+                </xpath>
+                <xpath expr="//form//sheet//notebook//page[@name='settings']//group//group[2]//field[@name='analytic_account_id']"
+                       position="attributes">
+                    <attribute name="domain">['|', ('x_users', '=', uid), ('x_users', '=', False)]</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

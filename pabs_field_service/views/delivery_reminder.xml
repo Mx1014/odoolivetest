@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="delivery_reminder_task_form_view" model="ir.ui.view">
+            <field name="name">delivery.reminder.task.form.view</field>
+            <field name="model">project.task</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                        <field name="x_business_line" readonly="1" options="{'no_open': True}"/>
+                    </group>
+                    <!--                <footer></footer>-->
+                </form>
+            </field>
+        </record>
+
+        <record id="delivery_reminder_form_view_inherit_pabs_field_service" model="ir.ui.view">
+            <field name="name">delivery.reminder.form.view.inherit.pabs.field.service</field>
+            <field name="model">delivery.reminder</field>
+            <field name="inherit_id" ref="pabs_logistics_extra.delivery_reminder_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="after">
+                    <group attrs="{'invisible': [('x_task', '=', [])]}">
+                        <field name="x_task" readonly="1" context="{'form_view_ref':'pabs_field_service.delivery_reminder_task_form_view'}">
+                            <tree>
+                                <field name="id" invisible="1"/>
+                                <field name="name" readonly="1"/>
+                                <field name="x_business_line" readonly="1"/>
+                                <button name="action_field_plan_calendar_from_reminder_item" type="object"
+                                        string="Find Slot"
+                                        class="btn-primary" context="{'task_id': id}"/>
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+                <xpath expr="//group[3]" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('x_delivery', '!=', []), ('x_task', '!=', [])]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//group[3]/h2" position="replace">
+                    <h2>You Have Assigned Slots for All Deliveries and Services</h2>
+                </xpath>
+                <button name="action_view_sale_order_from_reminder" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('x_delivery', '!=', []), ('x_task', '!=', [])]}
+                    </attribute>
+                </button>
+                <button name="action_view_logistic_gantt_from_reminder" position="after">
+                    <button style="margin-left: 5px;" name="action_view_field_service_gantt_from_reminder"
+                            string="Continue to Service Calendar"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('x_task', '!=', [])]}"/>
+                    <!--                <footer></footer>-->
+                </button>
+            </field>
+        </record>
+
+    </data>
+</odoo>

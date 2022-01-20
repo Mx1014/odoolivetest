@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="fawri+_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div style="padding-top:34mm">
+                            <div style="float:right">
+                                <span style="margin-right:39mm" t-field="o.payment_date"/>
+                            </div>
+                        </div>
+                        <div style="float:right">
+                            <div style="margin-top:27.5mm; margin-right:49mm">
+                                <span t-field="o.journal_id.bank_account_id.bank_name"/>
+                            </div>
+                            <div style="margin-top:30mm">
+                                <span t-field="o.journal_id.bank_account_id.x_iban"/>
+                            </div>
+                        </div>
+                        <div style="float:left">
+                            <div style="margin-left:18mm; margin-top:1mm">
+                                <span
+                                        t-field="o.journal_id.bank_account_id.x_branch"/>
+                            </div>
+                            <div style="margin-top:16.5mm; margin-left:10mm">
+                                <span
+                                        t-field="o.journal_id.bank_account_id.acc_holder_name"/>
+                            </div>
+                            <div style="margin-top:15mm; margin-left:16.5mm">
+                                <span t-field="o.amount"/>
+                            </div>
+                            <div style="margin-top:6.5mm; margin-left:10mm">
+                                <span t-field="o.x_amount_in_words"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                            style="float:left; margin-top:79.7mm; margin-left:42mm; width: 14.5mm;">
+                        <t t-esc="o.journal_id.bank_account_id.acc_number[0]"/>
+                    </div>
+                    <div style="margin-top:79.9mm">
+                        <t t-foreach="range(6)" t-as="i">
+                            <div style="width:7.7mm; float:left">
+                                <t t-esc="o.journal_id.bank_account_id.acc_number[i+1]"/>
+                            </div>
+
+                        </t>
+                        <div style="margin-left:147.3mm">
+                            <t t-foreach="range(3)" t-as="i">
+                                <div style="width:7.3mm; float:left">
+                                    <t t-esc="o.journal_id.bank_account_id.acc_number[i+7]"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                    <div style="margin-top:100.5mm; margin-left:41mm">
+                        <span t-field="o.remittance_details"/>
+                    </div>
+                    <div style="margin-left:38mm">
+                        <span t-field="o.company_id"/>
+                    </div>
+                    <div style="margin-top:8mm; margin-left:33.5mm">
+                        <span t-field="o.company_id.phone"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

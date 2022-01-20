@@ -1,0 +1,113 @@
+<odoo>
+
+    <template id="assets_frontend" inherit_id="web_editor.assets_frontend" name="Online Slot Date">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/pabs_online_booking/static/src/scss/website_calendar.scss" t-ignore="true"/>
+            <link rel="stylesheet" type="text/scss" href="/pabs_online_booking/static/src/scss/website_sale_frontend.scss"/>
+            <script type="text/javascript" src="/pabs_online_booking/static/src/js/website_calendar.js"/>
+        </xpath>
+    </template>
+
+
+ <template id="calender_form_date" name="Website Appointment: Appointment Calendars" inherit_id="portal.portal_sidebar" primary="True">
+     <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+          <div class="col-xl">
+                <div class="wizard">
+                    <div class="progress-wizard">
+                        <a class="no-decoration">
+                          <div id="wizard-step10" class="progress-wizard-step complete">
+                            <div class="progress-wizard-bar d-none d-md-block" style="background-color: #FFFFFF;"/>
+                            <span class="progress-wizard-dot d-none d-md-inline-block" ></span>
+                            <div class="text-center progress-wizard-steplabel">Review Order</div>
+                          </div>
+                        </a>
+                        <a class="no-decoration" >
+                          <div id="wizard-step20" class="progress-wizard-step active">
+                            <div class="progress-wizard-bar d-none d-md-block" style="background-color: #FFFFFF;"/>
+                            <span class="progress-wizard-dot d-none d-md-inline-block"  ></span>
+                            <div class="text-center progress-wizard-steplabel">Pick Date</div>
+                          </div>
+                        </a>
+                        <a class="no-decoration">
+                          <div id="wizard-step40" class="progress-wizard-step disable">
+                            <div class="progress-wizard-bar d-none d-md-block" style="background-color: #FFFFFF;"/>
+                            <span class="progress-wizard-dot d-none d-md-inline-block"  ></span>
+                            <div class="text-center progress-wizard-steplabel">Order Confirmed</div>
+                          </div>
+                        </a>
+                    </div>
+                </div>
+          </div>
+        <div>
+            <br/>
+            <h3 style="color: #00A09D;"><span t-esc="order['name']"/><span t-if="deliveries['x_business_line']['name']"> - </span><span t-esc="deliveries['x_business_line']['name']"/></h3>
+            <h3 style="color: red;" t-if="not deliveries['x_business_line']['name']"><center>Sorry, No Slot Available At This Moment</center></h3>
+            <br/>
+        </div>
+
+        <div class="row">
+            <div t-foreach="slots" t-as="month" class="col-lg-6">
+                <h3 t-esc="month['month']"/>
+                <table class="table">
+                    <tr class="active">
+                        <th class="text-center">Mon</th>
+                        <th class="text-center">Tue</th>
+                        <th class="text-center">Wed</th>
+                        <th class="text-center">Thu</th>
+                        <th class="text-center">Fri</th>
+                        <th class="text-center">Sat</th>
+                        <th class="text-center">Sun</th>
+                    </tr>
+                    <tr t-foreach="month['weeks']" t-as="weeks" class="o_calendar_days">
+                        <t t-foreach="weeks" t-as="day">
+                            <td t-attf-class="text-center#{day['slots'] and ' o_day dropdown' or ''} #{day['weekend_cls']} #{day['today_cls']}" t-attf-title="#{day['today_cls'] and 'Today' or ''}">
+                                <t t-if="day['slots']">
+                                    <div class="dropdown-toggle o_slots_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <strong>
+                                        <span t-esc="day['day'].day"/>
+                                      </strong>
+                                    </div>
+                                    <div class="dropdown-menu" role="menu">
+                                        <t t-foreach="day['slots']" t-as="slot">
+                                            <a t-if='slot' role="menuitem"  t-attf-href="/my/orders/#{order['id']}/successful?slot_id=#{slot['slot_id']['id']}&amp;delivery_id=#{deliveries['id']}&amp;prefered_time=#{slot['hours']}&amp;date_time=#{slot['datetime']}" class="dropdown-item" t-esc="slot['hours']"/>
+                                        </t>
+
+
+                                    </div>
+                                </t>
+                                <t t-if="not day['slots']">
+                                    <div t-esc="day['day'].day" t-att-class="day['mute_cls']"/>
+                                </t>
+                            </td>
+                        </t>
+                    </tr>
+                    <!--to fix bootstrap md height add empty tr so now each month has 6 weeks row -->
+                    <tr t-if="len(month['weeks']) == 5" class="o_calendar_days"/>
+                </table>
+            </div>
+        </div>
+
+     </xpath>
+
+<!--      <xpath expr="//div[hasclass('o_portal_sidebar')]" position="attributes">-->
+<!--          <attribute name="style">background-color: #FFFFFF;</attribute>-->
+<!--      </xpath>-->
+
+<!--     <xpath expr="//body" position="attributes">-->
+<!--          <attribute name="style">background-color: #FFFFFF;</attribute>-->
+<!--      </xpath>-->
+    </template>
+
+<!--    <template id="portal_layout_color" inherit_id="portal.portal_layout">-->
+<!--        <xpath expr="//div[@id='wrap']" position="attributes">-->
+<!--          <attribute name="style">background-color: #FFFFFF;</attribute>-->
+<!--      </xpath>-->
+<!--    </template>-->
+
+<!--    <template id="frontend_layout_custom" inherit_id="web.frontend_layout" primary="True">-->
+<!--        <xpath expr="//div[@id='wrapwrap']//main" position="attributes">-->
+<!--            <attribute name="style">background-color: #FFFFFF;</attribute>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+</odoo>

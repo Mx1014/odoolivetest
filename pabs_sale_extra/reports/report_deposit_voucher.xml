@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+    id="report_deposit_voucher_button"
+    model="account.batch.payment"
+    string="Deposit Voucher"
+    report_type="qweb-pdf"
+    name="pabs_sale_extra.report_deposit_voucher_template"
+    file="pabs_sale_extra.report_deposit_voucher_template"
+    paperformat="pabs_sale_extra.paperformat_deposit_voucher"
+    />
+</odoo>

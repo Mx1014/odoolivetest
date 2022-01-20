@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="pabs_sale_extra.mac_address_view_tree">
+            <field name="name">sales.team.view.mac.addresses</field>
+            <field name="model">crm.team.macadress</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="name" required="1"/>
+                    <field name="name_device"/>
+<!--                    <field name="team_id"/>-->
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="pabs_sale_extra.mac_address_view_forms">
+            <field name="name">sales.team.view.mac.addresses.form</field>
+            <field name="model">crm.team.macadress</field>
+            <field name="arch" type="xml">
+                <form>
+<!--                    <header>-->
+<!--                        <button name="mac_address_get" type="object" string="Get MAC Address" class="oe_highlight"/>-->
+<!--                    </header>-->
+                    <sheet>
+                        <h1 class="mt0">
+                        <field name="name" placeholder="Mac Address" required="1"/>
+                        </h1>
+                        <group>
+                        <field name="name_device"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_mac_address" model="ir.actions.act_window">
+            <field name="name">MAC Address</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.team.macadress</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="pabs_sale_extra.mac_address_view_tree"/>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem id="menu_sale_approval"
+                  action="pabs_sale_extra.action_mac_address"
+                  parent="pabs_sale.terminal_config_main"
+                  sequence="3"/>
+
+    </data>
+</odoo>

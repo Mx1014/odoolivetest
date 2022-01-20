@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pabs_hr/static/js/increment_button.js"></script>
+        </xpath>
+    </template>
+    <!--    <template id="assets_tests" inherit_id="web.assets_tests">-->
+    <!--        <xpath expr="." position="inside">-->
+    <!--            <script type="text/javascript" src="/pabs_hr/static/js/increment_button.js"/>-->
+    <!--        </xpath>-->
+    <!--    </template>-->
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <report
+            id="action_report_settlement_payslip"
+            model="hr.payslip"
+            string="Final Settlement Payslip"
+            report_type="qweb-pdf"
+            name="pabs_payroll.report_settlement_payslip"
+            file="pabs_payroll.report_settlement_payslip"
+            print_report_name="'Final  Payslip - %s' % (object.employee_id.name)"
+        />
+
+        <template id="report_settlement_payslip_document" inherit_id="pabs_payroll.report_payslip_inherit" primary="True">
+            <xpath expr="//h2" position="replace">
+               <h2 class="text-center">Final Settlement slip</h2>
+            </xpath>
+             <xpath expr="//tr[@name='desc']" position="replace">
+               <tr style="background-color:#B1B3B8;"><td class="text-center" colspan="5"><strong>Final Settlement</strong></td></tr>
+            </xpath>
+               <xpath expr="//table[@name='input_infos']//thead//tr" position="replace">
+                 <tr style="background-color:#B1B3B8;"><td class="text-center" colspan="6"><strong>Worked Days</strong></td></tr>
+             </xpath>
+              <xpath expr="//table[@name='input_infos']//th[2]" position="after">
+                 <th>From</th>
+                 <th>To</th>
+             </xpath>
+            <xpath expr="//table[@name='input_infos']//tbody//tr//td[2]" position="after">
+                 <td><span t-field="worked_days.x_date_from"/></td>
+                <td><span t-field="worked_days.x_date_to"/></td>
+             </xpath>
+        </template>
+
+
+
+        <template id="report_settlement_payslip">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+<!--                    <t t-set="lang" t-value="o.employee_id.lang"/>-->
+                    <t t-call="pabs_payroll.report_settlement_payslip_document"/>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,294 @@
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+
+<html>
+   <body>
+      <section class="oe_container oe_dark lead">
+         <section class="oe_container oe_dark lead">
+            <div class=row>
+               <div class="col-11" style="width:95%; margin-left:4%;">
+                  <p class="oe_slogan text-center" style="font-size:30px;">
+                            <b>  Print Odoo Reports via Zebra Printer</b> 
+                  </p>
+                  <p class="text-center" style="font-size:22px;">
+                        Odoo Extension Allowing The User To Print Reports Directly Via Zebra Printer Instead Of Downloading As a PDF File.
+                  </p>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-11" style="width:95%; margin-left:4%;">
+                  <p class="text-danger">
+                     <b>
+                     This module uses the QZ Tray client for sending direct print commands to the printer:
+                     </b>
+                  </p>
+                  <ul>
+                     <li>
+                        Installation Link: (<a href="https://qz.io/download/" target="_blank">https://qz.io/download/</a>)
+                     </li>
+                     <li>
+                        Demo Link: (<a href="https://demo.qz.io/" target="_blank">https://demo.qz.io/</a>)
+                     </li>
+                  </ul>
+                  <p class="text-danger">
+                     <b>
+                     Make sure you have installed the python library zplgrf.
+                     </b>
+                  </p>
+                  <ul>
+                     <li>
+                        Installation Command: (<b>pip install zplgrf</b>)
+                     </li>
+                  </ul>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-11" style="width:95%; margin-left:4%;">
+                  <div class="panel panel-primary" id="wkid0">
+                     <div class="panel-heading">
+                        <h3 class="panel-title" style="font-size: 25px;">
+                           <i class="fa fa-mail-forward ">
+                           </i>
+                           <b>
+                           Salient Features
+                           </b>
+                        </h3>
+                     </div>
+                     <div class="panel-body">
+                        <ul class="wk">
+                           <li>
+                              User can select the default report action for each report i.e whether to download the report or to send it to the printer.
+                           </li>
+                           <li>
+                              User can select the default Zebra printer for a report.
+                           </li>
+                           <li>
+                              User can select the desired printer from the list of available printers while printing the report.
+                           </li>
+                           <li>
+                              User can also define custom report templates using his printer specific language(like zpl) if he doesn't wish to print the default Odoo's report.
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </section>
+      <section class="oe_container oe_dark lead">
+         <div class="row">
+            <div class="col-11" style="width:95%; margin-left:4%;">
+               <div class="panel" id="wkid2">
+                  <div class="panel-heading">
+                     <h3 class="panel-title" style="font-size: 25px;">
+                        <i class="fa fa-wrench ">
+                        </i>
+                        <b>
+                        Setup&amp; Configuration
+                        </b>
+                     </h3>
+                  </div>
+                  <div class="panel-body">
+                     <!-- ############################################################################################## -->
+
+                     <div class="alert alert-info" style="padding:8px;font-weight: 300; font-size: 20px;">
+                           <i class="fa fa-cog"></i>
+                        <b>
+                              Configuring Printers& Custom Report Templates
+                        </b>
+                     </div>
+                     <p>
+                        <i>
+                              You can setup the available printers and custom report templates under the <b>Settings &gt; Technical</b> menu.
+                        </i>
+                     </p>
+                     <p>
+                        <a href="screen1.jpg">
+                           <img class="oe_picture oe_screenshot" src="screen1.jpg"/>
+                        </a>
+                     </p>
+                     <p>
+                        <i>
+                              Next, you'll need to configure the report action in the report that you wish to send to the printer. You can set this from the Settings&gt;  Technical menu under the Reporting section.
+                        </i>
+                     </p>
+                     <p>
+                        <i>
+                           Make sure the <b>Printer's name</b> is exactly the same as the name of the printer is used by the QZ Tray client to make connection and send print commands.
+                        </i>
+                     </p>
+                     <p>
+                        <i>
+                           <b>Printer type</b>: Select the printer type here. Currently, only zebra printers are supported.
+                        </i>
+                        </p>
+                     <p>
+                        <a href="screen2.jpg">
+                           <img class="oe_picture oe_screenshot" src="screen2.jpg"/>
+                        </a>
+                     </p>
+                     <p>
+                        <i>
+                           <b>Use Template</b>: Select this option if you wish to use a custom Report Template for printing this report. If you leave this field blank then the default Odoo's pdf report will be converted into the printer specific commands (ZPL) and then sent for printing.
+                        </i>
+                        </p>
+                     <p>
+                     <p>
+                        <a href="screen3.jpg">
+                           <img class="oe_picture oe_screenshot" src="screen3.jpg"/>
+                        </a>
+                     </p>
+                     <p>
+                        <a href="screen4.jpg">
+                           <img class="oe_picture oe_screenshot" src="screen4.jpg"/>
+                        </a>
+                     </p>
+
+                     <p></p>
+                     
+                     <div class="alert alert-info" style="padding:8px;font-weight: 300; font-size: 20px;">
+                        <i class="fa fa-cog"></i>
+                        <b>
+                           Odoo-Report Configuration.
+                        </b>
+                     </div>
+                     <p>
+                        <i>
+                           Next, you'll need to configure the report action in the report that you wish to send to the printer. You can set this from the <b>Settings > Technical</b> menu under the Reporting section.
+                        </i>
+                     </p>
+                     <p>
+                        <a href="screen5.jpg">
+                            <img class="oe_picture oe_screenshot" src="screen5.jpg"/>
+                        </a>
+                     </p>
+                     <p>
+                        <i>
+                           In the desired report form view, you can set the following parameters:
+                        </i>
+                     </p>
+                     <ul>
+                        <li>
+                           <i><b>Report Action</b>: Select the <b>"Send To Printer"</b> option here if you wish to print the report directly instead of downloading it. The default value of this field is <b>"Default Odoo's Action"</b> that leads to the default Odoo's behaviour.</i>
+                        </li>
+                        <li>
+                           <i><b>Printer</b>: Select the default printer here. Leave this field blank if you wish to select the printer from the list of available printers while printing it.</i>
+                        </li>
+                        <li>
+                           <i><b>Use Template</b>: Select this option if you wish to use a custom <b>Report Template</b> for printingthis report. If you leave this filed blank then the default Odoo's pdf report will be converted into the the printer specific commands (ZPL) and then sent for printing.</i>
+                        </li>
+                        <li>
+                           <i><b>Report Template</b>: Select the desired Report Template record here if the <b>Use Template</b> filed is marked.</i>
+                        </li>
+                     </ul>
+                     <p>
+                        <a href="screen6.jpg">
+                           <img class="oe_picture oe_screenshot" src="screen6.jpg"/>
+                        </a>
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="oe_container oe_dark lead">
+         <div class="row">
+            <div class="col-11" style="width:95%; margin-left:4%;">
+               <div class="panel" id="wkid3">
+                  <div class="panel-heading">
+                     <h3 class="panel-title" style="font-size: 25px;">
+                        <i class="fa fa-pencil-square-o ">
+                        </i>
+                        <b>
+                        Work-flow
+                        </b>
+                     </h3>
+                  </div>
+                  <div class="panel-body">
+                     <div class="alert alert-info" style="padding:8px;font-weight: 300; font-size: 20px;">
+                        <i class="fa fa-desktop">
+                        </i>
+                        <b>
+                           When Default Printer Is Set
+                        </b>
+                     </div>
+                     <p>
+                        <i>
+                           When the default printer is set in the report configuration then the report is sent to that printer directly when the 'Print' server action is triggered. This can be used in the cases when the user uses the same printer always for a report.
+                        </i>
+                     </p>
+                     <p>
+                        <a href="printing1.gif">
+                        <img class="oe_picture oe_screenshot" src="printing1.gif"/>
+                        </a>
+                     </p>
+                     <div class="alert alert-info" style="padding:8px;font-weight: 300; font-size: 20px;">
+                        <i class="fa fa-desktop">
+                        </i>
+                        <b>
+                            When Default Printer Is Not Set
+                        </b>
+                     </div>
+                     <p>
+                        <i>
+                            In case when no default printer is set in the report configuration, then a popup appears with the list of all the available printers and the user can select the desired one while printing the same.
+                        </i>
+                     </p>
+                     <p>
+                        <a href="printing2.gif">
+                           <img class="oe_picture oe_screenshot" src="printing2.gif"/>
+                        </a>
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <div class="tab-pane active" id="faq">
+      </div>
+      <section class="oe_container lead">
+         <div>
+            <div class="col-12 text-center">
+               <h2 class="oe_slogan">
+                  Complimentary Support
+               </h2>
+               <p>
+                  You will get 90 days free support for any doubt, queries, and bug fixing (excluding data recovery) or any type of issue related to this module.
+               </p>
+            </div>
+         </div>
+         <div class="col-12 text-center">
+            <div class="col-12 text-center">
+               <h2 class="text-center oe_slogan">
+                  Help and Support
+               </h2>
+            </div>
+            <div class="oe_slogan oe_spaced text-center">
+               <a href="https://webkul.uvdesk.com/en/customer/create-ticket/" onmouseout="this.style.color='#7c7bad'" onmouseover="this.style.color='#AC1EE0'" style="color:#7c7bad;" title="Get Instant Help !">
+               <i class="fa fa-life-ring">
+               </i>
+               Help
+               </a>
+               <a href="https://webkul.uvdesk.com/en/customer/create-ticket/" onmouseout="this.style.color='#7c7bad'" onmouseover="this.style.color='#AC1EE0'" style="color:#7c7bad;" title="Get Instant Support!">
+               <i class="fa fa-ticket">
+               </i>
+               Support
+               </a>
+               <a href="https://webkul.uvdesk.com/en/customer/create-ticket/" onmouseout="this.style.color='#7c7bad'" onmouseover="this.style.color='#AC1EE0'" style="color:#7c7bad;" title="Request Features now !">
+               <i class="fa fa-check-circle">
+               </i>
+               Request new Features
+               </a>
+            </div>
+         </div>
+      </section>
+      <section class="oe_container">
+         <div class="col-12">
+            <!-- Piwik Image Tracker-->
+            <img alt="" src="http://odooimg.webkul.com/analytics/piwik/piwik.php?idsite=3&amp;rec=1&amp;action_name=Print-Odoo-Reports-Via-Zebra-Printer&amp;url=https://apps.openerp.com/apps/modules/12.0/wk_odoo_directly_print_reports&amp;uid=wk_odoo_directly_print_reports" style="border:0"/>
+            <!-- End Piwik -->
+         </div>
+      </section>
+   </body>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_warehouse_orderpoint_tree_inherit_pabs_logistic_extra" model="ir.ui.view">
+            <field name="name">view.warehouse.orderpoint.tree.inherit.pabs.logistic.extra</field>
+            <field name="model">stock.warehouse.orderpoint</field>
+            <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="x_quantity_onhand" optional="show"/>
+                    <field name="x_quantity_reserved" optional="show"/>
+                    <field name="x_quantity_free" optional="show"/>
+                    <field name="x_quantity_forecast" optional="show"/>
+                    <field name="json_lead_days_popover" optional="show" nolabel="1" string="Forecast Description"
+                           widget="popover_widget"/>
+                </field>
+            </field>
+        </record>
+        <record id="view_warehouse_orderpoint_form_inherit_pabs_logistic_extra" model="ir.ui.view">
+            <field name="name">view.warehouse.orderpoint.form.inherit.pabs.logistic.extra</field>
+            <field name="model">stock.warehouse.orderpoint</field>
+            <field name="inherit_id" ref="stock.view_warehouse_orderpoint_form"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="after">
+                    <field name="x_quantity_onhand"/>
+                    <field name="x_quantity_reserved"/>
+                    <field name="x_quantity_forecast"/>
+                </field>
+            </field>
+        </record>
+        <template id="sale_order_line_view_list" name="sale.order.line.view.list" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pabs_logistics_extra/static/src/js/popover_widget.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>
